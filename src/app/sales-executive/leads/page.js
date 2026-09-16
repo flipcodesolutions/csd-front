@@ -368,7 +368,19 @@ export default function SalesExecutiveLeadsPage() {
                       <tr key={lead.id} className="border-bottom border-secondary border-opacity-10">
                         {/* Lead & Contact */}
                         <td className="py-3 px-3">
-                          <div className="fw-bold text-white fs-6">{lead.name}</div>
+                          <div className="d-flex align-items-center gap-2 flex-wrap">
+                            <span className="fw-bold text-white fs-6">{lead.name}</span>
+                            {lead.is_birthday_today && (
+                              <span className="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50 px-2 py-0" style={{ fontSize: "10px" }}>
+                                🎂 Birthday Today
+                              </span>
+                            )}
+                            {lead.is_anniversary_today && (
+                              <span className="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-50 px-2 py-0" style={{ fontSize: "10px" }}>
+                                💐 Anniversary Today
+                              </span>
+                            )}
+                          </div>
                           <div className="d-flex align-items-center gap-2 mt-1">
                             <a
                               href={`tel:${lead.phone}`}
@@ -432,13 +444,23 @@ export default function SalesExecutiveLeadsPage() {
 
                         {/* Action */}
                         <td className="py-3 px-3 text-end">
-                          <Link
-                            href={`/sales-executive/leads/${lead.id}`}
-                            className="btn btn-primary btn-sm px-3 rounded-pill"
-                          >
-                            <span>View Lead</span>
-                            <i className="bi bi-arrow-right ms-1"></i>
-                          </Link>
+                          <div className="d-flex align-items-center justify-content-end gap-2">
+                            <Link
+                              href={`/admin/quotation/create?lead_id=${lead.id}`}
+                              className="btn btn-outline-primary btn-sm px-3 rounded-pill d-inline-flex align-items-center gap-1"
+                              title="Send Quotation"
+                            >
+                              <i className="bi bi-file-earmark-spreadsheet-fill text-warning"></i>
+                              <span>Send Quote</span>
+                            </Link>
+                            <Link
+                              href={`/sales-executive/leads/${lead.id}`}
+                              className="btn btn-primary btn-sm px-3 rounded-pill"
+                            >
+                              <span>View Lead</span>
+                              <i className="bi bi-arrow-right ms-1"></i>
+                            </Link>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -503,13 +525,19 @@ export default function SalesExecutiveLeadsPage() {
                       </div>
                     )}
 
-                    {/* Action Button */}
-                    <div className="mt-2">
+                    {/* Action Buttons */}
+                    <div className="d-flex gap-2 mt-2">
+                      <Link
+                        href={`/admin/quotation/create?lead_id=${lead.id}`}
+                        className="btn btn-outline-primary btn-sm flex-fill py-2 rounded-pill fw-medium text-center"
+                      >
+                        <i className="bi bi-file-earmark-spreadsheet-fill text-warning me-1"></i> Send Quote
+                      </Link>
                       <Link
                         href={`/sales-executive/leads/${lead.id}`}
-                        className="btn btn-primary btn-sm w-100 py-2 rounded-pill fw-medium"
+                        className="btn btn-primary btn-sm flex-fill py-2 rounded-pill fw-medium text-center"
                       >
-                        <i className="bi bi-eye-fill me-1"></i> View Lead & Follow-Up
+                        <i className="bi bi-eye-fill me-1"></i> View Lead
                       </Link>
                     </div>
                   </div>

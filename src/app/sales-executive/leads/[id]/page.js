@@ -286,6 +286,15 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
               </>
             )}
 
+            <Link
+              href={`/admin/quotation/create?lead_id=${lead.id}`}
+              className="btn btn-outline-custom d-flex align-items-center gap-1 text-warning"
+              title="Send Quotation to Customer"
+            >
+              <i className="bi bi-file-earmark-spreadsheet-fill"></i>
+              <span>Send Quotation</span>
+            </Link>
+
             <button
               type="button"
               className="btn btn-primary d-flex align-items-center gap-1 shadow-sm"
@@ -460,6 +469,35 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                       <div className="col-6">
                         <span className="text-secondary small d-block">State</span>
                         <span className="text-white small fw-medium">{lead.state || "-"}</span>
+                      </div>
+                    </div>
+
+                    <div className="row g-3 pt-2 border-top border-secondary-subtle">
+                      <div className="col-6">
+                        <span className="text-secondary small d-block">
+                          <i className="bi bi-cake2-fill text-danger me-1"></i> Birthday
+                        </span>
+                        <span className="text-white small fw-semibold d-flex align-items-center gap-1 mt-1">
+                          {lead.birth_date ? new Date(lead.birth_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-"}
+                          {lead.is_birthday_today && (
+                            <span className="badge bg-danger-subtle text-danger px-1 py-0" style={{ fontSize: "9px" }}>
+                              🎂 Today!
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                      <div className="col-6">
+                        <span className="text-secondary small d-block">
+                          <i className="bi bi-heart-fill text-primary me-1"></i> Anniversary
+                        </span>
+                        <span className="text-white small fw-semibold d-flex align-items-center gap-1 mt-1">
+                          {lead.anniversary_date ? new Date(lead.anniversary_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-"}
+                          {lead.is_anniversary_today && (
+                            <span className="badge bg-primary-subtle text-primary px-1 py-0" style={{ fontSize: "9px" }}>
+                              💐 Today!
+                            </span>
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>

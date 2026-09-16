@@ -53,6 +53,8 @@ export default function LeadsPage() {
     phone: "",
     city: "",
     state: "",
+    birth_date: "",
+    anniversary_date: "",
     vehicle_segment: "4 Wheeler", // "2 Wheeler" or "4 Wheeler"
     brand_id: "",
     model_variant: "",
@@ -62,6 +64,7 @@ export default function LeadsPage() {
     status_id: "",
     assigned_user_name: "David Miller (Sales Executive)",
   });
+  const [isTriggeringWishes, setIsTriggeringWishes] = useState(false);
 
   // 2. Fetch Leads & Master Dropdowns from Laravel backend
   const fetchLeads = async () => {
@@ -127,6 +130,8 @@ export default function LeadsPage() {
         phone: formData.phone.trim(),
         city: formData.city.trim(),
         state: formData.state.trim(),
+        birth_date: formData.birth_date || null,
+        anniversary_date: formData.anniversary_date || null,
         vehicle_segment: formData.vehicle_segment,
         brand_id: formData.brand_id || null,
         model_variant: formData.model_variant.trim(),
@@ -145,6 +150,8 @@ export default function LeadsPage() {
           phone: "",
           city: "",
           state: "",
+          birth_date: "",
+          anniversary_date: "",
           vehicle_segment: "4 Wheeler",
           brand_id: "",
           model_variant: "",
@@ -190,6 +197,8 @@ export default function LeadsPage() {
         phone: editLead.phone.trim(),
         city: editLead.city ? editLead.city.trim() : "",
         state: editLead.state ? editLead.state.trim() : "",
+        birth_date: editLead.birth_date || null,
+        anniversary_date: editLead.anniversary_date || null,
         vehicle_segment: editLead.vehicle_segment || "4 Wheeler",
         brand_id: editLead.brand_id || null,
         model_variant: editLead.model_variant.trim(),
@@ -229,6 +238,24 @@ export default function LeadsPage() {
       console.log("Delete Error:", error);
       const msg = error.response?.data?.message || "Failed to delete lead.";
       showToast(msg, "error");
+    }
+  };
+
+  // 6. Trigger Birthday & Anniversary Greetings Automation on Demand
+  const handleTriggerGreetings = async () => {
+    setIsTriggeringWishes(true);
+    try {
+      showToast("Running Birthday & Anniversary wishes automation...", "info");
+      const res = await axios.post(`${API_URL}/leads/send-greetings-now`);
+      if (res.data && res.data.status) {
+        showToast(res.data.message || "Greetings sent successfully!", "success");
+        fetchLeads();
+      }
+    } catch (err) {
+      console.error("Trigger greetings error:", err);
+      showToast(err.response?.data?.message || "Failed to trigger greetings.", "error");
+    } finally {
+      setIsTriggeringWishes(false);
     }
   };
 
@@ -593,6 +620,17 @@ export default function LeadsPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2 flex-wrap">
+            <button
+              className="btn btn-outline-custom d-flex align-items-center gap-1"
+              style={{ color: "#f43f5e", borderColor: "rgba(244, 63, 94, 0.4)" }}
+              onClick={handleTriggerGreetings}
+              disabled={isTriggeringWishes}
+              title="Dispatch automated Birthday & Anniversary greetings scheduled for today"
+            >
+              <i className="bi bi-gift-fill"></i>
+              <span>{isTriggeringWishes ? "Sending..." : "Send Today's Wishes"}</span>
+            </button>
+
             <Link href="/admin/follow-up" className="btn btn-outline-custom">
               <i className="bi bi-telephone-outbound-fill text-warning"></i>
               <span>Follow-Ups Hub</span>
@@ -621,6 +659,8 @@ export default function LeadsPage() {
                   phone: "",
                   city: "",
                   state: "",
+                  birth_date: "",
+                  anniversary_date: "",
                   vehicle_segment: "4 Wheeler",
                   brand_id: brands[0]?.id || "",
                   model_variant: "",
@@ -982,7 +1022,19 @@ export default function LeadsPage() {
                         </td>
                         <td>
                           <div>
-                            <h6 className="mb-0 text-white fw-bold">{lead.name}</h6>
+                            <div className="d-flex align-items-center gap-2 flex-wrap">
+                              <h6 className="mb-0 text-white fw-bold">{lead.name}</h6>
+                              {lead.is_birthday_today && (
+                                <span className="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-0" style={{ fontSize: "10px" }}>
+                                  🎂 Birthday Today
+                                </span>
+                              )}
+                              {lead.is_anniversary_today && (
+                                <span className="badge bg-primary-subtle text-primary border border-primary-subtle px-2 py-0" style={{ fontSize: "10px" }}>
+                                  💐 Anniversary Today
+                                </span>
+                              )}
+                            </div>
                             <div className="d-flex align-items-center gap-2 mt-1">
                               <span className="text-muted small">
                                 <i className="bi bi-telephone me-1"></i>
@@ -1052,6 +1104,14 @@ export default function LeadsPage() {
                         </td>
                         <td className="text-end">
                           <div className="table-actions justify-content-end">
+                            <Link
+                              href={`/admin/quotation/create?lead_id=${lead.id}`}
+                              className="btn-action"
+                              style={{ color: "#38bdf8" }}
+                              title="Send Quotation"
+                            >
+                              <i className="bi bi-file-earmark-spreadsheet-fill"></i>
+                            </Link>
                             <button
                               className="btn-action btn-view"
                               title="View Details"
@@ -1189,6 +1249,30 @@ export default function LeadsPage() {
                         placeholder="e.g. Maharashtra, Rajasthan"
                         value={formData.state}
                         onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-white fw-bold small">
+                        <i className="bi bi-cake2-fill text-danger me-1"></i> Birth Date (Birthday)
+                      </label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={formData.birth_date}
+                        onChange={(e) => setFormData({ ...formData, birth_date: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-white fw-bold small">
+                        <i className="bi bi-heart-fill text-primary me-1"></i> Anniversary Date
+                      </label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={formData.anniversary_date}
+                        onChange={(e) => setFormData({ ...formData, anniversary_date: e.target.value })}
                       />
                     </div>
                   </div>
@@ -1497,8 +1581,32 @@ export default function LeadsPage() {
                       <input
                         type="text"
                         className="form-control"
-                        value={editLead.state}
+                        value={editLead.state || ""}
                         onChange={(e) => setEditLead({ ...editLead, state: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-white fw-bold small">
+                        <i className="bi bi-cake2-fill text-danger me-1"></i> Birth Date
+                      </label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={editLead.birth_date ? (editLead.birth_date.split('T')[0] || editLead.birth_date) : ""}
+                        onChange={(e) => setEditLead({ ...editLead, birth_date: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-white fw-bold small">
+                        <i className="bi bi-heart-fill text-primary me-1"></i> Anniversary Date
+                      </label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={editLead.anniversary_date ? (editLead.anniversary_date.split('T')[0] || editLead.anniversary_date) : ""}
+                        onChange={(e) => setEditLead({ ...editLead, anniversary_date: e.target.value })}
                       />
                     </div>
                   </div>
@@ -1690,6 +1798,24 @@ export default function LeadsPage() {
                     <strong className="text-info">{viewLead.model_variant}</strong>
                   </div>
                   <div className="col-6 mt-2">
+                    <span className="text-muted small d-block">Birth Date</span>
+                    <strong className="text-white d-flex align-items-center gap-1">
+                      {viewLead.birth_date ? new Date(viewLead.birth_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-"}
+                      {viewLead.is_birthday_today && (
+                        <span className="badge bg-danger-subtle text-danger small">🎂 Today!</span>
+                      )}
+                    </strong>
+                  </div>
+                  <div className="col-6 mt-2">
+                    <span className="text-muted small d-block">Anniversary Date</span>
+                    <strong className="text-white d-flex align-items-center gap-1">
+                      {viewLead.anniversary_date ? new Date(viewLead.anniversary_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-"}
+                      {viewLead.is_anniversary_today && (
+                        <span className="badge bg-primary-subtle text-primary small">💐 Today!</span>
+                      )}
+                    </strong>
+                  </div>
+                  <div className="col-6 mt-2">
                     <span className="text-muted small d-block">Brand / Segment</span>
                     <strong className="text-white">{viewLead.brand?.name || viewLead.brand_name || viewLead.vehicle_segment}</strong>
                   </div>
@@ -1761,7 +1887,7 @@ export default function LeadsPage() {
                 </div>
               </div>
 
-              <div className="modal-footer-custom">
+              <div className="modal-footer-custom d-flex justify-content-between align-items-center">
                 <button
                   type="button"
                   className="btn btn-outline-custom"
@@ -1769,6 +1895,13 @@ export default function LeadsPage() {
                 >
                   Close
                 </button>
+                <Link
+                  href={`/admin/quotation/create?lead_id=${viewLead.id}`}
+                  className="btn btn-primary d-inline-flex align-items-center gap-1"
+                >
+                  <i className="bi bi-file-earmark-spreadsheet-fill me-1"></i>
+                  <span>Send Quotation</span>
+                </Link>
               </div>
             </div>
           </div>
