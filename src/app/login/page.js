@@ -75,17 +75,20 @@ export default function LoginPage() {
     setErrorMessage("");
     setSuccessMessage("");
 
-    if (role === "backend") {
+    if (role === "admin") {
       setEmail("admin@example.com");
       setPassword("password");
-    } else if (role === "admin") {
-      setEmail("admin@example.com");
-      setPassword("password");
-    } else if (role === "director") {
-      setEmail("alexander.vance@carcrm.com");
+    } else if (role === "manager") {
+      setEmail("neha.sharma@carcrm.com");
       setPassword("password");
     } else if (role === "executive") {
       setEmail("david.miller@carcrm.com");
+      setPassword("password");
+    } else if (role === "receptionist") {
+      setEmail("pooja.iyer@carcrm.com");
+      setPassword("password");
+    } else if (role === "accountant") {
+      setEmail("amit.patel@carcrm.com");
       setPassword("password");
     }
   };
@@ -377,15 +380,7 @@ export default function LoginPage() {
             <label className="text-muted small fw-semibold mb-1 d-block">
               Quick Demo Fill:
             </label>
-            <div className="role-pills-wrapper">
-              <button
-                type="button"
-                className={`role-pill-btn ${activeRole === "backend" ? "active" : ""}`}
-                onClick={() => handleRoleSelect("backend")}
-              >
-                <i className="bi bi-hdd-network"></i>
-                <span>API User</span>
-              </button>
+            <div className="role-pills-wrapper d-flex flex-wrap gap-1">
               <button
                 type="button"
                 className={`role-pill-btn ${activeRole === "admin" ? "active" : ""}`}
@@ -396,11 +391,11 @@ export default function LoginPage() {
               </button>
               <button
                 type="button"
-                className={`role-pill-btn ${activeRole === "director" ? "active" : ""}`}
-                onClick={() => handleRoleSelect("director")}
+                className={`role-pill-btn ${activeRole === "manager" ? "active" : ""}`}
+                onClick={() => handleRoleSelect("manager")}
               >
                 <i className="bi bi-person-badge"></i>
-                <span>Sales Director</span>
+                <span>Manager</span>
               </button>
               <button
                 type="button"
@@ -409,6 +404,22 @@ export default function LoginPage() {
               >
                 <i className="bi bi-briefcase"></i>
                 <span>Sales Exec</span>
+              </button>
+              <button
+                type="button"
+                className={`role-pill-btn ${activeRole === "receptionist" ? "active" : ""}`}
+                onClick={() => handleRoleSelect("receptionist")}
+              >
+                <i className="bi bi-door-open"></i>
+                <span>Reception</span>
+              </button>
+              <button
+                type="button"
+                className={`role-pill-btn ${activeRole === "accountant" ? "active" : ""}`}
+                onClick={() => handleRoleSelect("accountant")}
+              >
+                <i className="bi bi-calculator"></i>
+                <span>Accountant</span>
               </button>
             </div>
           </div>

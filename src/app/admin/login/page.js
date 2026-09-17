@@ -15,7 +15,7 @@ export default function CrmLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [activeRole, setActiveRole] = useState("backend");
+  const [activeRole, setActiveRole] = useState("admin");
 
   // 2. Quick Demo button click handler
   const handleRoleSelect = (role) => {
@@ -23,18 +23,21 @@ export default function CrmLoginPage() {
     setErrorMessage("");
     setSuccessMessage("");
 
-    if (role === "backend") {
+    if (role === "admin") {
       setEmail("admin@example.com");
       setPassword("password");
-    } else if (role === "admin") {
-      setEmail("admin@defenceautolink.com");
-      setPassword("Admin@12345");
-    } else if (role === "director") {
-      setEmail("alexander.vance@carcrm.com");
-      setPassword("Director@2026");
+    } else if (role === "manager") {
+      setEmail("neha.sharma@carcrm.com");
+      setPassword("password");
     } else if (role === "executive") {
-      setEmail("rajesh.kumar@carcrm.com");
-      setPassword("Sales@2026");
+      setEmail("david.miller@carcrm.com");
+      setPassword("password");
+    } else if (role === "receptionist") {
+      setEmail("pooja.iyer@carcrm.com");
+      setPassword("password");
+    } else if (role === "accountant") {
+      setEmail("amit.patel@carcrm.com");
+      setPassword("password");
     }
   };
 
@@ -42,7 +45,6 @@ export default function CrmLoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Basic frontend check
     if (!email || !password) {
       setErrorMessage("Please enter both email and password.");
       return;
@@ -53,35 +55,33 @@ export default function CrmLoginPage() {
     setSuccessMessage("");
 
     try {
-      // API URL from .env or fallback to localhost
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
 
-      // Send POST request using Axios
       const response = await axios.post(`${apiUrl}/auth/login`, {
         email: email,
         password: password,
       });
 
-      // If backend returns success (status: true)
       if (response.data && response.data.status) {
-        // Save Bearer token and user info in browser localStorage
         const token = response.data.data.token;
         const user = response.data.data.user;
 
         localStorage.setItem("auth_token", token);
         localStorage.setItem("user", JSON.stringify(user));
 
-        setSuccessMessage("Login successful! Redirecting...");
+        setSuccessMessage("Login successful! Redirecting to dashboard...");
 
-        // Redirect user to dashboard
         setTimeout(() => {
-          router.push("/admin/dashboard");
+          if (user?.role === "Sales Executive") {
+            router.push("/sales-executive/dashboard");
+          } else {
+            router.push("/admin/dashboard");
+          }
         }, 500);
       }
     } catch (error) {
       console.log("Login Error:", error);
 
-      // Show error message returned from backend
       if (error.response && error.response.data && error.response.data.message) {
         setErrorMessage(error.response.data.message);
       } else {
@@ -132,32 +132,40 @@ export default function CrmLoginPage() {
               <div className="hero-kpi-icon">
                 <i className="bi bi-funnel-fill text-primary"></i>
               </div>
-              <div className="hero-kpi-val">1,450+</div>
-              <div className="hero-kpi-lbl">Monthly Inquiries Handled</div>
+              <div>
+                <div className="hero-kpi-val">1,450+</div>
+                <div className="hero-kpi-lbl">Monthly Inquiries Handled</div>
+              </div>
             </div>
 
             <div className="hero-kpi-card">
               <div className="hero-kpi-icon">
                 <i className="bi bi-graph-up-arrow text-warning"></i>
               </div>
-              <div className="hero-kpi-val">34.8%</div>
-              <div className="hero-kpi-lbl">Pipeline Conversion Rate</div>
+              <div>
+                <div className="hero-kpi-val">34.8%</div>
+                <div className="hero-kpi-lbl">Pipeline Conversion Rate</div>
+              </div>
             </div>
 
             <div className="hero-kpi-card">
               <div className="hero-kpi-icon">
                 <i className="bi bi-car-front-fill text-success"></i>
               </div>
-              <div className="hero-kpi-val">350+</div>
-              <div className="hero-kpi-lbl">2W & 4W Vehicles Listed</div>
+              <div>
+                <div className="hero-kpi-val">350+</div>
+                <div className="hero-kpi-lbl">2W & 4W Vehicles Listed</div>
+              </div>
             </div>
 
             <div className="hero-kpi-card">
               <div className="hero-kpi-icon">
                 <i className="bi bi-people-fill text-info"></i>
               </div>
-              <div className="hero-kpi-val">28 Reps</div>
-              <div className="hero-kpi-lbl">Active Sales Executives</div>
+              <div>
+                <div className="hero-kpi-val">28 Reps</div>
+                <div className="hero-kpi-lbl">Active Sales Executives</div>
+              </div>
             </div>
           </div>
         </div>
@@ -182,34 +190,46 @@ export default function CrmLoginPage() {
           {/* Quick Demo Preset Buttons */}
           <div className="mb-2">
             <label className="text-muted small fw-semibold mb-1 d-block">Quick Demo Fill:</label>
-            <div className="role-pills-wrapper">
-              <button
-                type="button"
-                className={`role-pill-btn ${activeRole === "backend" ? "active" : ""}`}
-                onClick={() => handleRoleSelect("backend")}
-              >
-                API User (admin@example.com)
-              </button>
+            <div className="role-pills-wrapper d-flex flex-wrap gap-1">
               <button
                 type="button"
                 className={`role-pill-btn ${activeRole === "admin" ? "active" : ""}`}
                 onClick={() => handleRoleSelect("admin")}
               >
-                Super Admin
+                <i className="bi bi-shield-lock"></i>
+                <span>Super Admin</span>
               </button>
               <button
                 type="button"
-                className={`role-pill-btn ${activeRole === "director" ? "active" : ""}`}
-                onClick={() => handleRoleSelect("director")}
+                className={`role-pill-btn ${activeRole === "manager" ? "active" : ""}`}
+                onClick={() => handleRoleSelect("manager")}
               >
-                Sales Director
+                <i className="bi bi-person-badge"></i>
+                <span>Manager</span>
               </button>
               <button
                 type="button"
                 className={`role-pill-btn ${activeRole === "executive" ? "active" : ""}`}
                 onClick={() => handleRoleSelect("executive")}
               >
-                Sales Exec
+                <i className="bi bi-briefcase"></i>
+                <span>Sales Exec</span>
+              </button>
+              <button
+                type="button"
+                className={`role-pill-btn ${activeRole === "receptionist" ? "active" : ""}`}
+                onClick={() => handleRoleSelect("receptionist")}
+              >
+                <i className="bi bi-door-open"></i>
+                <span>Reception</span>
+              </button>
+              <button
+                type="button"
+                className={`role-pill-btn ${activeRole === "accountant" ? "active" : ""}`}
+                onClick={() => handleRoleSelect("accountant")}
+              >
+                <i className="bi bi-calculator"></i>
+                <span>Accountant</span>
               </button>
             </div>
           </div>
