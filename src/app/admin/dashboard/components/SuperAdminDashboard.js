@@ -138,7 +138,7 @@ export default function SuperAdminDashboard({ onAddLead }) {
                         style={{
                           height: `${(item.inq / 170) * 100}%`,
                           width: "16px",
-                          background: "rgba(63, 73, 18, 0.75)",
+                          background: "var(--primary)",
                           borderRadius: "4px 4px 0 0",
                           transition: "height 0.3s ease",
                         }}
@@ -149,7 +149,7 @@ export default function SuperAdminDashboard({ onAddLead }) {
                         style={{
                           height: `${(item.deals / 40) * 100}%`,
                           width: "14px",
-                          background: "#EE6800",
+                          background: "var(--accent-orange)",
                           borderRadius: "4px 4px 0 0",
                           transition: "height 0.3s ease",
                         }}
@@ -166,11 +166,11 @@ export default function SuperAdminDashboard({ onAddLead }) {
               {/* Chart Legend */}
               <div className="d-flex justify-content-center gap-4 mt-3">
                 <div className="d-flex align-items-center gap-2">
-                  <span style={{ width: "14px", height: "14px", background: "rgba(63, 73, 18, 0.75)", borderRadius: "3px" }}></span>
+                  <span style={{ width: "14px", height: "14px", background: "var(--primary)", borderRadius: "3px" }}></span>
                   <span className="text-muted small">Total Inquiries</span>
                 </div>
                 <div className="d-flex align-items-center gap-2">
-                  <span style={{ width: "14px", height: "14px", background: "#EE6800", borderRadius: "3px" }}></span>
+                  <span style={{ width: "14px", height: "14px", background: "var(--accent-orange)", borderRadius: "3px" }}></span>
                   <span className="text-muted small">Deals Closed (Units)</span>
                 </div>
               </div>
@@ -193,7 +193,7 @@ export default function SuperAdminDashboard({ onAddLead }) {
                     width: "160px",
                     height: "160px",
                     borderRadius: "50%",
-                    background: "conic-gradient(#3F4912 0% 28%, #EE6800 28% 63%, #D99A00 63% 85%, #008318 85% 100%)",
+                    background: "conic-gradient(#58632A 0% 28%, #000080 28% 63%, #EE6800 63% 85%, #15803D 85% 100%)",
                     margin: "0 auto",
                     display: "flex",
                     alignItems: "center",
@@ -205,14 +205,15 @@ export default function SuperAdminDashboard({ onAddLead }) {
                       width: "110px",
                       height: "110px",
                       borderRadius: "50%",
-                      background: "#202224",
+                      background: "var(--card-bg)",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
+                      boxShadow: "inset 0 1px 4px rgba(0,0,0,0.08)"
                     }}
                   >
-                    <span className="text-white fw-bold fs-4">1,480</span>
+                    <span className="fw-bold fs-4" style={{ color: "var(--text-primary)" }}>1,480</span>
                     <span className="text-muted" style={{ fontSize: "0.72rem" }}>
                       Total Leads
                     </span>
@@ -222,42 +223,42 @@ export default function SuperAdminDashboard({ onAddLead }) {
 
               <div className="row g-2 mt-3">
                 <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                  <div className="p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                     <div className="d-flex align-items-center gap-2">
-                      <span style={{ width: "10px", height: "10px", background: "#3F4912", borderRadius: "50%" }}></span>
-                      <span className="text-white small fw-bold">New Lead</span>
+                      <span style={{ width: "10px", height: "10px", background: "var(--primary)", borderRadius: "50%" }}></span>
+                      <span className="small fw-bold" style={{ color: "var(--text-primary)" }}>New Lead</span>
                     </div>
-                    <div className="fs-6 fw-bold text-white mt-1">28% (414)</div>
+                    <div className="fs-6 fw-bold mt-1" style={{ color: "var(--text-primary)" }}>28% (414)</div>
                   </div>
                 </div>
 
                 <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                  <div className="p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                     <div className="d-flex align-items-center gap-2">
-                      <span style={{ width: "10px", height: "10px", background: "#EE6800", borderRadius: "50%" }}></span>
-                      <span className="text-white small fw-bold">Contacted</span>
+                      <span style={{ width: "10px", height: "10px", background: "var(--secondary)", borderRadius: "50%" }}></span>
+                      <span className="small fw-bold" style={{ color: "var(--text-primary)" }}>Contacted</span>
                     </div>
-                    <div className="fs-6 fw-bold text-white mt-1">35% (518)</div>
+                    <div className="fs-6 fw-bold mt-1" style={{ color: "var(--text-primary)" }}>35% (518)</div>
                   </div>
                 </div>
 
                 <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                  <div className="p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                     <div className="d-flex align-items-center gap-2">
-                      <span style={{ width: "10px", height: "10px", background: "#D99A00", borderRadius: "50%" }}></span>
-                      <span className="text-white small fw-bold">Qualified / TD</span>
+                      <span style={{ width: "10px", height: "10px", background: "var(--accent-orange)", borderRadius: "50%" }}></span>
+                      <span className="small fw-bold" style={{ color: "var(--text-primary)" }}>Qualified / TD</span>
                     </div>
-                    <div className="fs-6 fw-bold text-white mt-1">22% (325)</div>
+                    <div className="fs-6 fw-bold mt-1" style={{ color: "var(--text-primary)" }}>22% (325)</div>
                   </div>
                 </div>
 
                 <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                  <div className="p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                     <div className="d-flex align-items-center gap-2">
-                      <span style={{ width: "10px", height: "10px", background: "#008318", borderRadius: "50%" }}></span>
-                      <span className="text-white small fw-bold">Won / Booked</span>
+                      <span style={{ width: "10px", height: "10px", background: "#15803D", borderRadius: "50%" }}></span>
+                      <span className="small fw-bold" style={{ color: "var(--text-primary)" }}>Won / Booked</span>
                     </div>
-                    <div className="fs-6 fw-bold text-white mt-1">15% (223)</div>
+                    <div className="fs-6 fw-bold mt-1" style={{ color: "var(--text-primary)" }}>15% (223)</div>
                   </div>
                 </div>
               </div>
@@ -279,36 +280,36 @@ export default function SuperAdminDashboard({ onAddLead }) {
           <div className="row g-3">
             <div className="col-md-3 col-sm-6">
               <Link href="/admin/users" className="text-decoration-none">
-                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <i className="bi bi-people-fill text-primary fs-3 mb-2 d-block"></i>
-                  <div className="text-white fw-bold">Users & Roles</div>
+                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Users & Roles</div>
                   <div className="text-muted small">Manage 5 User Roles</div>
                 </div>
               </Link>
             </div>
             <div className="col-md-3 col-sm-6">
               <Link href="/admin/brand" className="text-decoration-none">
-                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <i className="bi bi-shield-shaded text-warning fs-3 mb-2 d-block"></i>
-                  <div className="text-white fw-bold">Brands & OEM</div>
+                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Brands & OEM</div>
                   <div className="text-muted small">Maruti, Tata, RE, etc.</div>
                 </div>
               </Link>
             </div>
             <div className="col-md-3 col-sm-6">
               <Link href="/admin/model" className="text-decoration-none">
-                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <i className="bi bi-car-front-fill text-success fs-3 mb-2 d-block"></i>
-                  <div className="text-white fw-bold">Models & Variants</div>
+                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Models & Variants</div>
                   <div className="text-muted small">2W & 4W Vehicles</div>
                 </div>
               </Link>
             </div>
             <div className="col-md-3 col-sm-6">
               <Link href="/admin/settings" className="text-decoration-none">
-                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <i className="bi bi-gear-fill text-info fs-3 mb-2 d-block"></i>
-                  <div className="text-white fw-bold">Security & System</div>
+                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Security & System</div>
                   <div className="text-muted small">Global Permissions</div>
                 </div>
               </Link>
@@ -521,13 +522,13 @@ export default function SuperAdminDashboard({ onAddLead }) {
 
             <div className="card-body">
               <div className="d-flex flex-column gap-3">
-                <div className="d-flex align-items-center justify-content-between p-2 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="d-flex align-items-center justify-content-between p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <div className="d-flex align-items-center gap-2">
-                    <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#3b82f6", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
+                    <div style={{ width: 34, height: 34, borderRadius: "50%", background: "var(--primary)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
                       V
                     </div>
                     <div>
-                      <div className="text-white fw-bold small">Vikram Singh</div>
+                      <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>Vikram Singh</div>
                       <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                         Senior Sales Consultant
                       </span>
@@ -541,13 +542,13 @@ export default function SuperAdminDashboard({ onAddLead }) {
                   </div>
                 </div>
 
-                <div className="d-flex align-items-center justify-content-between p-2 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="d-flex align-items-center justify-content-between p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <div className="d-flex align-items-center gap-2">
-                    <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#10b981", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
+                    <div style={{ width: 34, height: 34, borderRadius: "50%", background: "var(--secondary)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
                       R
                     </div>
                     <div>
-                      <div className="text-white fw-bold small">Rahul Verma</div>
+                      <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>Rahul Verma</div>
                       <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                         Sales Executive
                       </span>
@@ -561,13 +562,13 @@ export default function SuperAdminDashboard({ onAddLead }) {
                   </div>
                 </div>
 
-                <div className="d-flex align-items-center justify-content-between p-2 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="d-flex align-items-center justify-content-between p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <div className="d-flex align-items-center gap-2">
-                    <div style={{ width: 34, height: 34, borderRadius: "50%", background: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
+                    <div style={{ width: 34, height: 34, borderRadius: "50%", background: "var(--accent-orange)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
                       D
                     </div>
                     <div>
-                      <div className="text-white fw-bold small">David Miller</div>
+                      <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>David Miller</div>
                       <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                         Sales Executive (2W/4W)
                       </span>

@@ -184,11 +184,11 @@ export default function ReceptionistDashboard() {
       </div>
 
       {/* Front-Desk Quick Action Banner */}
-      <div className="card mb-4" style={{ background: "linear-gradient(135deg, #1e293b, #0f172a)", border: "1px solid #334155" }}>
+      <div className="card mb-4" style={{ background: "linear-gradient(135deg, #131C27, #1D2A3A)", border: "1px solid rgba(217, 221, 204, 0.25)" }}>
         <div className="card-body py-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
           <div>
             <h5 className="text-white fw-bold mb-1">Showroom Reception & Concierge Desk</h5>
-            <p className="text-muted small mb-0">Register walk-in guests, generate customer tokens, and assign available executives instantly.</p>
+            <p className="small mb-0" style={{ color: "var(--header-title-color)" }}>Register walk-in guests, generate customer tokens, and assign available executives instantly.</p>
           </div>
           <button
             type="button"
@@ -211,7 +211,7 @@ export default function ReceptionistDashboard() {
                 <h5 className="card-title mb-0">Showroom Visitor Token Queue</h5>
                 <span className="text-muted small">Live customer token entries and lounge stage</span>
               </div>
-              <span className="badge bg-primary-subtle text-white">Live Footfall</span>
+              <span className="badge bg-primary-subtle text-primary">Live Footfall</span>
             </div>
 
             <div className="table-responsive">
@@ -233,7 +233,7 @@ export default function ReceptionistDashboard() {
                         <div className="d-flex align-items-center gap-2">
                           <span className="badge bg-secondary font-monospace">{v.id}</span>
                           <div>
-                            <div className="text-white fw-bold small">{v.name}</div>
+                            <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>{v.name}</div>
                             <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                               {v.phone}
                             </span>
@@ -241,13 +241,13 @@ export default function ReceptionistDashboard() {
                         </div>
                       </td>
                       <td>
-                        <span className="text-white small fw-semibold">{v.vehicle}</span>
+                        <span className="small fw-semibold" style={{ color: "var(--text-primary)" }}>{v.vehicle}</span>
                       </td>
                       <td>
-                        <span className="text-info small fw-bold">{v.assignedRep}</span>
+                        <span className="text-primary small fw-bold">{v.assignedRep}</span>
                       </td>
                       <td>
-                        <div className="text-white small">{v.arrivalTime}</div>
+                        <div className="small fw-semibold" style={{ color: "var(--text-primary)" }}>{v.arrivalTime}</div>
                         <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                           Wait: {v.waitTime}
                         </span>
@@ -269,7 +269,7 @@ export default function ReceptionistDashboard() {
                       <td className="text-end">
                         <select
                           className="form-select form-select-sm"
-                          style={{ width: "auto", display: "inline-block", background: "#181a1b", color: "#fff", borderColor: "var(--border-color)", fontSize: "0.75rem" }}
+                          style={{ width: "auto", display: "inline-block", fontSize: "0.75rem" }}
                           value={v.status}
                           onChange={(e) => handleUpdateStatus(v.id, e.target.value)}
                         >
@@ -301,10 +301,10 @@ export default function ReceptionistDashboard() {
                   <div
                     key={idx}
                     className="p-3 rounded-3 d-flex justify-content-between align-items-center"
-                    style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}
+                    style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}
                   >
                     <div>
-                      <div className="text-white fw-bold small">{rep.name}</div>
+                      <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>{rep.name}</div>
                       <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                         {rep.role} • {rep.location}
                       </span>

@@ -191,14 +191,14 @@ export default function SalesManagerDashboard() {
             <div className="card-body">
               <div className="d-flex flex-column gap-3">
                 {/* Rep 1 */}
-                <div className="p-3 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <div className="d-flex align-items-center gap-2">
-                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#3b82f6", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
+                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--primary)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
                         V
                       </div>
                       <div>
-                        <div className="text-white fw-bold">Vikram Singh</div>
+                        <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Vikram Singh</div>
                         <span className="text-muted small">Senior Consultant • 42 Active Leads</span>
                       </div>
                     </div>
@@ -207,7 +207,7 @@ export default function SalesManagerDashboard() {
                       <span className="badge bg-success ms-2">96% Target</span>
                     </div>
                   </div>
-                  <div className="progress" style={{ height: "8px", background: "rgba(255,255,255,0.1)" }}>
+                  <div className="progress" style={{ height: "8px", background: "var(--border-color)" }}>
                     <div className="progress-bar bg-success" role="progressbar" style={{ width: "96%" }}></div>
                   </div>
                   <div className="d-flex justify-content-between align-items-center mt-2 text-muted small" style={{ fontSize: "0.75rem" }}>
@@ -218,14 +218,14 @@ export default function SalesManagerDashboard() {
                 </div>
 
                 {/* Rep 2 */}
-                <div className="p-3 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <div className="d-flex align-items-center gap-2">
-                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#10b981", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
+                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--secondary)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
                         R
                       </div>
                       <div>
-                        <div className="text-white fw-bold">Rahul Verma</div>
+                        <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Rahul Verma</div>
                         <span className="text-muted small">Sales Executive • 36 Active Leads</span>
                       </div>
                     </div>
@@ -234,7 +234,7 @@ export default function SalesManagerDashboard() {
                       <span className="badge bg-success ms-2">86% Target</span>
                     </div>
                   </div>
-                  <div className="progress" style={{ height: "8px", background: "rgba(255,255,255,0.1)" }}>
+                  <div className="progress" style={{ height: "8px", background: "var(--border-color)" }}>
                     <div className="progress-bar bg-primary" role="progressbar" style={{ width: "86%" }}></div>
                   </div>
                   <div className="d-flex justify-content-between align-items-center mt-2 text-muted small" style={{ fontSize: "0.75rem" }}>
@@ -245,23 +245,23 @@ export default function SalesManagerDashboard() {
                 </div>
 
                 {/* Rep 3 */}
-                <div className="p-3 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <div className="d-flex justify-content-between align-items-center mb-2">
                     <div className="d-flex align-items-center gap-2">
-                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
+                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--accent-orange)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
                         D
                       </div>
                       <div>
-                        <div className="text-white fw-bold">David Miller</div>
+                        <div className="fw-bold" style={{ color: "var(--text-primary)" }}>David Miller</div>
                         <span className="text-muted small">Sales Executive • 28 Active Leads</span>
                       </div>
                     </div>
                     <div className="text-end">
                       <span className="text-warning fw-bold">15 / 18 Units</span>
-                      <span className="badge bg-warning text-dark ms-2">83% Target</span>
+                      <span className="badge bg-warning ms-2 text-white">83% Target</span>
                     </div>
                   </div>
-                  <div className="progress" style={{ height: "8px", background: "rgba(255,255,255,0.1)" }}>
+                  <div className="progress" style={{ height: "8px", background: "var(--border-color)" }}>
                     <div className="progress-bar bg-warning" role="progressbar" style={{ width: "83%" }}></div>
                   </div>
                   <div className="d-flex justify-content-between align-items-center mt-2 text-muted small" style={{ fontSize: "0.75rem" }}>
@@ -290,7 +290,7 @@ export default function SalesManagerDashboard() {
               {unassignedLeads.length === 0 ? (
                 <div className="text-center py-4 text-muted">
                   <i className="bi bi-check-circle-fill text-success fs-2 d-block mb-2"></i>
-                  <div className="fw-semibold text-white">All Leads Allocated!</div>
+                  <div className="fw-semibold" style={{ color: "var(--text-primary)" }}>All Leads Allocated!</div>
                   <span className="small">No pending leads in allocation queue</span>
                 </div>
               ) : (
@@ -299,11 +299,11 @@ export default function SalesManagerDashboard() {
                     <div
                       key={lead.id}
                       className="p-3 rounded-3 d-flex flex-column gap-2"
-                      style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}
+                      style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}
                     >
                       <div className="d-flex justify-content-between align-items-start">
                         <div>
-                          <div className="text-white fw-bold small">{lead.name}</div>
+                          <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>{lead.name}</div>
                           <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                             {lead.phone} • <i className="bi bi-clock"></i> {lead.time}
                           </span>
@@ -314,7 +314,7 @@ export default function SalesManagerDashboard() {
                       </div>
 
                       <div className="d-flex justify-content-between align-items-center">
-                        <span className="text-info small">{lead.vehicle}</span>
+                        <span className="text-primary small fw-semibold">{lead.vehicle}</span>
                         <button
                           type="button"
                           className="btn btn-xs btn-primary d-flex align-items-center gap-1"
@@ -444,14 +444,14 @@ export default function SalesManagerDashboard() {
 
             <form onSubmit={handleConfirmAssign}>
               <div className="modal-body-custom">
-                <div className="p-3 rounded-3 mb-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
-                  <div className="text-white fw-bold">{assignModalLead.name}</div>
+                <div className="p-3 rounded-3 mb-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
+                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>{assignModalLead.name}</div>
                   <div className="text-muted small">{assignModalLead.phone} • {assignModalLead.vehicle}</div>
                   <div className="text-warning small mt-1">Budget: {assignModalLead.budget} • Source: {assignModalLead.source}</div>
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label text-white fw-semibold small">Select Sales Representative *</label>
+                  <label className="form-label fw-semibold small">Select Sales Representative *</label>
                   <select
                     className="form-select"
                     value={selectedRep}

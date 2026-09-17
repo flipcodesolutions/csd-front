@@ -146,16 +146,16 @@ export default function SalesExecutiveDashboard() {
       </div>
 
       {/* Personal Quota Progress Bar */}
-      <div className="card mb-4" style={{ background: "linear-gradient(135deg, #1e293b, #0f172a)", border: "1px solid #334155" }}>
+      <div className="card mb-4" style={{ background: "linear-gradient(135deg, #131C27, #1D2A3A)", border: "1px solid rgba(217, 221, 204, 0.25)" }}>
         <div className="card-body py-3">
           <div className="d-flex justify-content-between align-items-center mb-2">
             <div>
               <span className="text-white fw-bold">Personal Monthly Quota: 14 / 15 Units</span>
-              <span className="text-muted small ms-2">• 1 more deal to unlock 100% Super-Incentive Tier</span>
+              <span className="small ms-2" style={{ color: "var(--header-title-color)" }}>• 1 more deal to unlock 100% Super-Incentive Tier</span>
             </div>
             <span className="badge bg-success fw-bold px-3 py-1 fs-7">93.3% Complete</span>
           </div>
-          <div className="progress" style={{ height: "10px", background: "rgba(255,255,255,0.1)" }}>
+          <div className="progress" style={{ height: "10px", background: "rgba(255,255,255,0.15)" }}>
             <div className="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar" style={{ width: "93.3%" }}></div>
           </div>
         </div>
@@ -192,11 +192,11 @@ export default function SalesExecutiveDashboard() {
                   {calls.map((call) => (
                     <tr key={call.id}>
                       <td>
-                        <div className="text-white fw-bold small">{call.name}</div>
+                        <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>{call.name}</div>
                         <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                           {call.phone}
                         </span>
-                        <div className="text-info small fw-semibold mt-1">{call.vehicle}</div>
+                        <div className="text-primary small fw-semibold mt-1">{call.vehicle}</div>
                       </td>
                       <td style={{ maxWidth: "240px" }}>
                         <p className="text-muted small mb-0 text-truncate">{call.lastNote}</p>
@@ -213,7 +213,7 @@ export default function SalesExecutiveDashboard() {
                             <span className="badge-dot-indicator"></span>Pending Call
                           </span>
                         ) : (
-                          <span className="badge-custom badge-completed">
+                          <span className="badge-custom badge-won">
                             <span className="badge-dot-indicator"></span>Call Logged
                           </span>
                         )}
@@ -262,18 +262,18 @@ export default function SalesExecutiveDashboard() {
           <div className="card h-100">
             <div className="card-header d-flex justify-content-between align-items-center">
               <h5 className="card-title mb-0">Upcoming Test Drives</h5>
-              <span className="badge bg-primary-subtle text-white">Today</span>
+              <span className="badge bg-primary-subtle text-primary">Today</span>
             </div>
 
             <div className="card-body">
               <div className="d-flex flex-column gap-3">
                 {/* TD 1 */}
-                <div className="p-3 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <div className="d-flex justify-content-between align-items-center">
                     <span className="badge bg-primary">02:30 PM Today</span>
                     <span className="text-success small fw-semibold">Car Prepped 🟢</span>
                   </div>
-                  <div className="text-white fw-bold mt-2">Kunal Verma</div>
+                  <div className="fw-bold mt-2" style={{ color: "var(--text-primary)" }}>Kunal Verma</div>
                   <div className="text-muted small">+91 98112 44332</div>
                   <div className="text-warning small fw-semibold mt-1">
                     <i className="bi bi-car-front me-1"></i> Mahindra Thar Roxx AX7L
@@ -281,12 +281,12 @@ export default function SalesExecutiveDashboard() {
                 </div>
 
                 {/* TD 2 */}
-                <div className="p-3 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                   <div className="d-flex justify-content-between align-items-center">
                     <span className="badge bg-primary">04:45 PM Today</span>
                     <span className="text-warning small fw-semibold">Trade-in Eval 🟡</span>
                   </div>
-                  <div className="text-white fw-bold mt-2">Dr. Arvind Saxena</div>
+                  <div className="fw-bold mt-2" style={{ color: "var(--text-primary)" }}>Dr. Arvind Saxena</div>
                   <div className="text-muted small">+91 97120 99881</div>
                   <div className="text-warning small fw-semibold mt-1">
                     <i className="bi bi-car-front me-1"></i> Maruti Grand Vitara Alpha
@@ -322,13 +322,13 @@ export default function SalesExecutiveDashboard() {
 
             <form onSubmit={handleSaveCallLog}>
               <div className="modal-body-custom">
-                <div className="p-2 rounded-3 mb-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
-                  <div className="text-white fw-bold">{logCallModal.name} ({logCallModal.phone})</div>
+                <div className="p-2 rounded-3 mb-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
+                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>{logCallModal.name} ({logCallModal.phone})</div>
                   <div className="text-muted small">{logCallModal.vehicle}</div>
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label text-white fw-semibold small">Call Outcome *</label>
+                  <label className="form-label fw-semibold small">Call Outcome *</label>
                   <select
                     className="form-select"
                     value={callOutcome}

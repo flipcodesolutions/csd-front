@@ -102,7 +102,7 @@ function AdminLayoutInner({ children }) {
               <div className="modal-body-custom">
                 <div className="row g-3">
                   <div className="col-md-6">
-                    <label className="form-label text-white fw-semibold small">Customer Full Name *</label>
+                    <label className="form-label fw-semibold small">Customer Full Name *</label>
                     <input
                       type="text"
                       className="form-control"
@@ -114,7 +114,7 @@ function AdminLayoutInner({ children }) {
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label text-white fw-semibold small">Phone Number *</label>
+                    <label className="form-label fw-semibold small">Phone Number *</label>
                     <input
                       type="tel"
                       className="form-control"
@@ -126,7 +126,7 @@ function AdminLayoutInner({ children }) {
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label text-white fw-semibold small">Vehicle Brand</label>
+                    <label className="form-label fw-semibold small">Vehicle Brand</label>
                     <select
                       className="form-select"
                       value={quickLeadBrand}
@@ -144,7 +144,7 @@ function AdminLayoutInner({ children }) {
                   </div>
 
                   <div className="col-md-6">
-                    <label className="form-label text-white fw-semibold small">Model Interested</label>
+                    <label className="form-label fw-semibold small">Model Interested</label>
                     <input
                       type="text"
                       className="form-control"
@@ -155,7 +155,7 @@ function AdminLayoutInner({ children }) {
                   </div>
 
                   <div className="col-12">
-                    <label className="form-label text-white fw-semibold small">Priority Level</label>
+                    <label className="form-label fw-semibold small">Priority Level</label>
                     <div className="d-flex gap-3">
                       {["Hot", "Warm", "Cold"].map((p) => (
                         <div className="form-check" key={p}>
@@ -167,7 +167,7 @@ function AdminLayoutInner({ children }) {
                             checked={quickLeadPriority === p}
                             onChange={() => setQuickLeadPriority(p)}
                           />
-                          <label className="form-check-label text-white small" htmlFor={`priority-${p}`}>
+                          <label className="form-check-label small" htmlFor={`priority-${p}`}>
                             {p === "Hot" && <i className="bi bi-fire text-danger me-1"></i>}
                             {p === "Warm" && <i className="bi bi-sun-fill text-warning me-1"></i>}
                             {p === "Cold" && <i className="bi bi-snow text-info me-1"></i>}

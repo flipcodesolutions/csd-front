@@ -126,7 +126,7 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
                 top: "100%",
                 right: 0,
                 minWidth: "320px",
-                background: "#202224",
+                background: "var(--card-bg)",
                 border: "1px solid var(--border-color)",
                 borderRadius: "12px",
                 zIndex: 1000,
@@ -134,8 +134,8 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
               }}
             >
               <div className="p-2 border-bottom d-flex justify-content-between align-items-center" style={{ borderColor: "var(--border-color) !important" }}>
-                <span className="fw-bold text-white">Notifications</span>
-                <span className="badge bg-primary-subtle text-white rounded-pill">3 New</span>
+                <span className="fw-bold" style={{ color: "var(--text-primary)" }}>Notifications</span>
+                <span className="badge bg-primary-subtle text-primary rounded-pill">3 New</span>
               </div>
               <div>
                 <a
@@ -147,12 +147,12 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
                     setShowNotifications(false);
                     router.push(currentUser?.role === "Sales Executive" ? "/sales-executive/leads" : "/admin/leads");
                   }}
-                  style={{ borderRadius: "8px", color: "#D9D9D9" }}
+                  style={{ borderRadius: "8px" }}
                 >
                   <div className="d-flex align-items-start gap-2">
                     <i className="bi bi-fire text-danger fs-6 mt-1"></i>
                     <div>
-                      <p className="mb-0 text-white fw-semibold small">Active Leads Pipeline Ready</p>
+                      <p className="mb-0 fw-semibold small" style={{ color: "var(--text-primary)" }}>Active Leads Pipeline Ready</p>
                       <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                         Check customer interactions
                       </span>
@@ -167,14 +167,14 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
                     e.preventDefault();
                     showToast("Opening Today's Scheduled Follow-ups...", "info");
                     setShowNotifications(false);
-                    router.push("/follow-up");
+                    router.push("/admin/follow-up");
                   }}
-                  style={{ borderRadius: "8px", color: "#D9D9D9" }}
+                  style={{ borderRadius: "8px" }}
                 >
                   <div className="d-flex align-items-start gap-2">
                     <i className="bi bi-telephone-outbound text-warning fs-6 mt-1"></i>
                     <div>
-                      <p className="mb-0 text-white fw-semibold small">5 Call Follow-ups Due Today</p>
+                      <p className="mb-0 fw-semibold small" style={{ color: "var(--text-primary)" }}>5 Call Follow-ups Due Today</p>
                       <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                         Grand Vitara & Thar inquiries pending
                       </span>
@@ -190,12 +190,12 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
                     showToast("Catalog synchronized", "info");
                     setShowNotifications(false);
                   }}
-                  style={{ borderRadius: "8px", color: "#D9D9D9" }}
+                  style={{ borderRadius: "8px" }}
                 >
                   <div className="d-flex align-items-start gap-2">
                     <i className="bi bi-shield-check text-success fs-6 mt-1"></i>
                     <div>
-                      <p className="mb-0 text-white fw-semibold small">2W & 4W Brands Synchronized</p>
+                      <p className="mb-0 fw-semibold small" style={{ color: "var(--text-primary)" }}>2W & 4W Brands Synchronized</p>
                       <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                         Catalog updated with Maruti, Tata, RE
                       </span>
@@ -223,14 +223,15 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
                 height: 36,
                 borderRadius: "50%",
                 background: currentUser?.role === "Sales Executive"
-                  ? "linear-gradient(135deg, #10b981, #059669)"
-                  : "linear-gradient(135deg, #3b82f6, #1d4ed8)",
+                  ? "linear-gradient(135deg, #58632A, #3F4912)"
+                  : "linear-gradient(135deg, #000080, #131C27)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 fontWeight: "bold",
                 fontSize: "0.95rem",
                 color: "#fff",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.3)"
               }}
             >
               {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : "A"}
@@ -239,11 +240,11 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
               <span className="header-profile-name text-white fw-bold small">
                 {currentUser?.name || "Alexander Vance"}
               </span>
-              <span className="header-profile-role text-muted" style={{ fontSize: "0.75rem" }}>
+              <span className="header-profile-role" style={{ fontSize: "0.75rem", color: "var(--header-title-color)" }}>
                 {currentUser?.role || "Super Admin"}
               </span>
             </div>
-            <i className="bi bi-chevron-down text-muted fs-7"></i>
+            <i className="bi bi-chevron-down fs-7" style={{ color: "var(--header-title-color)" }}></i>
           </button>
 
           {showProfileMenu && (
@@ -254,7 +255,7 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
                 top: "100%",
                 right: 0,
                 minWidth: "220px",
-                background: "#202224",
+                background: "var(--card-bg)",
                 border: "1px solid var(--border-color)",
                 borderRadius: "12px",
                 zIndex: 1000,
@@ -262,18 +263,19 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
               }}
             >
               <div className="p-2 border-bottom" style={{ borderColor: "var(--border-color) !important" }}>
-                <p className="mb-0 fw-bold text-white">{currentUser?.name || "Alexander Vance"}</p>
+                <p className="mb-0 fw-bold" style={{ color: "var(--text-primary)" }}>{currentUser?.name || "Alexander Vance"}</p>
                 <span className="text-muted small">{currentUser?.email || "user@carcrm.com"}</span>
               </div>
               <div className="pt-2">
                 <a
-                  className="dropdown-item py-2 d-flex align-items-center text-white"
+                  className="dropdown-item py-2 d-flex align-items-center"
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
                     showToast(`Signed in as ${currentUser?.name} (${currentUser?.role})`, "info");
                     setShowProfileMenu(false);
                   }}
+                  style={{ color: "var(--text-primary)" }}
                 >
                   <i className="bi bi-person me-2 text-primary"></i> My Profile
                 </a>

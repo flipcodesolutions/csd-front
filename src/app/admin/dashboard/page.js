@@ -134,7 +134,7 @@ export default function DashboardPage() {
         </div>
 
         {/* 5-Role Switcher & Preview Toolbar */}
-        <div className="card mb-4" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+        <div className="card mb-4">
           <div className="card-body py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
             <div className="d-flex align-items-center gap-2">
               <span className="text-muted small fw-bold text-uppercase" style={{ letterSpacing: "0.5px" }}>
@@ -204,7 +204,7 @@ export default function DashboardPage() {
                 <div className="modal-body-custom">
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Customer Full Name *</label>
+                      <label className="form-label fw-semibold small">Customer Full Name *</label>
                       <input
                         type="text"
                         className="form-control"
@@ -216,7 +216,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Phone Number *</label>
+                      <label className="form-label fw-semibold small">Phone Number *</label>
                       <input
                         type="tel"
                         className="form-control"
@@ -228,7 +228,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Brand</label>
+                      <label className="form-label fw-semibold small">Brand</label>
                       <select
                         className="form-select"
                         value={newLead.brand}
@@ -246,7 +246,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Model & Variant</label>
+                      <label className="form-label fw-semibold small">Model & Variant</label>
                       <input
                         type="text"
                         className="form-control"
@@ -257,7 +257,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Estimated Budget</label>
+                      <label className="form-label fw-semibold small">Estimated Budget</label>
                       <input
                         type="text"
                         className="form-control"
@@ -268,7 +268,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Lead Source</label>
+                      <label className="form-label fw-semibold small">Lead Source</label>
                       <select
                         className="form-select"
                         value={newLead.source}
@@ -284,7 +284,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div className="col-12">
-                      <label className="form-label text-white fw-semibold small">Priority Level</label>
+                      <label className="form-label fw-semibold small">Priority Level</label>
                       <div className="d-flex gap-4">
                         {["Hot", "Warm", "Cold"].map((p) => (
                           <div className="form-check" key={p}>
@@ -296,7 +296,7 @@ export default function DashboardPage() {
                               checked={newLead.priority === p}
                               onChange={() => setNewLead({ ...newLead, priority: p })}
                             />
-                            <label className="form-check-label text-white small" htmlFor={`dash-p-${p}`}>
+                            <label className="form-check-label small" htmlFor={`dash-p-${p}`}>
                               {p === "Hot" && <i className="bi bi-fire text-danger me-1"></i>}
                               {p === "Warm" && <i className="bi bi-sun-fill text-warning me-1"></i>}
                               {p === "Cold" && <i className="bi bi-snow text-info me-1"></i>}

@@ -51,16 +51,16 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
   const getRoleBadgeGradient = () => {
     switch (userRole) {
       case "Sales Manager":
-        return "linear-gradient(135deg, #f59e0b, #d97706)";
+        return "linear-gradient(135deg, #EE6800, #C25400)";
       case "Sales Executive":
-        return "linear-gradient(135deg, #10b981, #059669)";
+        return "linear-gradient(135deg, #58632A, #3F4912)";
       case "Receptionist":
-        return "linear-gradient(135deg, #8b5cf6, #7c3aed)";
+        return "linear-gradient(135deg, #6B7735, #58632A)";
       case "Accountant":
-        return "linear-gradient(135deg, #06b6d4, #0891b2)";
+        return "linear-gradient(135deg, #000080, #131C27)";
       case "Super Admin":
       default:
-        return "linear-gradient(135deg, #3b82f6, #1d4ed8)";
+        return "linear-gradient(135deg, #58632A, #000080)";
     }
   };
 

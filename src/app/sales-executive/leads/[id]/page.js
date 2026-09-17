@@ -218,7 +218,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
             >
               <i className="bi bi-exclamation-octagon-fill"></i>
             </div>
-            <h4 className="fw-bold text-white">Lead Not Found</h4>
+            <h4 className="fw-bold mb-2">Lead Not Found</h4>
             <p className="text-secondary small mb-3">
               The requested lead does not exist or is not assigned to your account.
             </p>
@@ -374,8 +374,8 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
           <div
             className="card mb-4 p-3 shadow-sm"
             style={{
-              background: "linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(32, 34, 36, 0.95))",
-              borderLeft: "5px solid #f59e0b",
+              background: "linear-gradient(135deg, #131C27, #1D2A3A)",
+              borderLeft: "5px solid var(--accent-orange)",
             }}
           >
             <div className="d-flex align-items-center justify-content-between flex-wrap gap-3">
@@ -385,8 +385,8 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                     width: 46,
                     height: 46,
                     borderRadius: 12,
-                    background: "rgba(245, 158, 11, 0.25)",
-                    color: "#f59e0b",
+                    background: "rgba(238, 104, 0, 0.2)",
+                    color: "var(--accent-orange)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -397,7 +397,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                   <i className="bi bi-calendar2-check-fill"></i>
                 </div>
                 <div>
-                  <div className="text-warning small fw-bold text-uppercase" style={{ letterSpacing: "0.5px" }}>
+                  <div className="small fw-bold text-uppercase" style={{ letterSpacing: "0.5px", color: "var(--accent-orange)" }}>
                     Next Scheduled Interaction
                   </div>
                   <div className="text-white fw-bold fs-5">
@@ -408,7 +408,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
 
               <button
                 type="button"
-                className="btn btn-warning btn-sm fw-bold px-3 text-dark"
+                className="btn btn-primary btn-sm fw-bold px-3 shadow-sm"
                 onClick={() => setShowModal(true)}
               >
                 <i className="bi bi-telephone-plus-fill me-1"></i> Log Outcome
@@ -426,14 +426,14 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
               <div className="card">
                 <div className="card-header-custom d-flex align-items-center gap-2">
                   <i className="bi bi-person-badge-fill text-primary fs-5"></i>
-                  <h6 className="fw-bold text-white mb-0">Customer Contact Details</h6>
+                  <h6 className="fw-bold mb-0">Customer Contact Details</h6>
                 </div>
 
                 <div className="card-body">
                   <div className="d-flex flex-column gap-3">
                     <div>
                       <span className="text-secondary small d-block">Full Name</span>
-                      <span className="text-white fw-semibold fs-6">{lead.name}</span>
+                      <span className="fw-semibold fs-6">{lead.name}</span>
                     </div>
 
                     <div className="row g-3">
@@ -464,11 +464,11 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                     <div className="row g-3">
                       <div className="col-6">
                         <span className="text-secondary small d-block">City</span>
-                        <span className="text-white small fw-medium">{lead.city || "-"}</span>
+                        <span className="small fw-medium">{lead.city || "-"}</span>
                       </div>
                       <div className="col-6">
                         <span className="text-secondary small d-block">State</span>
-                        <span className="text-white small fw-medium">{lead.state || "-"}</span>
+                        <span className="small fw-medium">{lead.state || "-"}</span>
                       </div>
                     </div>
 
@@ -477,7 +477,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                         <span className="text-secondary small d-block">
                           <i className="bi bi-cake2-fill text-danger me-1"></i> Birthday
                         </span>
-                        <span className="text-white small fw-semibold d-flex align-items-center gap-1 mt-1">
+                        <span className="small fw-semibold d-flex align-items-center gap-1 mt-1">
                           {lead.birth_date ? new Date(lead.birth_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-"}
                           {lead.is_birthday_today && (
                             <span className="badge bg-danger-subtle text-danger px-1 py-0" style={{ fontSize: "9px" }}>
@@ -490,7 +490,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                         <span className="text-secondary small d-block">
                           <i className="bi bi-heart-fill text-primary me-1"></i> Anniversary
                         </span>
-                        <span className="text-white small fw-semibold d-flex align-items-center gap-1 mt-1">
+                        <span className="small fw-semibold d-flex align-items-center gap-1 mt-1">
                           {lead.anniversary_date ? new Date(lead.anniversary_date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "-"}
                           {lead.is_anniversary_today && (
                             <span className="badge bg-primary-subtle text-primary px-1 py-0" style={{ fontSize: "9px" }}>
@@ -508,14 +508,14 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
               <div className="card">
                 <div className="card-header-custom d-flex align-items-center gap-2">
                   <i className="bi bi-car-front-fill text-warning fs-5"></i>
-                  <h6 className="fw-bold text-white mb-0">Vehicle Requirement & Timeline</h6>
+                  <h6 className="fw-bold mb-0">Vehicle Requirement & Timeline</h6>
                 </div>
 
                 <div className="card-body">
                   <div className="d-flex flex-column gap-3">
                     <div>
                       <span className="text-secondary small d-block">Desired Model & Variant</span>
-                      <span className="text-white fw-bold fs-6">
+                      <span className="fw-bold fs-6">
                         {lead.model_variant || "Not specified"}
                       </span>
                     </div>
@@ -523,11 +523,11 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                     <div className="row g-3">
                       <div className="col-6">
                         <span className="text-secondary small d-block">Vehicle Segment</span>
-                        <span className="text-white small fw-medium">{lead.vehicle_segment || "4 Wheeler"}</span>
+                        <span className="small fw-medium">{lead.vehicle_segment || "4 Wheeler"}</span>
                       </div>
                       <div className="col-6">
                         <span className="text-secondary small d-block">Brand</span>
-                        <span className="text-white small fw-medium">{lead.brand_name || lead.brand?.name || "-"}</span>
+                        <span className="small fw-medium">{lead.brand_name || lead.brand?.name || "-"}</span>
                       </div>
                     </div>
 
@@ -551,7 +551,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
               <div className="card">
                 <div className="card-header-custom d-flex align-items-center gap-2">
                   <i className="bi bi-diagram-3-fill text-success fs-5"></i>
-                  <h6 className="fw-bold text-white mb-0">Lead Tracking & Pipeline</h6>
+                  <h6 className="fw-bold mb-0">Lead Tracking & Pipeline</h6>
                 </div>
 
                 <div className="card-body">
@@ -559,7 +559,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                     <div className="row g-3">
                       <div className="col-6">
                         <span className="text-secondary small d-block">Lead Source</span>
-                        <span className="text-white small fw-medium">{lead.source_name || lead.source?.title || "Direct"}</span>
+                        <span className="small fw-medium">{lead.source_name || lead.source?.title || "Direct"}</span>
                       </div>
                       <div className="col-6">
                         <span className="text-secondary small d-block">Pipeline Status</span>
@@ -570,7 +570,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                     <div className="row g-3">
                       <div className="col-6">
                         <span className="text-secondary small d-block">Assigned Executive</span>
-                        <span className="text-white small fw-semibold">
+                        <span className="small fw-semibold">
                           {lead.assigned_user_name || lead.assigned_to_display || "You"}
                         </span>
                       </div>
@@ -594,7 +594,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                 <div className="d-flex align-items-center gap-2">
                   <i className="bi bi-clock-history text-info fs-5"></i>
                   <div>
-                    <h6 className="fw-bold text-white mb-0">Follow-Up History</h6>
+                    <h6 className="fw-bold mb-0">Follow-Up History</h6>
                     <span className="text-secondary small" style={{ fontSize: "0.8rem" }}>
                       {followUps.length} interaction{followUps.length === 1 ? "" : "s"} logged
                     </span>
@@ -619,8 +619,8 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                         width: 56,
                         height: 56,
                         borderRadius: "50%",
-                        background: "rgba(59, 130, 246, 0.12)",
-                        color: "#3b82f6",
+                        background: "rgba(88, 99, 42, 0.12)",
+                        color: "var(--primary)",
                         display: "inline-flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -630,7 +630,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                     >
                       <i className="bi bi-chat-square-text"></i>
                     </div>
-                    <h5 className="text-white fw-semibold">No follow-ups recorded yet</h5>
+                    <h5 className="fw-semibold">No follow-ups recorded yet</h5>
                     <p className="small text-secondary mb-3" style={{ maxWidth: 380, margin: "0 auto 1rem auto" }}>
                       Start tracking your customer conversations, test drives, quotation discussions, and schedule your next action.
                     </p>
@@ -649,7 +649,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                         key={item.id || idx}
                         className="p-3 rounded-3"
                         style={{
-                          background: "rgba(255, 255, 255, 0.03)",
+                          background: "#F7F7F5",
                           border: "1px solid var(--border-color)",
                         }}
                       >
@@ -657,8 +657,8 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                         <div className="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
                           <div className="d-flex align-items-center gap-2">
                             <span
-                              className="p-1 px-2 rounded-2 small fw-semibold text-white d-flex align-items-center gap-1"
-                              style={{ background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.1)" }}
+                              className="p-1 px-2 rounded-2 small fw-semibold d-flex align-items-center gap-1"
+                              style={{ background: "#EAECE4", border: "1px solid var(--border-color)" }}
                             >
                               <i className={`bi ${getTypeIcon(item.type)}`}></i>
                               <span>{item.type}</span>
@@ -684,7 +684,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
 
                         {/* Notes / Conversation details */}
                         {item.notes ? (
-                          <p className="text-light small mb-2 lh-base" style={{ whiteSpace: "pre-line" }}>
+                          <p className="small mb-2 lh-base" style={{ whiteSpace: "pre-line", color: "var(--text-primary)" }}>
                             {item.notes}
                           </p>
                         ) : (
@@ -694,7 +694,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                         {/* Next follow-up info & Author */}
                         <div
                           className="d-flex align-items-center justify-content-between flex-wrap gap-2 pt-2"
-                          style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}
+                          style={{ borderTop: "1px solid var(--border-color)" }}
                         >
                           {item.next_follow_up_date ? (
                             <span className="text-warning small fw-medium">
@@ -709,7 +709,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                           )}
 
                           <span className="text-secondary small" style={{ fontSize: "0.75rem" }}>
-                            Logged by: <strong className="text-white">{item.user_name || "Sales Exec"}</strong>
+                            Logged by: <strong>{item.user_name || "Sales Exec"}</strong>
                           </span>
                         </div>
                       </div>
@@ -744,11 +744,11 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                   {/* Lead Quick Header in Modal */}
                   <div
                     className="p-3 rounded-2 mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2"
-                    style={{ background: "rgba(255, 255, 255, 0.04)", border: "1px solid var(--border-color)" }}
+                    style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}
                   >
                     <div>
                       <span className="text-secondary small d-block">Customer</span>
-                      <strong className="text-white">{lead.name}</strong> ({lead.phone})
+                      <strong>{lead.name}</strong> ({lead.phone})
                     </div>
                     <div className="text-end">
                       <span className="text-secondary small d-block">Vehicle</span>
@@ -759,7 +759,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                   <div className="row g-3">
                     {/* Follow-Up Date */}
                     <div className="col-12 col-md-6">
-                      <label className="form-label text-white fw-semibold small">
+                      <label className="form-label fw-semibold small">
                         Follow-Up Date <span className="text-danger">*</span>
                       </label>
                       <input
@@ -775,7 +775,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
 
                     {/* Follow-Up Time */}
                     <div className="col-12 col-md-6">
-                      <label className="form-label text-white fw-semibold small">
+                      <label className="form-label fw-semibold small">
                         Follow-Up Time
                       </label>
                       <input
@@ -790,7 +790,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
 
                     {/* Interaction Type */}
                     <div className="col-12 col-md-6">
-                      <label className="form-label text-white fw-semibold small">
+                      <label className="form-label fw-semibold small">
                         Follow-Up Type <span className="text-danger">*</span>
                       </label>
                       <select
@@ -810,7 +810,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
 
                     {/* Follow-Up Outcome Status */}
                     <div className="col-12 col-md-6">
-                      <label className="form-label text-white fw-semibold small">
+                      <label className="form-label fw-semibold small">
                         Interaction Status <span className="text-danger">*</span>
                       </label>
                       <select
@@ -827,7 +827,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
 
                     {/* Interaction Notes */}
                     <div className="col-12">
-                      <label className="form-label text-white fw-semibold small">
+                      <label className="form-label fw-semibold small">
                         Discussion Notes / Conversation Summary
                       </label>
                       <textarea
@@ -871,7 +871,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
 
                     {/* Update Lead Pipeline Status */}
                     <div className="col-12">
-                      <label className="form-label text-white fw-semibold small">
+                      <label className="form-label fw-semibold small">
                         Update Lead Pipeline Status (Optional)
                       </label>
                       <select

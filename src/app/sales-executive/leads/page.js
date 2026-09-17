@@ -176,7 +176,7 @@ export default function SalesExecutiveLeadsPage() {
         {/* KPI Counter Cards */}
         <div className="row g-3 mb-4">
           <div className="col-xl-3 col-sm-6">
-            <div className="card stat-card" style={{ borderLeft: "4px solid #3b82f6" }}>
+            <div className="card stat-card" style={{ borderLeft: "4px solid var(--primary)" }}>
               <div className="stat-card-header">
                 <span className="stat-card-title">Total Assigned</span>
                 <div className="stat-icon-box primary">
@@ -189,7 +189,7 @@ export default function SalesExecutiveLeadsPage() {
           </div>
 
           <div className="col-xl-3 col-sm-6">
-            <div className="card stat-card" style={{ borderLeft: "4px solid #38bdf8" }}>
+            <div className="card stat-card" style={{ borderLeft: "4px solid var(--secondary)" }}>
               <div className="stat-card-header">
                 <span className="stat-card-title">In Follow-Up</span>
                 <div className="stat-icon-box info">
@@ -197,12 +197,12 @@ export default function SalesExecutiveLeadsPage() {
                 </div>
               </div>
               <div className="stat-card-value">{inFollowUpCount}</div>
-              <span className="text-info small fw-semibold">Active customer communication</span>
+              <span className="text-secondary small fw-semibold">Active customer communication</span>
             </div>
           </div>
 
           <div className="col-xl-3 col-sm-6">
-            <div className="card stat-card" style={{ borderLeft: "4px solid #ef4444" }}>
+            <div className="card stat-card" style={{ borderLeft: "4px solid #DC2626" }}>
               <div className="stat-card-header">
                 <span className="stat-card-title">Hot Priority</span>
                 <div className="stat-icon-box danger">
@@ -215,7 +215,7 @@ export default function SalesExecutiveLeadsPage() {
           </div>
 
           <div className="col-xl-3 col-sm-6">
-            <div className="card stat-card" style={{ borderLeft: "4px solid #22c55e" }}>
+            <div className="card stat-card" style={{ borderLeft: "4px solid #15803D" }}>
               <div className="stat-card-header">
                 <span className="stat-card-title">Deals Won</span>
                 <div className="stat-icon-box success">
@@ -229,17 +229,17 @@ export default function SalesExecutiveLeadsPage() {
         </div>
 
         {/* Filter and Search Bar */}
-        <div className="card bg-dark border-secondary border-opacity-25 p-3 mb-4 rounded-3 shadow-sm">
+        <div className="card p-3 mb-4 rounded-3 shadow-sm">
           <form onSubmit={handleSearchSubmit} className="row g-2 align-items-center">
             {/* Search Input */}
             <div className="col-12 col-md-5">
               <div className="input-group">
-                <span className="input-group-text bg-secondary bg-opacity-10 border-secondary border-opacity-25 text-secondary">
+                <span className="input-group-text">
                   <i className="bi bi-search"></i>
                 </span>
                 <input
                   type="text"
-                  className="form-control bg-secondary bg-opacity-10 border-secondary border-opacity-25 text-white"
+                  className="form-control"
                   placeholder="Search by lead name, phone, email, model, city..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -250,32 +250,32 @@ export default function SalesExecutiveLeadsPage() {
             {/* Status Filter */}
             <div className="col-6 col-md-3">
               <select
-                className="form-select bg-secondary bg-opacity-10 border-secondary border-opacity-25 text-white"
+                className="form-select"
                 value={statusFilter}
                 onChange={(e) => handleStatusChange(e.target.value)}
               >
-                <option value="" className="bg-dark text-white">All Statuses</option>
-                <option value="New" className="bg-dark text-white">New</option>
-                <option value="In Follow-Up" className="bg-dark text-white">In Follow-Up</option>
-                <option value="Test Drive Scheduled" className="bg-dark text-white">Test Drive Scheduled</option>
-                <option value="Quotation Sent" className="bg-dark text-white">Quotation Sent</option>
-                <option value="Negotiation" className="bg-dark text-white">Negotiation</option>
-                <option value="Deal Won" className="bg-dark text-white">Deal Won</option>
-                <option value="Deal Lost" className="bg-dark text-white">Deal Lost</option>
+                <option value="">All Statuses</option>
+                <option value="New">New</option>
+                <option value="In Follow-Up">In Follow-Up</option>
+                <option value="Test Drive Scheduled">Test Drive Scheduled</option>
+                <option value="Quotation Sent">Quotation Sent</option>
+                <option value="Negotiation">Negotiation</option>
+                <option value="Deal Won">Deal Won</option>
+                <option value="Deal Lost">Deal Lost</option>
               </select>
             </div>
 
             {/* Priority Filter */}
             <div className="col-6 col-md-2">
               <select
-                className="form-select bg-secondary bg-opacity-10 border-secondary border-opacity-25 text-white"
+                className="form-select"
                 value={priorityFilter}
                 onChange={(e) => handlePriorityChange(e.target.value)}
               >
-                <option value="" className="bg-dark text-white">All Priorities</option>
-                <option value="Hot" className="bg-dark text-white">Hot</option>
-                <option value="Warm" className="bg-dark text-white">Warm</option>
-                <option value="Cold" className="bg-dark text-white">Cold</option>
+                <option value="">All Priorities</option>
+                <option value="Hot">Hot</option>
+                <option value="Warm">Warm</option>
+                <option value="Cold">Cold</option>
               </select>
             </div>
 
@@ -287,7 +287,7 @@ export default function SalesExecutiveLeadsPage() {
               {(searchTerm || statusFilter || priorityFilter) && (
                 <button
                   type="button"
-                  className="btn btn-outline-secondary btn-sm"
+                  className="btn btn-outline-custom btn-sm"
                   onClick={handleClearFilters}
                   title="Clear all filters"
                 >
@@ -310,14 +310,14 @@ export default function SalesExecutiveLeadsPage() {
 
         {/* Empty State */}
         {!isLoading && leads.length === 0 && (
-          <div className="card bg-dark border-secondary border-opacity-25 p-5 text-center rounded-3 my-4">
+          <div className="card p-5 text-center rounded-3 my-4">
             <div
               style={{
                 width: 64,
                 height: 64,
                 borderRadius: "50%",
-                background: "rgba(59, 130, 246, 0.1)",
-                color: "#3b82f6",
+                background: "rgba(88, 99, 42, 0.12)",
+                color: "var(--primary)",
                 display: "inline-flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -327,7 +327,7 @@ export default function SalesExecutiveLeadsPage() {
             >
               <i className="bi bi-inbox-fill"></i>
             </div>
-            <h4 className="fw-bold text-white">No leads assigned to you</h4>
+            <h4 className="fw-bold" style={{ color: "var(--text-primary)" }}>No leads assigned to you</h4>
             <p className="text-secondary small mb-3">
               {searchTerm || statusFilter || priorityFilter
                 ? "No leads matched your search/filter criteria. Try resetting the filters."
@@ -350,10 +350,10 @@ export default function SalesExecutiveLeadsPage() {
         {/* Desktop Table View (Hidden on mobile) */}
         {!isLoading && leads.length > 0 && (
           <div className="d-none d-lg-block">
-            <div className="card bg-dark border-secondary border-opacity-25 rounded-3 overflow-hidden shadow-sm">
+            <div className="card rounded-3 overflow-hidden shadow-sm">
               <div className="table-responsive">
-                <table className="table table-dark table-hover align-middle mb-0">
-                  <thead className="border-bottom border-secondary border-opacity-25 text-secondary small text-uppercase">
+                <table className="table table-custom align-middle mb-0">
+                  <thead>
                     <tr>
                       <th className="py-3 px-3">Lead & Contact</th>
                       <th className="py-3 px-3">Vehicle Requirement</th>
@@ -365,57 +365,62 @@ export default function SalesExecutiveLeadsPage() {
                   </thead>
                   <tbody>
                     {leads.map((lead) => (
-                      <tr key={lead.id} className="border-bottom border-secondary border-opacity-10">
+                      <tr key={lead.id}>
                         {/* Lead & Contact */}
                         <td className="py-3 px-3">
                           <div className="d-flex align-items-center gap-2 flex-wrap">
-                            <span className="fw-bold text-white fs-6">{lead.name}</span>
+                            <span className="fw-bold fs-6" style={{ color: "var(--text-primary)" }}>{lead.name}</span>
                             {lead.is_birthday_today && (
-                              <span className="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50 px-2 py-0" style={{ fontSize: "10px" }}>
+                              <span className="badge bg-danger-subtle text-danger px-2 py-0" style={{ fontSize: "10px" }}>
                                 🎂 Birthday Today
                               </span>
                             )}
                             {lead.is_anniversary_today && (
-                              <span className="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-50 px-2 py-0" style={{ fontSize: "10px" }}>
+                              <span className="badge bg-primary-subtle text-primary px-2 py-0" style={{ fontSize: "10px" }}>
                                 💐 Anniversary Today
                               </span>
                             )}
                           </div>
-                          <div className="d-flex align-items-center gap-2 mt-1">
-                            <a
-                              href={`tel:${lead.phone}`}
-                              className="text-primary text-decoration-none small d-flex align-items-center gap-1"
-                              title="Call Customer"
-                            >
-                              <i className="bi bi-telephone-fill"></i>
-                              <span>{lead.phone}</span>
+                          <div className="text-secondary small mt-1">
+                            <i className="bi bi-telephone-fill me-1"></i>
+                            <a href={`tel:${lead.phone}`} className="text-decoration-none" style={{ color: "var(--text-primary)" }}>
+                              {lead.phone}
                             </a>
-                            {lead.city && (
-                              <span className="text-secondary small">
-                                • <i className="bi bi-geo-alt-fill"></i> {lead.city}
-                              </span>
-                            )}
+                            {lead.email && <span className="ms-2">• {lead.email}</span>}
                           </div>
+                          {lead.city && (
+                            <div className="text-muted small" style={{ fontSize: "0.75rem" }}>
+                              <i className="bi bi-geo-alt-fill me-1"></i>
+                              {lead.city}
+                              {lead.state ? `, ${lead.state}` : ""}
+                            </div>
+                          )}
                         </td>
 
-                        {/* Requirement */}
+                        {/* Vehicle Requirement */}
                         <td className="py-3 px-3">
-                          <div className="text-white small fw-semibold">
-                            {lead.model_variant || lead.brand_name || "Any Vehicle"}
+                          <div className="fw-bold" style={{ color: "var(--text-primary)" }}>
+                            🚗 {lead.model_variant || "Model Not Specified"}
                           </div>
-                          <div className="text-secondary small" style={{ fontSize: "0.75rem" }}>
-                            {lead.vehicle_segment} {lead.brand_name ? `• ${lead.brand_name}` : ""}
+                          <div className="text-muted small">
+                            {lead.brand_name ? `Brand: ${lead.brand_name}` : "Multi-Brand Search"}
+                            {lead.budget ? ` • Budget: ${lead.budget}` : ""}
                           </div>
+                          {lead.source && (
+                            <span className="badge bg-secondary-subtle text-secondary mt-1">
+                              Source: {lead.source}
+                            </span>
+                          )}
                         </td>
 
-                        {/* Priority */}
+                        {/* Priority Badge */}
                         <td className="py-3 px-3">
                           <span className={getPriorityBadgeClass(lead.priority)}>
                             {lead.priority || "Standard"}
                           </span>
                         </td>
 
-                        {/* Status */}
+                        {/* Status Badge */}
                         <td className="py-3 px-3">
                           <span className={getStatusBadgeClass(lead.status_name)}>
                             {lead.status_name || "New"}
@@ -425,29 +430,33 @@ export default function SalesExecutiveLeadsPage() {
                         {/* Next Follow-Up */}
                         <td className="py-3 px-3">
                           {lead.latest_follow_up?.next_follow_up_date ? (
-                            <div className="d-flex flex-column">
-                              <span className="text-warning small fw-bold">
-                                <i className="bi bi-calendar-event me-1"></i>
+                            <div>
+                              <div className="fw-semibold text-warning small d-flex align-items-center gap-1">
+                                <i className="bi bi-alarm"></i>
                                 {lead.latest_follow_up.next_follow_up_date}
-                              </span>
+                              </div>
                               {lead.latest_follow_up.next_follow_up_time && (
-                                <span className="text-secondary" style={{ fontSize: "0.72rem" }}>
-                                  <i className="bi bi-clock me-1"></i>
-                                  {lead.latest_follow_up.next_follow_up_time}
-                                </span>
+                                <div className="text-muted" style={{ fontSize: "0.75rem" }}>
+                                  at {lead.latest_follow_up.next_follow_up_time}
+                                </div>
+                              )}
+                              {lead.latest_follow_up.notes && (
+                                <div className="text-muted text-truncate" style={{ maxWidth: "160px", fontSize: "0.72rem" }} title={lead.latest_follow_up.notes}>
+                                  &quot;{lead.latest_follow_up.notes}&quot;
+                                </div>
                               )}
                             </div>
                           ) : (
-                            <span className="text-secondary small">Not scheduled</span>
+                            <span className="text-muted small">No scheduled call</span>
                           )}
                         </td>
 
-                        {/* Action */}
+                        {/* Action Buttons */}
                         <td className="py-3 px-3 text-end">
-                          <div className="d-flex align-items-center justify-content-end gap-2">
+                          <div className="d-inline-flex align-items-center gap-2">
                             <Link
                               href={`/admin/quotation/create?lead_id=${lead.id}`}
-                              className="btn btn-outline-primary btn-sm px-3 rounded-pill d-inline-flex align-items-center gap-1"
+                              className="btn btn-outline-custom btn-sm px-3 rounded-pill d-inline-flex align-items-center gap-1"
                               title="Send Quotation"
                             >
                               <i className="bi bi-file-earmark-spreadsheet-fill text-warning"></i>
@@ -477,11 +486,11 @@ export default function SalesExecutiveLeadsPage() {
             <div className="row g-3">
               {leads.map((lead) => (
                 <div key={lead.id} className="col-12 col-md-6">
-                  <div className="card bg-dark border-secondary border-opacity-25 rounded-3 p-3 shadow-sm">
+                  <div className="card rounded-3 p-3 shadow-sm">
                     {/* Top Row: Name & Priority */}
                     <div className="d-flex align-items-start justify-content-between gap-2 mb-2">
                       <div>
-                        <h5 className="fw-bold text-white mb-0">{lead.name}</h5>
+                        <h5 className="fw-bold mb-0" style={{ color: "var(--text-primary)" }}>{lead.name}</h5>
                         {lead.city && (
                           <span className="text-secondary small">
                             <i className="bi bi-geo-alt-fill me-1"></i>
@@ -496,7 +505,7 @@ export default function SalesExecutiveLeadsPage() {
                     </div>
 
                     {/* Phone & Vehicle */}
-                    <div className="bg-secondary bg-opacity-10 p-2 rounded-2 mb-2">
+                    <div className="p-2 rounded-2 mb-2" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                       <div className="d-flex align-items-center justify-content-between">
                         <a
                           href={`tel:${lead.phone}`}
@@ -509,14 +518,14 @@ export default function SalesExecutiveLeadsPage() {
                           {lead.status_name || "New"}
                         </span>
                       </div>
-                      <div className="text-white small fw-medium mt-1">
+                      <div className="small fw-semibold mt-1" style={{ color: "var(--text-primary)" }}>
                         🚗 {lead.model_variant} {lead.brand_name ? `(${lead.brand_name})` : ""}
                       </div>
                     </div>
 
                     {/* Next Follow-Up Banner if scheduled */}
                     {lead.latest_follow_up?.next_follow_up_date && (
-                      <div className="d-flex align-items-center gap-2 text-warning small bg-warning bg-opacity-10 px-2 py-1 rounded-2 mb-3">
+                      <div className="d-flex align-items-center gap-2 text-warning small bg-warning-subtle px-2 py-1 rounded-2 mb-3">
                         <i className="bi bi-alarm-fill"></i>
                         <span>
                           Next Follow-Up: <strong>{lead.latest_follow_up.next_follow_up_date}</strong>
@@ -529,7 +538,7 @@ export default function SalesExecutiveLeadsPage() {
                     <div className="d-flex gap-2 mt-2">
                       <Link
                         href={`/admin/quotation/create?lead_id=${lead.id}`}
-                        className="btn btn-outline-primary btn-sm flex-fill py-2 rounded-pill fw-medium text-center"
+                        className="btn btn-outline-custom btn-sm flex-fill py-2 rounded-pill fw-medium text-center"
                       >
                         <i className="bi bi-file-earmark-spreadsheet-fill text-warning me-1"></i> Send Quote
                       </Link>

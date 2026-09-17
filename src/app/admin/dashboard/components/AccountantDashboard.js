@@ -264,11 +264,11 @@ export default function AccountantDashboard() {
                   <div
                     key={idx}
                     className="p-3 rounded-3 d-flex flex-column gap-1"
-                    style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}
+                    style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}
                   >
                     <div className="d-flex justify-content-between align-items-start">
                       <div>
-                        <div className="text-white fw-bold small">{loan.customer}</div>
+                        <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>{loan.customer}</div>
                         <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                           {loan.appNo}
                         </span>
@@ -276,9 +276,9 @@ export default function AccountantDashboard() {
                       <span className="text-warning fw-bold small">{loan.amount}</span>
                     </div>
 
-                    <div className="text-info small mt-1">{loan.bank} • {loan.roi}</div>
+                    <div className="text-primary small mt-1">{loan.bank} • {loan.roi}</div>
 
-                    <div className="d-flex justify-content-between align-items-center mt-2 pt-2 border-top" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                    <div className="d-flex justify-content-between align-items-center mt-2 pt-2 border-top" style={{ borderColor: "var(--border-color)" }}>
                       <span className={`badge bg-${loan.badge}-subtle text-${loan.badge} rounded-pill`}>
                         {loan.status}
                       </span>
@@ -318,33 +318,33 @@ export default function AccountantDashboard() {
         <div className="card-body">
           <div className="row g-3">
             <div className="col-md-3 col-sm-6">
-              <div className="p-3 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+              <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                 <span className="text-muted small">Gross Ex-Showroom Invoiced</span>
-                <div className="text-white fw-bold fs-5 mt-1">₹3.14 Cr</div>
+                <div className="fw-bold fs-5 mt-1" style={{ color: "var(--text-primary)" }}>₹3.14 Cr</div>
                 <span className="text-success small">42 Vehicles</span>
               </div>
             </div>
 
             <div className="col-md-3 col-sm-6">
-              <div className="p-3 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+              <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                 <span className="text-muted small">RTO Road Tax Remitted</span>
-                <div className="text-white fw-bold fs-5 mt-1">₹41.8 Lakhs</div>
-                <span className="text-info small">Challans Verified</span>
+                <div className="fw-bold fs-5 mt-1" style={{ color: "var(--text-primary)" }}>₹41.8 Lakhs</div>
+                <span className="text-primary small">Challans Verified</span>
               </div>
             </div>
 
             <div className="col-md-3 col-sm-6">
-              <div className="p-3 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+              <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                 <span className="text-muted small">GST (28% + Cess) Output</span>
-                <div className="text-white fw-bold fs-5 mt-1">₹88.2 Lakhs</div>
+                <div className="fw-bold fs-5 mt-1" style={{ color: "var(--text-primary)" }}>₹88.2 Lakhs</div>
                 <span className="text-warning small">Tax Invoice Input Synced</span>
               </div>
             </div>
 
             <div className="col-md-3 col-sm-6">
-              <div className="p-3 rounded-3" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+              <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
                 <span className="text-muted small">Dealership Gross Margin</span>
-                <div className="text-white fw-bold fs-5 mt-1">₹26.4 Lakhs</div>
+                <div className="fw-bold fs-5 mt-1" style={{ color: "var(--text-primary)" }}>₹26.4 Lakhs</div>
                 <span className="text-success small">8.4% Average Margin</span>
               </div>
             </div>

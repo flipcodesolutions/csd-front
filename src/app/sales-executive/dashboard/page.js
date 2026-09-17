@@ -88,7 +88,7 @@ export default function SalesExecutiveDashboardPage() {
                 <div className="modal-body-custom">
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Customer Full Name *</label>
+                      <label className="form-label fw-semibold small">Customer Full Name *</label>
                       <input
                         type="text"
                         className="form-control"
@@ -100,7 +100,7 @@ export default function SalesExecutiveDashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Phone Number *</label>
+                      <label className="form-label fw-semibold small">Phone Number *</label>
                       <input
                         type="tel"
                         className="form-control"
@@ -112,7 +112,7 @@ export default function SalesExecutiveDashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Brand</label>
+                      <label className="form-label fw-semibold small">Brand</label>
                       <select
                         className="form-select"
                         value={newLead.brand}
@@ -127,7 +127,7 @@ export default function SalesExecutiveDashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Model & Variant</label>
+                      <label className="form-label fw-semibold small">Model & Variant</label>
                       <input
                         type="text"
                         className="form-control"
@@ -138,7 +138,7 @@ export default function SalesExecutiveDashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Estimated Budget</label>
+                      <label className="form-label fw-semibold small">Estimated Budget</label>
                       <input
                         type="text"
                         className="form-control"
@@ -149,7 +149,7 @@ export default function SalesExecutiveDashboardPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Priority Level</label>
+                      <label className="form-label fw-semibold small">Priority Level</label>
                       <div className="d-flex gap-3 pt-2">
                         {["Hot", "Warm", "Cold"].map((p) => (
                           <div className="form-check" key={p}>
@@ -161,7 +161,7 @@ export default function SalesExecutiveDashboardPage() {
                               checked={newLead.priority === p}
                               onChange={() => setNewLead({ ...newLead, priority: p })}
                             />
-                            <label className="form-check-label text-white small" htmlFor={`se-p-${p}`}>
+                            <label className="form-check-label small" htmlFor={`se-p-${p}`}>
                               {p}
                             </label>
                           </div>
