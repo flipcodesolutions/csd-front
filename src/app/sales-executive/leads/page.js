@@ -408,7 +408,7 @@ export default function SalesExecutiveLeadsPage() {
                           </div>
                           {lead.source && (
                             <span className="badge bg-secondary-subtle text-secondary mt-1">
-                              Source: {lead.source}
+                              Source: {lead.source?.title || lead.source_name || lead.source}
                             </span>
                           )}
                         </td>
