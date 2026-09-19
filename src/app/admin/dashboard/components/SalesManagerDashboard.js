@@ -7,474 +7,680 @@ import { useToast } from "@/app/components/Toast";
 export default function SalesManagerDashboard() {
   const { showToast } = useToast();
 
-  // State for interactive discount approvals
-  const [discountRequests, setDiscountRequests] = useState([
-    {
-      id: "REQ-101",
-      customer: "Kunal Singhania",
-      phone: "+91 98112 33445",
-      vehicle: "Mahindra Thar Roxx AX7L 4x4",
-      exShowroom: "₹22,49,000",
-      discountRequested: "₹45,000 Special Dealership Off",
-      requestedBy: "David Miller",
-      reason: "Customer ready for on-spot booking if approved",
-      status: "Pending",
-    },
-    {
-      id: "REQ-102",
-      customer: "Dr. Meenakshi Sundaram",
-      phone: "+91 97234 55667",
-      vehicle: "Tata Safari Adventure Plus Dark AT",
-      exShowroom: "₹24,85,000",
-      discountRequested: "₹35,000 Corporate & Exchange Bonus",
-      requestedBy: "Rahul Verma",
-      reason: "Doctor Corporate Discount + Old City Exchange",
-      status: "Pending",
-    },
-    {
-      id: "REQ-103",
-      customer: "Arjun Rampal",
-      phone: "+91 99887 66554",
-      vehicle: "Maruti Grand Vitara Alpha Hybrid",
-      exShowroom: "₹19,75,000",
-      discountRequested: "₹25,000 Extended Warranty + Acc Package",
-      requestedBy: "Vikram Singh",
-      reason: "Matching competitor quotation from NEXA West",
-      status: "Pending",
-    },
-  ]);
+  // Modals state
+  const [showCounterModal, setShowCounterModal] = useState(false);
+  const [counterPrice, setCounterPrice] = useState("₹16,15,000");
+  const [counterNotes, setCounterNotes] = useState("");
 
-  // State for interactive unassigned leads
-  const [unassignedLeads, setUnassignedLeads] = useState([
-    {
-      id: 201,
-      name: "Gaurav Kapoor",
-      phone: "+91 98450 11990",
-      vehicle: "Hyundai Creta SX (O) Turbo Petrol",
-      budget: "₹20 - 22 Lakhs",
-      source: "Website Meta Ad",
-      priority: "Hot",
-      time: "15 mins ago",
-    },
-    {
-      id: 202,
-      name: "Siddharth Malhotra",
-      phone: "+91 99123 44882",
-      vehicle: "Royal Enfield Classic 350 Dual Channel",
-      budget: "₹2.4 Lakhs",
-      source: "Showroom Walk-in",
-      priority: "Hot",
-      time: "32 mins ago",
-    },
-    {
-      id: 203,
-      name: "Pooja Banerjee",
-      phone: "+91 98332 77110",
-      vehicle: "Tata Nexon EV Empowered Plus",
-      budget: "₹18 Lakhs",
-      source: "CarDekho Inflow",
-      priority: "Warm",
-      time: "1 hour ago",
-    },
-  ]);
+  // Action Required State
+  const [actionItem, setActionItem] = useState({
+    id: 1,
+    name: "Rajesh Patel",
+    vehicle: "Hyundai Creta Automatic",
+    rep: "Amit Kumar",
+    date: "Oct 24, 2023",
+    originalPrice: "₹16.4L",
+    counterPrice: "₹16.2L",
+    proposedPrice: "₹16.25L",
+    status: "pending",
+  });
 
-  // Selected lead for allocation modal
-  const [assignModalLead, setAssignModalLead] = useState(null);
-  const [selectedRep, setSelectedRep] = useState("Rahul Verma");
-
-  const handleApproveDiscount = (reqId, customer) => {
-    setDiscountRequests((prev) =>
-      prev.map((r) => (r.id === reqId ? { ...r, status: "Approved" } : r))
-    );
-    showToast(`Quotation discount approved for ${customer}! Notification sent to Sales Executive.`, "success");
+  // Handle Approve
+  const handleApprove = () => {
+    showToast(`Approved proposed pricing ₹16.25L for ${actionItem.name}!`, "success");
+    setActionItem(null);
   };
 
-  const handleRejectDiscount = (reqId, customer) => {
-    setDiscountRequests((prev) =>
-      prev.map((r) => (r.id === reqId ? { ...r, status: "Rejected" } : r))
-    );
-    showToast(`Discount request for ${customer} has been rejected.`, "info");
+  // Handle Reject
+  const handleReject = () => {
+    showToast(`Rejected proposed discount for ${actionItem.name}.`, "warning");
+    setActionItem(null);
   };
 
-  const handleConfirmAssign = (e) => {
+  // Handle Submit Counter Offer
+  const handleSubmitCounter = (e) => {
     e.preventDefault();
-    if (!assignModalLead) return;
-    setUnassignedLeads((prev) => prev.filter((l) => l.id !== assignModalLead.id));
-    showToast(`Lead for ${assignModalLead.name} successfully assigned to ${selectedRep}!`, "success");
-    setAssignModalLead(null);
+    showToast(`Counter offer of ${counterPrice} sent to Amit Kumar for ${actionItem.name}!`, "info");
+    setShowCounterModal(false);
+    if (actionItem) {
+      setActionItem({ ...actionItem, counterPrice: counterPrice });
+    }
   };
 
   return (
-    <div>
-      {/* 4 Team KPI Cards */}
+    <div className="container-fluid px-0 pb-5">
+      {/* ----------------------------------------------------
+          1. HEADER: PERFORMANCE OVERVIEW
+          ---------------------------------------------------- */}
+      <div className="mb-3">
+        <span
+          className="text-muted fw-bold text-uppercase small"
+          style={{ fontSize: "0.76rem", letterSpacing: "0.8px" }}
+        >
+          PERFORMANCE OVERVIEW
+        </span>
+      </div>
+
+      {/* ----------------------------------------------------
+          2. TOP STAT CARDS (7 White Cards + 1 Dark Total Sales Card)
+          ---------------------------------------------------- */}
       <div className="row g-3 mb-4">
-        <div className="col-xl-3 col-sm-6">
-          <div className="card stat-card">
-            <div className="stat-card-header">
-              <span className="stat-card-title">Team Active Pipeline</span>
-              <div className="stat-icon-box primary">
-                <i className="bi bi-funnel-fill"></i>
-              </div>
+        {/* Card 1: New Leads */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="text-secondary small fw-medium">New Leads</span>
+              <i className="bi bi-person-plus text-secondary fs-6"></i>
             </div>
-            <div className="stat-card-value">264 Leads</div>
-            <div className="stat-change positive">
-              <i className="bi bi-currency-rupee"></i>
-              <span>₹18.6 Cr Pipeline Value</span>
+            <div className="fw-bolder text-dark" style={{ fontSize: "2rem", lineHeight: "1" }}>
+              42
             </div>
           </div>
         </div>
 
-        <div className="col-xl-3 col-sm-6">
-          <div className="card stat-card">
-            <div className="stat-card-header">
-              <span className="stat-card-title">Monthly Target Progress</span>
-              <div className="stat-icon-box success">
-                <i className="bi bi-bullseye"></i>
-              </div>
+        {/* Card 2: Active Leads */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="text-secondary small fw-medium">Active Leads</span>
+              <i className="bi bi-graph-up-arrow text-secondary fs-6"></i>
             </div>
-            <div className="stat-card-value">84.5%</div>
-            <div className="stat-change positive">
-              <i className="bi bi-check2-circle"></i>
-              <span>54 / 64 Units Booked</span>
+            <div className="fw-bolder text-dark" style={{ fontSize: "2rem", lineHeight: "1" }}>
+              128
             </div>
           </div>
         </div>
 
-        <div className="col-xl-3 col-sm-6">
-          <div className="card stat-card">
-            <div className="stat-card-header">
-              <span className="stat-card-title">Unassigned Leads</span>
-              <div className="stat-icon-box warning">
-                <i className="bi bi-person-exclamation"></i>
-              </div>
+        {/* Card 3: Sourcing */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="text-secondary small fw-medium">Sourcing</span>
+              <i className="bi bi-search text-secondary fs-6"></i>
             </div>
-            <div className="stat-card-value text-warning">{unassignedLeads.length} Inquiries</div>
-            <div className="stat-change text-warning">
-              <i className="bi bi-clock-history"></i>
-              <span>Requires instant allocation</span>
+            <div className="fw-bolder text-dark" style={{ fontSize: "2rem", lineHeight: "1" }}>
+              15
             </div>
           </div>
         </div>
 
-        <div className="col-xl-3 col-sm-6">
-          <div className="card stat-card">
-            <div className="stat-card-header">
-              <span className="stat-card-title">Pending Discount Approvals</span>
-              <div className="stat-icon-box danger">
-                <i className="bi bi-tag-fill"></i>
-              </div>
+        {/* Card 4: Quotations */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="text-secondary small fw-medium">Quotations</span>
+              <i className="bi bi-file-earmark-text text-secondary fs-6"></i>
             </div>
-            <div className="stat-card-value text-danger">
-              {discountRequests.filter((r) => r.status === "Pending").length} Requests
-            </div>
-            <div className="stat-change positive">
-              <i className="bi bi-shield-check"></i>
-              <span>Manager approval required</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Team Quota Progress & Reps Performance Leaderboard */}
-      <div className="row g-4 mb-4">
-        {/* Sales Reps Quota Performance */}
-        <div className="col-xl-7">
-          <div className="card h-100">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <div>
-                <h5 className="card-title mb-0">Sales Executive Quota Leaderboard</h5>
-                <span className="text-muted small">Real-time target vs actual booked units this month</span>
-              </div>
-              <span className="badge bg-success-subtle text-success">Target: 64 Units</span>
-            </div>
-
-            <div className="card-body">
-              <div className="d-flex flex-column gap-3">
-                {/* Rep 1 */}
-                <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <div className="d-flex align-items-center gap-2">
-                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--primary)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
-                        V
-                      </div>
-                      <div>
-                        <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Vikram Singh</div>
-                        <span className="text-muted small">Senior Consultant • 42 Active Leads</span>
-                      </div>
-                    </div>
-                    <div className="text-end">
-                      <span className="text-warning fw-bold">24 / 25 Units</span>
-                      <span className="badge bg-success ms-2">96% Target</span>
-                    </div>
-                  </div>
-                  <div className="progress" style={{ height: "8px", background: "var(--border-color)" }}>
-                    <div className="progress-bar bg-success" role="progressbar" style={{ width: "96%" }}></div>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center mt-2 text-muted small" style={{ fontSize: "0.75rem" }}>
-                    <span>Conversion: 38.2%</span>
-                    <span>Volume: ₹3.42 Cr</span>
-                    <span className="text-success">Avg Deal Cycle: 4.8 Days</span>
-                  </div>
-                </div>
-
-                {/* Rep 2 */}
-                <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <div className="d-flex align-items-center gap-2">
-                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--secondary)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
-                        R
-                      </div>
-                      <div>
-                        <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Rahul Verma</div>
-                        <span className="text-muted small">Sales Executive • 36 Active Leads</span>
-                      </div>
-                    </div>
-                    <div className="text-end">
-                      <span className="text-warning fw-bold">19 / 22 Units</span>
-                      <span className="badge bg-success ms-2">86% Target</span>
-                    </div>
-                  </div>
-                  <div className="progress" style={{ height: "8px", background: "var(--border-color)" }}>
-                    <div className="progress-bar bg-primary" role="progressbar" style={{ width: "86%" }}></div>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center mt-2 text-muted small" style={{ fontSize: "0.75rem" }}>
-                    <span>Conversion: 32.5%</span>
-                    <span>Volume: ₹2.45 Cr</span>
-                    <span className="text-success">Avg Deal Cycle: 5.4 Days</span>
-                  </div>
-                </div>
-
-                {/* Rep 3 */}
-                <div className="p-3 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <div className="d-flex justify-content-between align-items-center mb-2">
-                    <div className="d-flex align-items-center gap-2">
-                      <div style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--accent-orange)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
-                        D
-                      </div>
-                      <div>
-                        <div className="fw-bold" style={{ color: "var(--text-primary)" }}>David Miller</div>
-                        <span className="text-muted small">Sales Executive • 28 Active Leads</span>
-                      </div>
-                    </div>
-                    <div className="text-end">
-                      <span className="text-warning fw-bold">15 / 18 Units</span>
-                      <span className="badge bg-warning ms-2 text-white">83% Target</span>
-                    </div>
-                  </div>
-                  <div className="progress" style={{ height: "8px", background: "var(--border-color)" }}>
-                    <div className="progress-bar bg-warning" role="progressbar" style={{ width: "83%" }}></div>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center mt-2 text-muted small" style={{ fontSize: "0.75rem" }}>
-                    <span>Conversion: 29.8%</span>
-                    <span>Volume: ₹1.95 Cr</span>
-                    <span className="text-warning">Avg Deal Cycle: 6.2 Days</span>
-                  </div>
-                </div>
-              </div>
+            <div className="fw-bolder text-dark" style={{ fontSize: "2rem", lineHeight: "1" }}>
+              34
             </div>
           </div>
         </div>
 
-        {/* Unassigned Leads Fast Allocation Queue */}
-        <div className="col-xl-5">
-          <div className="card h-100">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <div>
-                <h5 className="card-title mb-0">Unassigned Inflow Leads</h5>
-                <span className="text-muted small">Direct customer inquiries waiting for executive assignment</span>
-              </div>
-              <span className="badge bg-danger rounded-pill">{unassignedLeads.length} Pending</span>
+        {/* Card 5: Negotiations */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="text-secondary small fw-medium">Negotiations</span>
+              <i className="bi bi-chat-square-dots text-secondary fs-6"></i>
             </div>
+            <div className="fw-bolder text-dark" style={{ fontSize: "2rem", lineHeight: "1" }}>
+              12
+            </div>
+          </div>
+        </div>
 
-            <div className="card-body">
-              {unassignedLeads.length === 0 ? (
-                <div className="text-center py-4 text-muted">
-                  <i className="bi bi-check-circle-fill text-success fs-2 d-block mb-2"></i>
-                  <div className="fw-semibold" style={{ color: "var(--text-primary)" }}>All Leads Allocated!</div>
-                  <span className="small">No pending leads in allocation queue</span>
-                </div>
-              ) : (
-                <div className="d-flex flex-column gap-3">
-                  {unassignedLeads.map((lead) => (
-                    <div
-                      key={lead.id}
-                      className="p-3 rounded-3 d-flex flex-column gap-2"
-                      style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}
-                    >
-                      <div className="d-flex justify-content-between align-items-start">
-                        <div>
-                          <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>{lead.name}</div>
-                          <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                            {lead.phone} • <i className="bi bi-clock"></i> {lead.time}
-                          </span>
-                        </div>
-                        <span className={`badge ${lead.priority === "Hot" ? "bg-danger-subtle text-danger" : "bg-warning-subtle text-warning"} rounded-pill`}>
-                          {lead.priority}
-                        </span>
-                      </div>
+        {/* Card 6: Approvals */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="text-secondary small fw-medium">Approvals</span>
+              <i className="bi bi-shield-check text-secondary fs-6"></i>
+            </div>
+            <div className="fw-bolder text-dark" style={{ fontSize: "2rem", lineHeight: "1" }}>
+              8
+            </div>
+          </div>
+        </div>
 
-                      <div className="d-flex justify-content-between align-items-center">
-                        <span className="text-primary small fw-semibold">{lead.vehicle}</span>
-                        <button
-                          type="button"
-                          className="btn btn-xs btn-primary d-flex align-items-center gap-1"
-                          onClick={() => setAssignModalLead(lead)}
-                        >
-                          <i className="bi bi-person-plus-fill"></i>
-                          <span>Assign Rep</span>
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+        {/* Card 7: Bookings */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span className="text-secondary small fw-medium">Bookings</span>
+              <i className="bi bi-calendar3 text-secondary fs-6"></i>
+            </div>
+            <div className="fw-bolder text-dark" style={{ fontSize: "2rem", lineHeight: "1" }}>
+              24
+            </div>
+          </div>
+        </div>
+
+        {/* Card 8: Total Sales Value (Dark Card Highlight) */}
+        <div className="col-6 col-md-3">
+          <div
+            className="h-100 border-0 rounded-4 p-3 shadow-sm position-relative overflow-hidden"
+            style={{
+              backgroundColor: "#0D1527",
+              color: "#FFFFFF",
+            }}
+          >
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span style={{ fontSize: "0.8rem", color: "rgba(255, 255, 255, 0.75)" }}>
+                Total Sales Value
+              </span>
+              <i className="bi bi-credit-card-2-front text-warning fs-6"></i>
+            </div>
+            <div className="fw-bolder" style={{ fontSize: "2rem", lineHeight: "1", color: "#FFFFFF" }}>
+              ₹4.2 Cr
             </div>
           </div>
         </div>
       </div>
 
-      {/* Special Quotation Discount Approval Requests */}
-      <div className="card mb-4">
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <div>
-            <h5 className="card-title mb-0">Quotation Special Discount Approval Requests</h5>
-            <span className="text-muted small">Executive discount requests requiring Sales Manager clearance</span>
-          </div>
-          <span className="badge bg-warning-subtle text-warning">
-            {discountRequests.filter((r) => r.status === "Pending").length} Actionable
-          </span>
-        </div>
+      {/* ----------------------------------------------------
+          3. MAIN LAYOUT: 2 COLUMNS ON DESKTOP, 1 ON MOBILE
+          ---------------------------------------------------- */}
+      <div className="row g-4">
+        {/* Left Column (Desktop: col-lg-7, col-xl-8) */}
+        <div className="col-12 col-lg-7 col-xl-8">
+          {/* SECTION: ACTION REQUIRED */}
+          <div className="mb-4">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <div
+                className="d-flex align-items-center gap-1 fw-bold text-uppercase small"
+                style={{ color: "#DC2626", fontSize: "0.75rem", letterSpacing: "0.8px" }}
+              >
+                <i className="bi bi-exclamation-triangle"></i>
+                <span>ACTION REQUIRED</span>
+              </div>
+              <Link
+                href="/admin/leads"
+                className="text-decoration-none text-muted fw-semibold small"
+                style={{ fontSize: "0.8rem" }}
+              >
+                View All
+              </Link>
+            </div>
 
-        <div className="table-responsive">
-          <table className="table table-custom">
-            <thead>
-              <tr>
-                <th>Request ID & Customer</th>
-                <th>Vehicle & Ex-Showroom</th>
-                <th>Discount Requested</th>
-                <th>Executive & Justification</th>
-                <th>Status</th>
-                <th className="text-end">Approval Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {discountRequests.map((req) => (
-                <tr key={req.id}>
-                  <td>
-                    <div className="text-white fw-bold small">{req.customer}</div>
-                    <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                      {req.id} • {req.phone}
+            {actionItem ? (
+              <div
+                className="card rounded-4 p-3 bg-white shadow-sm"
+                style={{ border: "1.5px solid #FCA5A5" }}
+              >
+                {/* Header Row */}
+                <div className="d-flex align-items-start justify-content-between mb-1">
+                  <div>
+                    <h5 className="fw-bold text-dark mb-0 fs-6">{actionItem.name}</h5>
+                    <div className="text-secondary small d-flex align-items-center gap-1 mt-1">
+                      <i className="bi bi-car-front"></i>
+                      <span>{actionItem.vehicle}</span>
+                    </div>
+                  </div>
+                  <span
+                    className="badge fw-bold px-2 py-1 rounded-1"
+                    style={{ backgroundColor: "#FEE2E2", color: "#DC2626", fontSize: "0.7rem", letterSpacing: "0.5px" }}
+                  >
+                    NEGOTIATION
+                  </span>
+                </div>
+
+                {/* Subtitle / Rep Meta */}
+                <div className="d-flex align-items-center justify-content-between text-muted small mb-3" style={{ fontSize: "0.78rem" }}>
+                  <span>Rep: {actionItem.rep}</span>
+                  <span>{actionItem.date}</span>
+                </div>
+
+                {/* Pricing Box (Original, Counter, Proposed) */}
+                <div
+                  className="rounded-3 p-2 px-3 mb-3 d-flex align-items-center justify-content-between text-center"
+                  style={{ backgroundColor: "#F9FAFB", border: "1px solid #F3F4F6" }}
+                >
+                  <div>
+                    <span className="text-muted d-block small" style={{ fontSize: "0.72rem" }}>
+                      Original
                     </span>
-                  </td>
-                  <td>
-                    <span className="text-white fw-semibold small">{req.vehicle}</span>
-                    <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-                      Ex-Showroom: {req.exShowroom}
-                    </div>
-                  </td>
-                  <td>
-                    <span className="text-warning fw-bold small">{req.discountRequested}</span>
-                  </td>
-                  <td>
-                    <span className="text-white small fw-semibold">{req.requestedBy}</span>
-                    <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-                      &quot;{req.reason}&quot;
-                    </div>
-                  </td>
-                  <td>
-                    {req.status === "Pending" && (
-                      <span className="badge bg-warning-subtle text-warning">Pending Review</span>
-                    )}
-                    {req.status === "Approved" && (
-                      <span className="badge bg-success-subtle text-success">
-                        <i className="bi bi-check-circle me-1"></i>Approved
-                      </span>
-                    )}
-                    {req.status === "Rejected" && (
-                      <span className="badge bg-danger-subtle text-danger">
-                        <i className="bi bi-x-circle me-1"></i>Rejected
-                      </span>
-                    )}
-                  </td>
-                  <td className="text-end">
-                    {req.status === "Pending" ? (
-                      <div className="d-inline-flex gap-2">
-                        <button
-                          type="button"
-                          className="btn btn-xs btn-success d-flex align-items-center gap-1"
-                          onClick={() => handleApproveDiscount(req.id, req.customer)}
-                        >
-                          <i className="bi bi-check-lg"></i>
-                          <span>Approve</span>
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-xs btn-outline-danger d-flex align-items-center gap-1"
-                          onClick={() => handleRejectDiscount(req.id, req.customer)}
-                        >
-                          <i className="bi bi-x-lg"></i>
-                          <span>Reject</span>
-                        </button>
-                      </div>
-                    ) : (
-                      <span className="text-muted small">Decision Recorded</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                    <span className="text-decoration-line-through text-muted small fw-semibold">
+                      {actionItem.originalPrice}
+                    </span>
+                  </div>
+                  <div style={{ borderLeft: "1px solid #E5E7EB", height: "24px" }}></div>
+                  <div>
+                    <span className="text-muted d-block small" style={{ fontSize: "0.72rem" }}>
+                      Counter
+                    </span>
+                    <span className="fw-bold text-dark small">{actionItem.counterPrice}</span>
+                  </div>
+                  <div style={{ borderLeft: "1px solid #E5E7EB", height: "24px" }}></div>
+                  <div>
+                    <span className="text-muted d-block small" style={{ fontSize: "0.72rem" }}>
+                      Proposed
+                    </span>
+                    <span className="fw-bolder text-success small">{actionItem.proposedPrice}</span>
+                  </div>
+                </div>
+
+                {/* 3 Action Buttons */}
+                <div className="d-flex gap-2">
+                  <button
+                    type="button"
+                    className="btn flex-fill bg-white border py-2 fw-semibold shadow-sm"
+                    style={{ borderColor: "#E5E7EB", color: "#1E293B", borderRadius: "10px", fontSize: "0.85rem" }}
+                    onClick={handleReject}
+                  >
+                    Reject
+                  </button>
+                  <button
+                    type="button"
+                    className="btn flex-fill bg-white border py-2 fw-semibold shadow-sm"
+                    style={{ borderColor: "#4D5D25", color: "#4D5D25", borderRadius: "10px", fontSize: "0.85rem" }}
+                    onClick={() => setShowCounterModal(true)}
+                  >
+                    Negotiate
+                  </button>
+                  <button
+                    type="button"
+                    className="btn flex-fill text-white py-2 fw-semibold shadow-sm"
+                    style={{ backgroundColor: "#0D1527", borderRadius: "10px", fontSize: "0.85rem", border: "none" }}
+                    onClick={handleApprove}
+                  >
+                    Approve
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="card border rounded-4 p-4 text-center text-muted bg-white">
+                <i className="bi bi-check-circle-fill text-success fs-3 mb-2"></i>
+                <p className="mb-0 fw-semibold">All negotiation requests resolved!</p>
+              </div>
+            )}
+          </div>
+
+          {/* SECTION: SALES PIPELINE */}
+          <div className="mb-4">
+            <span
+              className="text-muted fw-bold text-uppercase small d-block mb-2"
+              style={{ fontSize: "0.74rem", letterSpacing: "0.8px" }}
+            >
+              SALES PIPELINE
+            </span>
+
+            <div className="card border rounded-4 p-4 bg-white shadow-sm mb-0">
+              {/* Pipeline Stage Pills (6 stages in responsive grid) */}
+              <div className="row g-3 text-center">
+              {/* Stage 1: New Lead */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 text-white fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#0D1527",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  120
+                </div>
+                <span className="fw-bold small text-dark d-block" style={{ fontSize: "0.8rem" }}>
+                  New Lead
+                </span>
+              </div>
+
+              {/* Stage 2: Contacted */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 text-white fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#0D1527",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  85
+                </div>
+                <span className="fw-bold small text-dark d-block" style={{ fontSize: "0.8rem" }}>
+                  Contacted
+                </span>
+              </div>
+
+              {/* Stage 3: Requirement */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#F3F4F6",
+                    borderColor: "#E5E7EB",
+                    color: "#1E293B",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  60
+                </div>
+                <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.8rem" }}>
+                  Requirement
+                </span>
+              </div>
+
+              {/* Stage 4: Quotation */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#F3F4F6",
+                    borderColor: "#E5E7EB",
+                    color: "#1E293B",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  45
+                </div>
+                <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.8rem" }}>
+                  Quotation
+                </span>
+              </div>
+
+              {/* Stage 5: Negotiation */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#F3F4F6",
+                    borderColor: "#E5E7EB",
+                    color: "#1E293B",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  30
+                </div>
+                <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.8rem" }}>
+                  Negotiation
+                </span>
+              </div>
+
+              {/* Stage 6: Booking (Green) */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#DCFCE7",
+                    borderColor: "#BBF7D0",
+                    color: "#16A34A",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  24
+                </div>
+                <span className="fw-bold small d-block" style={{ fontSize: "0.8rem", color: "#16A34A" }}>
+                  Booking
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          {/* SECTION: ACTIVE REQUIREMENTS */}
+          <div className="mb-4">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span
+                className="text-muted fw-bold text-uppercase small"
+                style={{ fontSize: "0.74rem", letterSpacing: "0.8px" }}
+              >
+                ACTIVE REQUIREMENTS
+              </span>
+              <Link
+                href="/admin/leads"
+                className="text-decoration-none text-muted fw-semibold small"
+                style={{ fontSize: "0.8rem" }}
+              >
+                View All
+              </Link>
+            </div>
+
+            <div className="card border rounded-4 p-3 bg-white shadow-sm">
+              <div className="d-flex align-items-center justify-content-between mb-1">
+                <span className="text-muted small" style={{ fontSize: "0.75rem" }}>
+                  REQ-1042
+                </span>
+                <span
+                  className="badge fw-semibold px-2 py-1 rounded-1"
+                  style={{ backgroundColor: "#F1F5F9", color: "#475569", fontSize: "0.7rem", letterSpacing: "0.5px" }}
+                >
+                  SOURCING
+                </span>
+              </div>
+
+              <h6 className="fw-bold text-dark mb-1 fs-6">Sunil Sharma</h6>
+
+              <div className="d-flex align-items-center gap-2 text-secondary small mb-1" style={{ fontSize: "0.8rem" }}>
+                <i className="bi bi-car-front"></i>
+                <span>Toyota Innova Crysta</span>
+              </div>
+
+              <div className="d-flex align-items-center gap-2 text-secondary small mb-2" style={{ fontSize: "0.8rem" }}>
+                <i className="bi bi-cash-stack"></i>
+                <span>Budget: ₹22L - ₹25L</span>
+              </div>
+
+              <div className="d-flex align-items-center justify-content-between text-muted small pt-2 border-top" style={{ borderColor: "#F1F5F9", fontSize: "0.76rem" }}>
+                <span>Rep: Vikram S.</span>
+                <span>Oct 23, 2023</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column (Desktop: col-lg-5, col-xl-4) */}
+        <div className="col-12 col-lg-5 col-xl-4">
+          {/* SECTION: UPCOMING DELIVERIES */}
+          <div className="mb-4">
+            <span
+              className="text-muted fw-bold text-uppercase small d-block mb-2"
+              style={{ fontSize: "0.74rem", letterSpacing: "0.8px" }}
+            >
+              UPCOMING DELIVERIES
+            </span>
+
+            <div className="card border rounded-4 p-3 bg-white shadow-sm">
+              <div className="d-flex align-items-center justify-content-between mb-1">
+                <h6 className="fw-bold text-dark mb-0 fs-6">Priya Desai</h6>
+                <span
+                  className="badge fw-bold px-2 py-1 rounded-1"
+                  style={{ backgroundColor: "#ECFDF5", color: "#16A34A", fontSize: "0.7rem", letterSpacing: "0.5px" }}
+                >
+                  READY
+                </span>
+              </div>
+
+              <div className="d-flex align-items-center gap-2 text-secondary small mt-1 mb-1" style={{ fontSize: "0.8rem" }}>
+                <i className="bi bi-car-front"></i>
+                <span>Kia Seltos GTX+</span>
+              </div>
+
+              <div className="d-flex align-items-center gap-2 text-muted small" style={{ fontSize: "0.78rem" }}>
+                <i className="bi bi-calendar-event"></i>
+                <span>Delivery: Today, 4:00 PM</span>
+              </div>
+            </div>
+          </div>
+
+          {/* SECTION: QUICK ACTIONS */}
+          <div className="mb-4">
+            <span
+              className="text-muted fw-bold text-uppercase small d-block mb-2"
+              style={{ fontSize: "0.74rem", letterSpacing: "0.8px" }}
+            >
+              QUICK ACTIONS
+            </span>
+
+            <div className="row g-2">
+              {/* Action 1: View Leads */}
+              <div className="col-6">
+                <Link
+                  href="/admin/leads"
+                  className="btn w-100 card border rounded-3 p-3 bg-white shadow-sm text-center d-flex flex-column align-items-center justify-content-center gap-2 text-decoration-none"
+                  style={{ minHeight: "85px" }}
+                >
+                  <i className="bi bi-person-lines-fill fs-5 text-dark"></i>
+                  <span className="fw-semibold text-dark small" style={{ fontSize: "0.78rem" }}>
+                    View Leads
+                  </span>
+                </Link>
+              </div>
+
+              {/* Action 2: Requirements */}
+              <div className="col-6">
+                <Link
+                  href="/admin/leads"
+                  className="btn w-100 card border rounded-3 p-3 bg-white shadow-sm text-center d-flex flex-column align-items-center justify-content-center gap-2 text-decoration-none"
+                  style={{ minHeight: "85px" }}
+                >
+                  <i className="bi bi-card-checklist fs-5 text-dark"></i>
+                  <span className="fw-semibold text-dark small" style={{ fontSize: "0.78rem" }}>
+                    Requirements
+                  </span>
+                </Link>
+              </div>
+
+              {/* Action 3: Quotations */}
+              <div className="col-6">
+                <Link
+                  href="/admin/quotation"
+                  className="btn w-100 card border rounded-3 p-3 bg-white shadow-sm text-center d-flex flex-column align-items-center justify-content-center gap-2 text-decoration-none"
+                  style={{ minHeight: "85px" }}
+                >
+                  <i className="bi bi-file-earmark-text fs-5 text-dark"></i>
+                  <span className="fw-semibold text-dark small" style={{ fontSize: "0.78rem" }}>
+                    Quotations
+                  </span>
+                </Link>
+              </div>
+
+              {/* Action 4: Negotiations */}
+              <div className="col-6">
+                <Link
+                  href="/admin/leads"
+                  className="btn w-100 card border rounded-3 p-3 bg-white shadow-sm text-center d-flex flex-column align-items-center justify-content-center gap-2 text-decoration-none"
+                  style={{ minHeight: "85px" }}
+                >
+                  <i className="bi bi-chat-square-dots fs-5 text-dark"></i>
+                  <span className="fw-semibold text-dark small" style={{ fontSize: "0.78rem" }}>
+                    Negotiations
+                  </span>
+                </Link>
+              </div>
+
+              {/* Action 5: Bookings */}
+              <div className="col-6">
+                <Link
+                  href="/admin/quotation"
+                  className="btn w-100 card border rounded-3 p-3 bg-white shadow-sm text-center d-flex flex-column align-items-center justify-content-center gap-2 text-decoration-none"
+                  style={{ minHeight: "85px" }}
+                >
+                  <i className="bi bi-calendar-check fs-5 text-dark"></i>
+                  <span className="fw-semibold text-dark small" style={{ fontSize: "0.78rem" }}>
+                    Bookings
+                  </span>
+                </Link>
+              </div>
+
+              {/* Action 6: Reports */}
+              <div className="col-6">
+                <Link
+                  href="/admin/reports"
+                  className="btn w-100 card border rounded-3 p-3 bg-white shadow-sm text-center d-flex flex-column align-items-center justify-content-center gap-2 text-decoration-none"
+                  style={{ minHeight: "85px" }}
+                >
+                  <i className="bi bi-bar-chart-line fs-5 text-dark"></i>
+                  <span className="fw-semibold text-dark small" style={{ fontSize: "0.78rem" }}>
+                    Reports
+                  </span>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Lead Allocation Modal */}
-      {assignModalLead && (
-        <div className="modal-backdrop-custom" onClick={() => setAssignModalLead(null)}>
-          <div className="modal-dialog-custom" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header-custom">
-              <h5 className="modal-title-custom">
-                <i className="bi bi-person-check-fill text-primary"></i> Assign Lead to Sales Executive
+      {/* ----------------------------------------------------
+          4. MODAL: COUNTER OFFER NEGOTIATION
+          ---------------------------------------------------- */}
+      {showCounterModal && actionItem && (
+        <div className="modal-backdrop-custom" onClick={() => setShowCounterModal(false)}>
+          <div className="modal-dialog-custom modal-md" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-custom" style={{ backgroundColor: "#0D1527", color: "#fff" }}>
+              <h5 className="modal-title-custom text-white mb-0 fs-6">
+                <i className="bi bi-cash-coin me-2 text-warning"></i> Counter Offer: {actionItem.name}
               </h5>
               <button
                 type="button"
                 className="btn-close btn-close-white"
-                onClick={() => setAssignModalLead(null)}
+                onClick={() => setShowCounterModal(false)}
               ></button>
             </div>
 
-            <form onSubmit={handleConfirmAssign}>
+            <form onSubmit={handleSubmitCounter}>
               <div className="modal-body-custom">
-                <div className="p-3 rounded-3 mb-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>{assignModalLead.name}</div>
-                  <div className="text-muted small">{assignModalLead.phone} • {assignModalLead.vehicle}</div>
-                  <div className="text-warning small mt-1">Budget: {assignModalLead.budget} • Source: {assignModalLead.source}</div>
+                <div className="p-3 rounded-3 mb-3" style={{ background: "#F8F9FA", border: "1px solid #E5E7EB" }}>
+                  <div className="fw-bold text-dark">{actionItem.name}</div>
+                  <div className="text-secondary small">{actionItem.vehicle} • Rep: {actionItem.rep}</div>
+                  <div className="small text-muted mt-1">
+                    Original: <span className="text-decoration-line-through">{actionItem.originalPrice}</span> • Proposed: <strong className="text-success">{actionItem.proposedPrice}</strong>
+                  </div>
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label fw-semibold small">Select Sales Representative *</label>
-                  <select
-                    className="form-select"
-                    value={selectedRep}
-                    onChange={(e) => setSelectedRep(e.target.value)}
-                  >
-                    <option value="Rahul Verma">Rahul Verma (19 Deals • 36 Active Leads)</option>
-                    <option value="David Miller">David Miller (15 Deals • 28 Active Leads)</option>
-                    <option value="Vikram Singh">Vikram Singh (24 Deals • 42 Active Leads)</option>
-                    <option value="Sneha Joshi">Sneha Joshi (12 Deals • 20 Active Leads)</option>
-                  </select>
+                  <label className="form-label fw-semibold small">Manager Counter Offer Price *</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="e.g. ₹16,15,000"
+                    required
+                    value={counterPrice}
+                    onChange={(e) => setCounterPrice(e.target.value)}
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label fw-semibold small">Special Note to Sales Rep</label>
+                  <textarea
+                    className="form-control"
+                    rows="2"
+                    placeholder="e.g. Include 1st year insurance discount instead of cash discount..."
+                    value={counterNotes}
+                    onChange={(e) => setCounterNotes(e.target.value)}
+                  ></textarea>
                 </div>
               </div>
 
               <div className="modal-footer-custom">
                 <button
                   type="button"
-                  className="btn btn-outline-custom"
-                  onClick={() => setAssignModalLead(null)}
+                  className="btn btn-light border px-3"
+                  onClick={() => setShowCounterModal(false)}
                 >
                   Cancel
                 </button>
-                <button type="submit" className="btn btn-primary">
-                  <i className="bi bi-check-circle me-1"></i> Confirm Assignment
+                <button
+                  type="submit"
+                  className="btn text-white px-4 fw-semibold"
+                  style={{ backgroundColor: "#0D1527" }}
+                >
+                  Send Counter Offer
                 </button>
               </div>
             </form>
