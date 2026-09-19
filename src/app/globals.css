@@ -35,8 +35,8 @@
 
     --login-accent-orange: #EE6800;
 
-    --login-text-primary: #1F2933;
-    --login-text-muted: #6B7280;
+    --login-text-primary: #000000;
+    --login-text-muted: #4B5563;
 
     --login-white: #FFFFFF;
     --login-black: #000000;
@@ -64,11 +64,11 @@
     --border-color-light: #EBEFE3;
     --border-color-dark: #BCC2AD;
 
-    --text-primary: #1F2933;
-    --text-secondary: #4B5563;
-    --text-muted: #6B7280;
+    --text-primary: #000000;
+    --text-secondary: #000000;
+    --text-muted: #4B5563;
     --text-white: #FFFFFF;
-    --text-dark: #1F2933;
+    --text-dark: #000000;
 
     --header-title-color: #DCE9A2;
     --sidebar-text-color: #DCE9A2;
@@ -116,15 +116,15 @@
 
     /* Bootstrap 5 Overrides */
     --bs-body-bg: #F7F7F5 !important;
-    --bs-body-color: #1F2933 !important;
+    --bs-body-color: #000000 !important;
     --bs-card-bg: #FFFFFF !important;
-    --bs-card-color: #1F2933 !important;
+    --bs-card-color: #000000 !important;
     --bs-card-border-color: #D9DDCC !important;
     --bs-border-color: #D9DDCC !important;
     --bs-tertiary-bg: #F0F0ED !important;
     --bs-secondary-bg: #FAFAF9 !important;
-    --bs-emphasis-color: #1F2933 !important;
-    --bs-heading-color: #1F2933 !important;
+    --bs-emphasis-color: #000000 !important;
+    --bs-heading-color: #000000 !important;
     --bs-primary: #58632A !important;
     --bs-secondary: #000080 !important;
 
@@ -165,7 +165,7 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--body-bg);
-    color: var(--text-primary);
+    color: #000000;
     font-family: var(--font-family-base);
     font-size: 0.9375rem;
     line-height: 1.5;
@@ -180,14 +180,14 @@ h3,
 h4,
 h5,
 h6 {
-    color: var(--text-primary);
+    color: #000000;
     font-weight: 700;
     letter-spacing: -0.02em;
     margin-bottom: 0.5rem;
 }
 
 p {
-    color: var(--text-secondary);
+    color: #000000;
     margin-bottom: 1rem;
 }
 
@@ -684,7 +684,7 @@ body.sidebar-collapsed .app-main-content {
 .page-title {
     font-size: 1.4rem;
     font-weight: 700;
-    color: var(--text-primary);
+    color: #000000 !important;
     margin: 0;
 }
 
@@ -738,7 +738,7 @@ body.sidebar-collapsed .app-main-content {
     transition: box-shadow var(--transition-speed) ease, border-color var(--transition-speed) ease;
     min-width: 0;
     max-width: 100%;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
 }
 
 .card:hover {
@@ -755,19 +755,19 @@ body.sidebar-collapsed .app-main-content {
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
 }
 
 .card-title {
     font-size: 1.05rem;
     font-weight: 700;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
     margin: 0;
 }
 
 .card-subtitle {
     font-size: 0.8125rem;
-    color: var(--text-muted) !important;
+    color: #4B5563 !important;
     margin: 0.15rem 0 0 0;
 }
 
@@ -775,7 +775,7 @@ body.sidebar-collapsed .app-main-content {
     padding: 1.25rem;
     min-width: 0;
     background-color: transparent !important;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
 }
 
 .card-footer {
@@ -784,7 +784,7 @@ body.sidebar-collapsed .app-main-content {
     padding: 0.875rem 1.25rem;
     border-bottom-left-radius: var(--border-radius) !important;
     border-bottom-right-radius: var(--border-radius) !important;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
 }
 
 /* KPI Metric Cards */
@@ -877,7 +877,7 @@ body.sidebar-collapsed .app-main-content {
 .stat-card-value {
     font-size: 1.75rem;
     font-weight: 800;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
     line-height: 1.2;
     margin-bottom: 0.5rem;
     letter-spacing: -0.02em;
@@ -929,7 +929,7 @@ body.sidebar-collapsed .app-main-content {
 
 .table-custom thead th {
     background-color: #F0F1EB !important;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
     font-size: 0.78rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -943,7 +943,7 @@ body.sidebar-collapsed .app-main-content {
 .table-custom tbody td {
     padding: 0.875rem 1rem;
     font-size: 0.875rem;
-    color: var(--text-primary);
+    color: #000000 !important;
     background-color: #FFFFFF;
     border-bottom: 1px solid var(--border-color-light);
     white-space: nowrap;
@@ -973,7 +973,7 @@ body.sidebar-collapsed .app-main-content {
 
 .table-avatar-cell .user-name {
     font-weight: 600;
-    color: var(--text-primary);
+    color: #000000 !important;
     margin: 0;
     line-height: 1.2;
 }
@@ -1377,18 +1377,18 @@ body.sidebar-collapsed .app-main-content {
 label {
     font-size: 0.8125rem;
     font-weight: 600;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
     margin-bottom: 0.35rem;
     letter-spacing: 0.01em;
 }
 
 .form-text {
-    color: var(--text-muted) !important;
+    color: #4B5563 !important;
     font-size: 0.775rem;
 }
 
 .form-check-label {
-    color: var(--text-primary) !important;
+    color: #000000 !important;
     font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
@@ -1401,7 +1401,7 @@ label {
     border-radius: var(--border-radius-sm);
     padding: 0.55rem 0.875rem;
     font-size: 0.875rem;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
     transition: border-color var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
 }
 
@@ -1411,13 +1411,13 @@ label {
     box-shadow: 0 0 0 3px rgba(88, 99, 42, 0.2) !important;
     outline: none;
     background-color: #FFFFFF !important;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
 }
 
 .input-group-text {
     background-color: #F0F1EB !important;
     border-color: var(--border-color) !important;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
 }
 
 .form-control::placeholder {
@@ -1448,7 +1448,7 @@ label {
     border: 1px solid var(--border-color) !important;
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-xl);
-    color: var(--text-primary) !important;
+    color: #000000 !important;
 }
 
 .modal-header {
@@ -1470,7 +1470,7 @@ label {
 
 .modal-body {
     padding: 1.5rem;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
     background-color: #FFFFFF !important;
 }
 
@@ -1484,14 +1484,14 @@ label {
 .modal-body .bg-light {
     background-color: #F7F7F5 !important;
     border: 1px solid var(--border-color) !important;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
 }
 
 .modal .bg-card,
 .modal-body .bg-card {
     background-color: #FFFFFF !important;
     border: 1px solid var(--border-color) !important;
-    color: var(--text-primary) !important;
+    color: #000000 !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -3005,4 +3005,128 @@ label {
     .hero-heading {
         font-size: 2rem;
     }
+}
+
+/* ==========================================================================
+   GLOBAL BLACK FONT COLOR ENFORCEMENT
+   (All content, forms, tables, cards, and modals use font color black.
+   Sidebar & Top Bar / Header strictly preserve their dark background + light text)
+   ========================================================================== */
+
+/* Page content root containers */
+.app-main-content,
+.se-portal-root main,
+.page-body,
+.card,
+.modal-dialog-custom,
+.modal-body,
+.modal-body-custom {
+    color: #000000;
+}
+
+/* General typography within page content */
+.app-main-content h1,
+.app-main-content h2,
+.app-main-content h3,
+.app-main-content h4,
+.app-main-content h5,
+.app-main-content h6,
+.app-main-content p,
+.app-main-content label,
+.app-main-content .form-label,
+.app-main-content .card-title,
+.app-main-content .page-title,
+.app-main-content .table-custom,
+.app-main-content .table-custom td,
+.app-main-content .table-custom th,
+.se-portal-root main h1,
+.se-portal-root main h2,
+.se-portal-root main h3,
+.se-portal-root main h4,
+.se-portal-root main h5,
+.se-portal-root main h6,
+.se-portal-root main p,
+.se-portal-root main label,
+.se-portal-root main .form-label,
+.se-portal-root main .table-custom td,
+.page-body h1,
+.page-body h2,
+.page-body h3,
+.page-body h4,
+.page-body h5,
+.page-body h6,
+.page-body p,
+.page-body label,
+.page-body .form-label,
+.page-body .card-title,
+.modal-dialog-custom label,
+.modal-dialog-custom .form-label,
+.modal-dialog-custom p,
+.modal-dialog-custom .modal-body,
+.modal-dialog-custom .modal-body-custom {
+    color: #000000;
+}
+
+/* Override utility classes in content to black (except buttons, badges, avatars, dots) */
+.app-main-content .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator):not(.custom-crm-toast *),
+.page-body .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator):not(.custom-crm-toast *),
+.modal-body .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator),
+.modal-body-custom .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator),
+.card .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator),
+.table-custom .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator),
+.se-portal-root main .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator) {
+    color: #000000 !important;
+}
+
+/* Strict Preservation for Top Bar / Header */
+.app-header,
+.app-header .header-profile-name,
+.app-header .header-toggle-btn,
+.app-header .header-action-btn,
+.app-header .header-profile-role,
+.app-header .header-search input,
+.app-header .header-search input::placeholder,
+.se-portal-root nav,
+.se-portal-root nav .navbar-brand span {
+    color: #FFFFFF;
+}
+
+.app-header .header-profile-role,
+.app-header .header-toggle-btn,
+.se-portal-root nav .navbar-brand .small {
+    color: var(--header-title-color) !important;
+}
+
+/* Strict Preservation for Sidebar */
+.app-sidebar,
+.app-sidebar .sidebar-brand .brand-title,
+.app-sidebar .sidebar-user-name {
+    color: #FFFFFF !important;
+}
+
+.app-sidebar .sidebar-brand .brand-subtitle,
+.app-sidebar .sidebar-user-role {
+    color: var(--header-title-color) !important;
+}
+
+.app-sidebar .nav-section-title {
+    color: #8E9BAE !important;
+}
+
+.app-sidebar .sidebar-nav .nav-link {
+    color: #CBD5E1 !important;
+}
+
+.app-sidebar .sidebar-nav .nav-link i {
+    color: #94A3B8 !important;
+}
+
+.app-sidebar .sidebar-nav .nav-link:hover,
+.app-sidebar .sidebar-nav .nav-link:hover i {
+    color: var(--header-title-color) !important;
+}
+
+.app-sidebar .sidebar-nav .nav-link.active,
+.app-sidebar .sidebar-nav .nav-link.active i {
+    color: #FFFFFF !important;
 }
