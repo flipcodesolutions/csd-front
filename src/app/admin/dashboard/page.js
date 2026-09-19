@@ -15,7 +15,7 @@ import AccountantDashboard from "./components/AccountantDashboard";
 export default function DashboardPage() {
   const { showToast } = useToast();
   const [currentUser, setCurrentUser] = useState(null);
-  const [selectedRole, setSelectedRole] = useState("Super Admin");
+  const [selectedRole, setSelectedRole] = useState("Accountant");
   const [showAddLeadModal, setShowAddLeadModal] = useState(false);
 
   // New Lead Form state
@@ -106,77 +106,81 @@ export default function DashboardPage() {
     <AdminLayout>
       <div className="page-body">
         {/* Page Breadcrumbs & Header Actions */}
-        <div className="page-header-wrapper">
-          <div>
-            <ul className="breadcrumb-custom">
-              <li className="breadcrumb-item">
-                <Link href="/admin/dashboard">Home</Link>
-              </li>
-              <li className="breadcrumb-item active">Role-Wise Dashboard</li>
-            </ul>
-            <h1 className="page-title mt-1">{getDashboardTitle()}</h1>
-            <p className="text-muted small mb-0 mt-1">{getDashboardSubtitle()}</p>
-          </div>
+        {selectedRole !== "Accountant" && (
+          <div className="page-header-wrapper">
+            <div>
+              <ul className="breadcrumb-custom">
+                <li className="breadcrumb-item">
+                  <Link href="/admin/dashboard">Home</Link>
+                </li>
+                <li className="breadcrumb-item active">Role-Wise Dashboard</li>
+              </ul>
+              <h1 className="page-title mt-1">{getDashboardTitle()}</h1>
+              <p className="text-muted small mb-0 mt-1">{getDashboardSubtitle()}</p>
+            </div>
 
-          <div className="page-header-actions d-flex align-items-center gap-2">
-            <button
-              className="btn btn-outline-custom"
-              onClick={() => showToast(`Exporting ${selectedRole} dashboard summary as CSV...`, "info")}
-            >
-              <i className="bi bi-file-earmark-arrow-down"></i>
-              <span>Export CSV</span>
-            </button>
-            <button className="btn btn-primary" onClick={() => setShowAddLeadModal(true)}>
-              <i className="bi bi-plus-circle"></i>
-              <span>Add New Lead</span>
-            </button>
+            <div className="page-header-actions d-flex align-items-center gap-2">
+              <button
+                className="btn btn-outline-custom"
+                onClick={() => showToast(`Exporting ${selectedRole} dashboard summary as CSV...`, "info")}
+              >
+                <i className="bi bi-file-earmark-arrow-down"></i>
+                <span>Export CSV</span>
+              </button>
+              <button className="btn btn-primary" onClick={() => setShowAddLeadModal(true)}>
+                <i className="bi bi-plus-circle"></i>
+                <span>Add New Lead</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
 
         {/* 5-Role Switcher & Preview Toolbar */}
-        <div className="card mb-4">
-          <div className="card-body py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
-            <div className="d-flex align-items-center gap-2">
-              <span className="text-muted small fw-bold text-uppercase" style={{ letterSpacing: "0.5px" }}>
-                Active Role View:
-              </span>
-              <span className="badge bg-primary px-2 py-1">{selectedRole}</span>
-              {currentUser?.role && currentUser.role === selectedRole && (
-                <span className="badge bg-success-subtle text-success small">Your Logged-in Role</span>
-              )}
-            </div>
+        {selectedRole !== "Accountant" && (
+          <div className="card mb-4">
+            <div className="card-body py-2 px-3 d-flex flex-wrap align-items-center justify-content-between gap-2">
+              <div className="d-flex align-items-center gap-2">
+                <span className="text-muted small fw-bold text-uppercase" style={{ letterSpacing: "0.5px" }}>
+                  Active Role View:
+                </span>
+                <span className="badge bg-primary px-2 py-1">{selectedRole}</span>
+                {currentUser?.role && currentUser.role === selectedRole && (
+                  <span className="badge bg-success-subtle text-success small">Your Logged-in Role</span>
+                )}
+              </div>
 
-            {/* Role Switcher Pills */}
-            <div className="d-flex flex-wrap gap-1">
-              {[
-                { id: "Super Admin", icon: "bi-shield-shaded", label: "Super Admin" },
-                { id: "Sales Manager", icon: "bi-person-badge-fill", label: "Sales Manager" },
-                { id: "Sales Executive", icon: "bi-briefcase-fill", label: "Sales Executive" },
-                { id: "Receptionist", icon: "bi-door-open-fill", label: "Receptionist" },
-                { id: "Accountant", icon: "bi-calculator-fill", label: "Accountant" },
-              ].map((r) => {
-                const isActive = selectedRole === r.id;
-                return (
-                  <button
-                    key={r.id}
-                    type="button"
-                    className={`btn btn-xs ${isActive ? "btn-primary fw-bold" : "btn-outline-custom"}`}
-                    style={{
-                      borderRadius: "6px",
-                      padding: "5px 10px",
-                      fontSize: "0.8rem",
-                      transition: "all 0.2s ease",
-                    }}
-                    onClick={() => handleRoleChange(r.id)}
-                  >
-                    <i className={`bi ${r.icon} me-1`}></i>
-                    <span>{r.label}</span>
-                  </button>
-                );
-              })}
+              {/* Role Switcher Pills */}
+              <div className="d-flex flex-wrap gap-1">
+                {[
+                  { id: "Super Admin", icon: "bi-shield-shaded", label: "Super Admin" },
+                  { id: "Sales Manager", icon: "bi-person-badge-fill", label: "Sales Manager" },
+                  { id: "Sales Executive", icon: "bi-briefcase-fill", label: "Sales Executive" },
+                  { id: "Receptionist", icon: "bi-door-open-fill", label: "Receptionist" },
+                  { id: "Accountant", icon: "bi-calculator-fill", label: "Accountant" },
+                ].map((r) => {
+                  const isActive = selectedRole === r.id;
+                  return (
+                    <button
+                      key={r.id}
+                      type="button"
+                      className={`btn btn-xs ${isActive ? "btn-primary fw-bold" : "btn-outline-custom"}`}
+                      style={{
+                        borderRadius: "6px",
+                        padding: "5px 10px",
+                        fontSize: "0.8rem",
+                        transition: "all 0.2s ease",
+                      }}
+                      onClick={() => handleRoleChange(r.id)}
+                    >
+                      <i className={`bi ${r.icon} me-1`}></i>
+                      <span>{r.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Dynamic Role Dashboard Rendering */}
         {selectedRole === "Super Admin" && <SuperAdminDashboard onAddLead={() => setShowAddLeadModal(true)} />}
