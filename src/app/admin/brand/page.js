@@ -406,7 +406,7 @@ export default function BrandPage() {
                                 {brand.name.charAt(0)}
                               </div>
                             )}
-                            <h6 className="mb-0 text-white fw-bold">{brand.name}</h6>
+                            <h6 className="mb-0 text-black fw-bold">{brand.name}</h6>
                           </div>
                         </td>
                         <td>
