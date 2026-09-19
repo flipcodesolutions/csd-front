@@ -241,7 +241,7 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
                 {currentUser?.name || "Alexander Vance"}
               </span>
               <span className="header-profile-role" style={{ fontSize: "0.75rem", color: "var(--header-title-color)" }}>
-                {currentUser?.role || "Super Admin"}
+                {typeof currentUser?.role === "object" ? (currentUser.role.title || currentUser.role.name || "Super Admin") : (currentUser?.role || "Super Admin")}
               </span>
             </div>
             <i className="bi bi-chevron-down fs-7" style={{ color: "var(--header-title-color)" }}></i>

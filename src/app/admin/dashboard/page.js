@@ -38,7 +38,10 @@ export default function DashboardPage() {
           const user = JSON.parse(userStr);
           setCurrentUser(user);
           if (user?.role) {
-            setSelectedRole(user.role);
+            const roleName = typeof user.role === "object" ? (user.role.title || user.role.name) : user.role;
+            if (roleName) {
+              setSelectedRole(roleName);
+            }
           }
         } catch (e) {
           console.error(e);
@@ -143,8 +146,10 @@ export default function DashboardPage() {
                 <span className="text-muted small fw-bold text-uppercase" style={{ letterSpacing: "0.5px" }}>
                   Active Role View:
                 </span>
-                <span className="badge bg-primary px-2 py-1">{selectedRole}</span>
-                {currentUser?.role && currentUser.role === selectedRole && (
+                <span className="badge bg-primary px-2 py-1">
+                  {typeof selectedRole === "object" ? (selectedRole?.title || selectedRole?.name || "Dashboard") : selectedRole}
+                </span>
+                {currentUser?.role && (typeof currentUser.role === "object" ? (currentUser.role.title || currentUser.role.name) : currentUser.role) === selectedRole && (
                   <span className="badge bg-success-subtle text-success small">Your Logged-in Role</span>
                 )}
               </div>

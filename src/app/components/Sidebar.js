@@ -37,7 +37,9 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
     return pathname === path || pathname?.startsWith(`${path}/`);
   };
 
-  const userRole = currentUser?.role || "Super Admin";
+  const userRole = typeof currentUser?.role === "object"
+    ? (currentUser.role.title || currentUser.role.name || "Super Admin")
+    : (currentUser?.role || "Super Admin");
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
