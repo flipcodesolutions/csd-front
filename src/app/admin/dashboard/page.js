@@ -109,7 +109,7 @@ export default function DashboardPage() {
     <AdminLayout>
       <div className="page-body">
         {/* Page Breadcrumbs & Header Actions */}
-        {selectedRole !== "Accountant" && selectedRole !== "Sales Executive" && selectedRole !== "Super Admin" && (
+        {selectedRole !== "Accountant" && selectedRole !== "Sales Executive" && selectedRole !== "Super Admin" && selectedRole !== "Receptionist" && (
           <div className="page-header-wrapper">
             <div>
               <ul className="breadcrumb-custom">
