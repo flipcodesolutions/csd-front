@@ -525,7 +525,7 @@ export default function BrandPage() {
                       Vehicle Type <span className="text-danger">*</span>
                     </label>
                     <div
-                      className="p-2 rounded-2 d-flex align-items-center gap-4"
+                      className="p-2 rounded-2 d-flex align-items-center gap-4 dark-selection-box"
                       style={{ background: "#181A1B", border: "1px solid #33383B" }}
                     >
                       <div className="form-check mb-0">
@@ -536,7 +536,7 @@ export default function BrandPage() {
                           checked={formData.vehicle_type.includes("2 Wheeler")}
                           onChange={() => handleTypeToggle("2 Wheeler")}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="addCheck2W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="addCheck2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -549,7 +549,7 @@ export default function BrandPage() {
                           checked={formData.vehicle_type.includes("4 Wheeler")}
                           onChange={() => handleTypeToggle("4 Wheeler")}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="addCheck4W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="addCheck4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>
@@ -654,7 +654,7 @@ export default function BrandPage() {
                       Vehicle Type <span className="text-danger">*</span>
                     </label>
                     <div
-                      className="p-2 rounded-2 d-flex align-items-center gap-4"
+                      className="p-2 rounded-2 d-flex align-items-center gap-4 dark-selection-box"
                       style={{ background: "#181A1B", border: "1px solid #33383B" }}
                     >
                       <div className="form-check mb-0">
@@ -668,7 +668,7 @@ export default function BrandPage() {
                           }
                           onChange={() => handleEditTypeToggle("2 Wheeler")}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="editCheck2W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="editCheck2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -684,7 +684,7 @@ export default function BrandPage() {
                           }
                           onChange={() => handleEditTypeToggle("4 Wheeler")}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="editCheck4W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="editCheck4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>

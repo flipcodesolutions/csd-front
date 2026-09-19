@@ -446,18 +446,18 @@ export default function QuotationDetailsPage() {
 
               <form onSubmit={handleSendEmailSubmit}>
                 <div className="modal-body-custom">
-                  <div className="p-3 mb-3 rounded bg-dark border border-secondary border-opacity-25">
-                    <div className="d-flex justify-content-between text-white small mb-1">
-                      <span>Quotation Number:</span>
-                      <strong className="text-primary">{quotation.quotation_number}</strong>
+                  <div className="p-3 mb-3 rounded dark-selection-box border border-secondary border-opacity-25" style={{ background: "#181A1B", color: "#FFFFFF" }}>
+                    <div className="d-flex justify-content-between small mb-1">
+                      <span style={{ color: "#CBD5E1" }}>Quotation Number:</span>
+                      <strong style={{ color: "#60A5FA" }}>{quotation.quotation_number}</strong>
                     </div>
-                    <div className="d-flex justify-content-between text-white small mb-1">
-                      <span>Customer:</span>
-                      <strong>{quotation.customer_name}</strong>
+                    <div className="d-flex justify-content-between small mb-1">
+                      <span style={{ color: "#CBD5E1" }}>Customer:</span>
+                      <strong style={{ color: "#FFFFFF" }}>{quotation.customer_name}</strong>
                     </div>
-                    <div className="d-flex justify-content-between text-white small">
-                      <span>Grand Total:</span>
-                      <strong className="text-success">₹{Number(quotation.grand_total).toLocaleString("en-IN")}</strong>
+                    <div className="d-flex justify-content-between small">
+                      <span style={{ color: "#CBD5E1" }}>Grand Total:</span>
+                      <strong style={{ color: "#4ADE80" }}>₹{Number(quotation.grand_total).toLocaleString("en-IN")}</strong>
                     </div>
                   </div>
 

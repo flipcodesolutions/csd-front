@@ -3391,3 +3391,32 @@ label.text-white,
 .bg-dark .text-muted {
     color: #94A3B8 !important;
 }
+
+/* Specific class for dark option boxes (Vehicle Segment, Priority, Category) */
+.dark-selection-box,
+.dark-selection-box label,
+.dark-selection-box .form-check-label,
+.dark-selection-box span,
+.dark-selection-box strong {
+    color: #FFFFFF !important;
+}
+
+.dark-selection-box .form-check-label.text-danger,
+.dark-selection-box .text-danger {
+    color: #EF4444 !important;
+}
+
+.dark-selection-box .form-check-label.text-warning,
+.dark-selection-box .text-warning {
+    color: #F59E0B !important;
+}
+
+.dark-selection-box .form-check-label.text-info,
+.dark-selection-box .text-info {
+    color: #38BDF8 !important;
+}
+
+.dark-selection-box .form-check-label.text-success,
+.dark-selection-box .text-success {
+    color: #22C55E !important;
+}

@@ -208,10 +208,10 @@ export default function SettingsPage() {
 
                 <div className="card-body">
                   <div className="d-flex flex-column gap-3">
-                    <div className="d-flex justify-content-between align-items-center p-3 rounded-2" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                    <div className="d-flex justify-content-between align-items-center p-3 rounded-2 dark-selection-box" style={{ background: "#181a1b", border: "1px solid var(--border-color)", color: "#FFFFFF" }}>
                       <div>
-                        <h6 className="text-white fw-bold mb-0">Instant SMS Alert on New Lead</h6>
-                        <span className="text-muted small">Notify sales executive when a fresh inquiry is received</span>
+                        <h6 className="fw-bold mb-0" style={{ color: "#FFFFFF" }}>Instant SMS Alert on New Lead</h6>
+                        <span className="small" style={{ color: "#94A3B8" }}>Notify sales executive when a fresh inquiry is received</span>
                       </div>
                       <div className="form-check form-switch">
                         <input
@@ -224,10 +224,10 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    <div className="d-flex justify-content-between align-items-center p-3 rounded-2" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                    <div className="d-flex justify-content-between align-items-center p-3 rounded-2 dark-selection-box" style={{ background: "#181a1b", border: "1px solid var(--border-color)", color: "#FFFFFF" }}>
                       <div>
-                        <h6 className="text-white fw-bold mb-0">WhatsApp Test Drive Confirmation</h6>
-                        <span className="text-muted small">Send automated booking confirmation & location map to customer</span>
+                        <h6 className="fw-bold mb-0" style={{ color: "#FFFFFF" }}>WhatsApp Test Drive Confirmation</h6>
+                        <span className="small" style={{ color: "#94A3B8" }}>Send automated booking confirmation & location map to customer</span>
                       </div>
                       <div className="form-check form-switch">
                         <input
@@ -240,10 +240,10 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    <div className="d-flex justify-content-between align-items-center p-3 rounded-2" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                    <div className="d-flex justify-content-between align-items-center p-3 rounded-2 dark-selection-box" style={{ background: "#181a1b", border: "1px solid var(--border-color)", color: "#FFFFFF" }}>
                       <div>
-                        <h6 className="text-white fw-bold mb-0">Official Quotation Copy to Sales Director</h6>
-                        <span className="text-muted small">Email audit copy of generated quotation sheets</span>
+                        <h6 className="fw-bold mb-0" style={{ color: "#FFFFFF" }}>Official Quotation Copy to Sales Director</h6>
+                        <span className="small" style={{ color: "#94A3B8" }}>Email audit copy of generated quotation sheets</span>
                       </div>
                       <div className="form-check form-switch">
                         <input
@@ -256,10 +256,10 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    <div className="d-flex justify-content-between align-items-center p-3 rounded-2" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                    <div className="d-flex justify-content-between align-items-center p-3 rounded-2 dark-selection-box" style={{ background: "#181a1b", border: "1px solid var(--border-color)", color: "#FFFFFF" }}>
                       <div>
-                        <h6 className="text-white fw-bold mb-0">Overdue Follow-Up Call Escalations</h6>
-                        <span className="text-muted small">Send reminder to sales manager if lead has no update in 48 hours</span>
+                        <h6 className="fw-bold mb-0" style={{ color: "#FFFFFF" }}>Overdue Follow-Up Call Escalations</h6>
+                        <span className="small" style={{ color: "#94A3B8" }}>Send reminder to sales manager if lead has no update in 48 hours</span>
                       </div>
                       <div className="form-check form-switch">
                         <input
@@ -342,16 +342,16 @@ export default function SettingsPage() {
 
                 <div className="card-body">
                   <div className="d-flex flex-column gap-3">
-                    <div className="p-3 rounded-2" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
+                    <div className="p-3 rounded-2 dark-selection-box" style={{ background: "#181a1b", border: "1px solid var(--border-color)", color: "#FFFFFF" }}>
                       <div className="d-flex justify-content-between align-items-center mb-2">
-                        <h6 className="text-white fw-bold mb-0">Two-Factor Authentication (2FA)</h6>
+                        <h6 className="fw-bold mb-0" style={{ color: "#FFFFFF" }}>Two-Factor Authentication (2FA)</h6>
                         <span className="badge bg-success-subtle text-success">Enabled for Admins</span>
                       </div>
-                      <span className="text-muted small">Requires OTP verification when logging in from new devices.</span>
+                      <span className="small" style={{ color: "#94A3B8" }}>Requires OTP verification when logging in from new devices.</span>
                     </div>
 
-                    <div className="p-3 rounded-2" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
-                      <h6 className="text-white fw-bold mb-1">Session Inactivity Timeout</h6>
+                    <div className="p-3 rounded-2 dark-selection-box" style={{ background: "#181a1b", border: "1px solid var(--border-color)", color: "#FFFFFF" }}>
+                      <h6 className="fw-bold mb-1" style={{ color: "#FFFFFF" }}>Session Inactivity Timeout</h6>
                       <select className="form-select form-select-sm mt-2" style={{ maxWidth: "200px" }}>
                         <option value="30">30 Minutes</option>
                         <option value="60">1 Hour</option>

@@ -1286,7 +1286,7 @@ export default function LeadsPage() {
                       Vehicle Segment <span className="text-danger">*</span>
                     </label>
                     <div
-                      className="p-2 rounded-2 d-flex align-items-center gap-4"
+                      className="p-2 rounded-2 d-flex align-items-center gap-4 dark-selection-box"
                       style={{ background: "#181A1B", border: "1px solid #33383B" }}
                     >
                       <div className="form-check mb-0">
@@ -1299,7 +1299,7 @@ export default function LeadsPage() {
                           checked={formData.vehicle_segment === "2 Wheeler"}
                           onChange={(e) => setFormData({ ...formData, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="addSeg2W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="addSeg2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler (Bike / Scooter)
                         </label>
                       </div>
@@ -1314,7 +1314,7 @@ export default function LeadsPage() {
                           checked={formData.vehicle_segment === "4 Wheeler"}
                           onChange={(e) => setFormData({ ...formData, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="addSeg4W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="addSeg4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler (Car / SUV)
                         </label>
                       </div>
@@ -1357,7 +1357,7 @@ export default function LeadsPage() {
                         Lead Priority / Temperature <span className="text-danger">*</span>
                       </label>
                       <div
-                        className="p-2 rounded-2 d-flex align-items-center gap-3"
+                        className="p-2 rounded-2 d-flex align-items-center gap-3 dark-selection-box"
                         style={{ background: "#181A1B", border: "1px solid #33383B" }}
                       >
                         <div className="form-check mb-0">
@@ -1370,7 +1370,7 @@ export default function LeadsPage() {
                             checked={formData.priority === "Hot"}
                             onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
                           />
-                          <label className="form-check-label text-danger small fw-bold" htmlFor="addPrioHot">
+                          <label className="form-check-label small fw-bold" style={{ color: "#EF4444" }} htmlFor="addPrioHot">
                             🔥 Hot
                           </label>
                         </div>
@@ -1385,7 +1385,7 @@ export default function LeadsPage() {
                             checked={formData.priority === "Warm"}
                             onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
                           />
-                          <label className="form-check-label text-warning small fw-bold" htmlFor="addPrioWarm">
+                          <label className="form-check-label small fw-bold" style={{ color: "#F59E0B" }} htmlFor="addPrioWarm">
                             ☀️ Warm
                           </label>
                         </div>
@@ -1400,7 +1400,7 @@ export default function LeadsPage() {
                             checked={formData.priority === "Cold"}
                             onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
                           />
-                          <label className="form-check-label text-info small fw-bold" htmlFor="addPrioCold">
+                          <label className="form-check-label small fw-bold" style={{ color: "#38BDF8" }} htmlFor="addPrioCold">
                             ❄️ Cold
                           </label>
                         </div>
@@ -1968,11 +1968,11 @@ export default function LeadsPage() {
 
               <div className="modal-body-custom py-3">
                 <div
-                  className="p-3 mb-3 rounded-2"
+                  className="p-3 mb-3 rounded-2 dark-selection-box"
                   style={{ background: "#181A1B", border: "1px solid #33383B" }}
                 >
-                  <span className="text-white small">
-                    Assigning <strong>{selectedLeadIds.length}</strong> selected customer {selectedLeadIds.length === 1 ? "lead" : "leads"} to sales representative.
+                  <span className="small" style={{ color: "#FFFFFF" }}>
+                    Assigning <strong style={{ color: "#FBBF24" }}>{selectedLeadIds.length}</strong> selected customer {selectedLeadIds.length === 1 ? "lead" : "leads"} to sales representative.
                   </span>
                 </div>
 

@@ -459,7 +459,7 @@ export default function ModelPage() {
                       Vehicle Segment <span className="text-danger">*</span>
                     </label>
                     <div
-                      className="p-2 rounded-2 d-flex align-items-center gap-4"
+                      className="p-2 rounded-2 d-flex align-items-center gap-4 dark-selection-box"
                       style={{ background: "#181A1B", border: "1px solid #33383B" }}
                     >
                       <div className="form-check mb-0">
@@ -472,7 +472,7 @@ export default function ModelPage() {
                           checked={formData.vehicle_segment === "2 Wheeler"}
                           onChange={(e) => setFormData({ ...formData, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="addRadio2W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="addRadio2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -487,7 +487,7 @@ export default function ModelPage() {
                           checked={formData.vehicle_segment === "4 Wheeler"}
                           onChange={(e) => setFormData({ ...formData, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="addRadio4W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="addRadio4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>
@@ -593,7 +593,7 @@ export default function ModelPage() {
                       Vehicle Segment <span className="text-danger">*</span>
                     </label>
                     <div
-                      className="p-2 rounded-2 d-flex align-items-center gap-4"
+                      className="p-2 rounded-2 d-flex align-items-center gap-4 dark-selection-box"
                       style={{ background: "#181A1B", border: "1px solid #33383B" }}
                     >
                       <div className="form-check mb-0">
@@ -606,7 +606,7 @@ export default function ModelPage() {
                           checked={editModel.vehicle_segment === "2 Wheeler"}
                           onChange={(e) => setEditModel({ ...editModel, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="editRadio2W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="editRadio2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -621,7 +621,7 @@ export default function ModelPage() {
                           checked={editModel.vehicle_segment === "4 Wheeler"}
                           onChange={(e) => setEditModel({ ...editModel, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-dark small" htmlFor="editRadio4W">
+                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="editRadio4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>
