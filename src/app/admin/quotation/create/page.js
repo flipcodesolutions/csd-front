@@ -588,16 +588,9 @@ function SendQuotationPageContent() {
               =================================================================== */}
           <div className="col-xl-5 col-lg-5">
             {/* 1. Customer & Lead Info Card */}
-            <div
-              className="card mb-4"
-              style={{
-                background: "#181a1b",
-                border: "1px solid #2d3134",
-                borderRadius: "10px",
-              }}
-            >
+            <div className="card mb-4 shadow-sm">
               <div className="card-header border-0 pb-0 pt-3 px-3">
-                <h6 className="card-title text-white fw-semibold d-flex align-items-center gap-2 mb-0">
+                <h6 className="card-title text-dark fw-semibold d-flex align-items-center gap-2 mb-0">
                   <i className="bi bi-person-badge-fill text-primary"></i>
                   <span>Customer & Lead Info</span>
                 </h6>
@@ -606,11 +599,11 @@ function SendQuotationPageContent() {
               <div className="card-body p-3">
                 {/* Auto-Fill from Leads Pipeline */}
                 <div className="mb-3">
-                  <label className="form-label text-secondary small fw-medium mb-1">
+                  <label className="form-label text-dark small fw-medium mb-1">
                     Auto-Fill from Leads Pipeline
                   </label>
                   <select
-                    className="form-select bg-dark text-white border-secondary border-opacity-25"
+                    className="form-select"
                     value={selectedLeadId}
                     onChange={(e) => handleSelectLead(e.target.value)}
                     disabled={isLoadingLeads}
@@ -635,20 +628,20 @@ function SendQuotationPageContent() {
                 {/* Client Name & Mobile */}
                 <div className="row g-2 mb-3">
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">Client Name</label>
+                    <label className="form-label text-dark small fw-medium mb-1">Client Name</label>
                     <input
                       type="text"
-                      className="form-control bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control"
                       value={clientName}
                       onChange={(e) => setClientName(e.target.value)}
                       placeholder="Vikramaditya Singh"
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">Client Mobile</label>
+                    <label className="form-label text-dark small fw-medium mb-1">Client Mobile</label>
                     <input
                       type="tel"
-                      className="form-control bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control"
                       value={clientMobile}
                       onChange={(e) => setClientMobile(e.target.value)}
                       placeholder="9825123456"
@@ -659,20 +652,20 @@ function SendQuotationPageContent() {
                 {/* City & Quotation Date */}
                 <div className="row g-2">
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">City / Jurisdiction</label>
+                    <label className="form-label text-dark small fw-medium mb-1">City / Jurisdiction</label>
                     <input
                       type="text"
-                      className="form-control bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control"
                       value={cityJurisdiction}
                       onChange={(e) => setCityJurisdiction(e.target.value)}
                       placeholder="Ahmedabad"
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">Quotation Date</label>
+                    <label className="form-label text-dark small fw-medium mb-1">Quotation Date</label>
                     <input
                       type="text"
-                      className="form-control bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control"
                       value={quotationDate}
                       onChange={(e) => setQuotationDate(e.target.value)}
                       placeholder="12.08.26"
@@ -683,16 +676,9 @@ function SendQuotationPageContent() {
             </div>
 
             {/* 2. Vehicle Selection (Brand, Model, Variant) */}
-            <div
-              className="card mb-4"
-              style={{
-                background: "#181a1b",
-                border: "1px solid #2d3134",
-                borderRadius: "10px",
-              }}
-            >
+            <div className="card mb-4 shadow-sm">
               <div className="card-header border-0 pb-0 pt-3 px-3">
-                <h6 className="card-title text-white fw-semibold d-flex align-items-center gap-2 mb-0">
+                <h6 className="card-title text-dark fw-semibold d-flex align-items-center gap-2 mb-0">
                   <i className="bi bi-car-front-fill text-warning"></i>
                   <span>Vehicle Selection (Brand, Model, Variant)</span>
                 </h6>
@@ -702,9 +688,9 @@ function SendQuotationPageContent() {
                 {/* Brand & Model Selector */}
                 <div className="row g-2 mb-3">
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">Select Brand</label>
+                    <label className="form-label text-dark small fw-medium mb-1">Select Brand</label>
                     <select
-                      className="form-select bg-dark text-white border-secondary border-opacity-25"
+                      className="form-select"
                       value={selectedBrandId}
                       onChange={handleBrandChange}
                     >
@@ -717,11 +703,11 @@ function SendQuotationPageContent() {
                     </select>
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">
+                    <label className="form-label text-dark small fw-medium mb-1">
                       Select Model {isLoadingModels && <span className="spinner-border spinner-border-sm ms-1"></span>}
                     </label>
                     <select
-                      className="form-select bg-dark text-white border-secondary border-opacity-25"
+                      className="form-select"
                       value={selectedModelId}
                       onChange={handleModelChange}
                       disabled={!selectedBrandId || isLoadingModels}
@@ -739,11 +725,11 @@ function SendQuotationPageContent() {
                 {/* Variant & Fuel Type */}
                 <div className="row g-2 mb-3">
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">
+                    <label className="form-label text-dark small fw-medium mb-1">
                       Select Variant {isLoadingVariants && <span className="spinner-border spinner-border-sm ms-1"></span>}
                     </label>
                     <select
-                      className="form-select bg-dark text-white border-secondary border-opacity-25"
+                      className="form-select"
                       value={selectedVariantId}
                       onChange={handleVariantChange}
                       disabled={!selectedModelId || isLoadingVariants}
@@ -757,9 +743,9 @@ function SendQuotationPageContent() {
                     </select>
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">Fuel / Variant Tag</label>
+                    <label className="form-label text-dark small fw-medium mb-1">Fuel / Variant Tag</label>
                     <select
-                      className="form-select bg-dark text-white border-secondary border-opacity-25"
+                      className="form-select"
                       value={variantFuel}
                       onChange={(e) => setVariantFuel(e.target.value)}
                     >
@@ -775,20 +761,20 @@ function SendQuotationPageContent() {
                 {/* Custom Sheet Display Headers */}
                 <div className="row g-2">
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">Sheet Car Title</label>
+                    <label className="form-label text-dark small fw-medium mb-1">Sheet Car Title</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={carName}
                       onChange={(e) => setCarName(e.target.value)}
                       placeholder="e.g. NEW VENUE"
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">Sheet Model Title</label>
+                    <label className="form-label text-dark small fw-medium mb-1">Sheet Model Title</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={modelSpec}
                       onChange={(e) => setModelSpec(e.target.value)}
                       placeholder="e.g. 1.0 TURBO DCT HX5"
@@ -799,16 +785,9 @@ function SendQuotationPageContent() {
             </div>
 
             {/* 3. Sales Executive Details Card */}
-            <div
-              className="card mb-4"
-              style={{
-                background: "#181a1b",
-                border: "1px solid #2d3134",
-                borderRadius: "10px",
-              }}
-            >
+            <div className="card mb-4 shadow-sm">
               <div className="card-header border-0 pb-0 pt-3 px-3">
-                <h6 className="card-title text-white fw-semibold d-flex align-items-center gap-2 mb-0">
+                <h6 className="card-title text-dark fw-semibold d-flex align-items-center gap-2 mb-0">
                   <i className="bi bi-headset text-info"></i>
                   <span>Sales Executive Details</span>
                 </h6>
@@ -817,20 +796,20 @@ function SendQuotationPageContent() {
               <div className="card-body p-3">
                 <div className="row g-2">
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">Executive Name</label>
+                    <label className="form-label text-dark small fw-medium mb-1">Executive Name</label>
                     <input
                       type="text"
-                      className="form-control bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control"
                       value={executiveName}
                       onChange={(e) => setExecutiveName(e.target.value)}
                       placeholder="PRIYANKA PARMAR"
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">Phone Number</label>
+                    <label className="form-label text-dark small fw-medium mb-1">Phone Number</label>
                     <input
                       type="tel"
-                      className="form-control bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control"
                       value={executivePhone}
                       onChange={(e) => setExecutivePhone(e.target.value)}
                       placeholder="97233 37621"
@@ -841,16 +820,9 @@ function SendQuotationPageContent() {
             </div>
 
             {/* 4. Pricing & Breakdown Controls Card */}
-            <div
-              className="card mb-4"
-              style={{
-                background: "#181a1b",
-                border: "1px solid #2d3134",
-                borderRadius: "10px",
-              }}
-            >
+            <div className="card mb-4 shadow-sm">
               <div className="card-header border-0 pb-0 pt-3 px-3">
-                <h6 className="card-title text-white fw-semibold d-flex align-items-center gap-2 mb-0">
+                <h6 className="card-title text-dark fw-semibold d-flex align-items-center gap-2 mb-0">
                   <i className="bi bi-calculator text-success"></i>
                   <span>Price Breakdown Sheet Parameters (₹)</span>
                 </h6>
@@ -859,82 +831,82 @@ function SendQuotationPageContent() {
               <div className="card-body p-3">
                 <div className="row g-2">
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">CSD Price</label>
+                    <label className="form-label text-dark small fw-medium mb-1">CSD Price</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={csdPrice}
                       onChange={(e) => setCsdPrice(e.target.value)}
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">GJ RTO</label>
+                    <label className="form-label text-dark small fw-medium mb-1">GJ RTO</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={gjRto}
                       onChange={(e) => setGjRto(e.target.value)}
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">BH RTO * APPOROX</label>
+                    <label className="form-label text-dark small fw-medium mb-1">BH RTO * APPOROX</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={bhRto}
                       onChange={(e) => setBhRto(e.target.value)}
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">CRTM</label>
+                    <label className="form-label text-dark small fw-medium mb-1">CRTM</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={crtm}
                       onChange={(e) => setCrtm(e.target.value)}
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">INSURANCE</label>
+                    <label className="form-label text-dark small fw-medium mb-1">INSURANCE</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={insurance}
                       onChange={(e) => setInsurance(e.target.value)}
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">ACCESSORIES</label>
+                    <label className="form-label text-dark small fw-medium mb-1">ACCESSORIES</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={accessories}
                       onChange={(e) => setAccessories(e.target.value)}
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">WARRANTY</label>
+                    <label className="form-label text-dark small fw-medium mb-1">WARRANTY</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={warranty}
                       onChange={(e) => setWarranty(e.target.value)}
                     />
                   </div>
                   <div className="col-md-6">
-                    <label className="form-label text-secondary small fw-medium mb-1">M.S REWORD (Disc)</label>
+                    <label className="form-label text-dark small fw-medium mb-1">M.S REWORD (Disc)</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={msReward}
                       onChange={(e) => setMsReward(e.target.value)}
                     />
                   </div>
                   <div className="col-12">
-                    <label className="form-label text-secondary small fw-medium mb-1">DIFFERENCE AMT CASH</label>
+                    <label className="form-label text-dark small fw-medium mb-1">DIFFERENCE AMT CASH</label>
                     <input
                       type="text"
-                      className="form-control form-control-sm bg-dark text-white border-secondary border-opacity-25"
+                      className="form-control form-control-sm"
                       value={diffAmtCash}
                       onChange={(e) => setDiffAmtCash(e.target.value)}
                     />

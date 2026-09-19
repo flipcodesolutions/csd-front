@@ -131,7 +131,7 @@ export default function FollowUpPage() {
                     onClick={() => setActiveTab(tab.id)}
                   >
                     {tab.label}
-                    <span className="badge bg-dark-subtle text-white ms-1">{tab.count}</span>
+                    <span className="badge bg-secondary-subtle text-secondary ms-1">{tab.count}</span>
                   </button>
                 ))}
               </div>
@@ -370,7 +370,7 @@ export default function FollowUpPage() {
                     </div>
                   </td>
                   <td>
-                    <span className="badge bg-primary-subtle text-white small">
+                    <span className="badge bg-primary-subtle text-primary small">
                       <i className="bi bi-file-earmark-text me-1"></i>Quote Review
                     </span>
                     <div className="text-muted small mt-1" style={{ fontSize: "0.75rem" }}>

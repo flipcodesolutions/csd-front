@@ -318,7 +318,7 @@ export default function BrandPage() {
           <div className="card-header d-flex flex-wrap justify-content-between align-items-center gap-2">
             <div className="d-flex align-items-center gap-2">
               <h5 className="card-title mb-0">Automotive Brand Directory</h5>
-              <span className="badge bg-primary-subtle text-white rounded-pill px-2">
+              <span className="badge bg-primary-subtle text-primary rounded-pill px-2">
                 {filteredBrands.length} Brands
               </span>
             </div>

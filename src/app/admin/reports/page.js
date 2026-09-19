@@ -129,11 +129,11 @@ export default function ReportsPage() {
               <div className="card-body">
                 <div className="d-flex flex-column gap-3">
                   <div>
-                    <div className="d-flex justify-content-between text-white small fw-bold mb-1">
+                    <div className="d-flex justify-content-between text-dark small fw-bold mb-1">
                       <span>1. Total Inquiries Captured</span>
                       <span>1,284 Inquiries (100%)</span>
                     </div>
-                    <div className="progress" style={{ height: "14px", background: "#151616" }}>
+                    <div className="progress" style={{ height: "14px", background: "#E2E8F0" }}>
                       <div
                         className="progress-bar"
                         style={{ width: "100%", background: "#3F4912", borderRadius: "4px" }}
@@ -142,11 +142,11 @@ export default function ReportsPage() {
                   </div>
 
                   <div>
-                    <div className="d-flex justify-content-between text-white small fw-bold mb-1">
+                    <div className="d-flex justify-content-between text-dark small fw-bold mb-1">
                       <span>2. Contacted & Validated</span>
                       <span>898 Leads (70.0%)</span>
                     </div>
-                    <div className="progress" style={{ height: "14px", background: "#151616" }}>
+                    <div className="progress" style={{ height: "14px", background: "#E2E8F0" }}>
                       <div
                         className="progress-bar"
                         style={{ width: "70%", background: "#4B5028", borderRadius: "4px" }}
@@ -155,11 +155,11 @@ export default function ReportsPage() {
                   </div>
 
                   <div>
-                    <div className="d-flex justify-content-between text-white small fw-bold mb-1">
+                    <div className="d-flex justify-content-between text-dark small fw-bold mb-1">
                       <span>3. Test Drives Completed</span>
                       <span>385 Drivers (30.0%)</span>
                     </div>
-                    <div className="progress" style={{ height: "14px", background: "#151616" }}>
+                    <div className="progress" style={{ height: "14px", background: "#E2E8F0" }}>
                       <div
                         className="progress-bar"
                         style={{ width: "30%", background: "#D99A00", borderRadius: "4px" }}
@@ -168,11 +168,11 @@ export default function ReportsPage() {
                   </div>
 
                   <div>
-                    <div className="d-flex justify-content-between text-white small fw-bold mb-1">
+                    <div className="d-flex justify-content-between text-dark small fw-bold mb-1">
                       <span>4. Official Quotations Sent</span>
                       <span>246 Quotes (19.2%)</span>
                     </div>
-                    <div className="progress" style={{ height: "14px", background: "#151616" }}>
+                    <div className="progress" style={{ height: "14px", background: "#E2E8F0" }}>
                       <div
                         className="progress-bar"
                         style={{ width: "19.2%", background: "#EE6800", borderRadius: "4px" }}
@@ -181,11 +181,11 @@ export default function ReportsPage() {
                   </div>
 
                   <div>
-                    <div className="d-flex justify-content-between text-white small fw-bold mb-1">
+                    <div className="d-flex justify-content-between text-dark small fw-bold mb-1">
                       <span>5. Final Closed Deliveries (Won)</span>
                       <span>64 Bookings (5.0%)</span>
                     </div>
-                    <div className="progress" style={{ height: "14px", background: "#151616" }}>
+                    <div className="progress" style={{ height: "14px", background: "#E2E8F0" }}>
                       <div
                         className="progress-bar"
                         style={{ width: "5%", background: "#008318", borderRadius: "4px" }}
@@ -236,7 +236,7 @@ export default function ReportsPage() {
                       <td>380</td>
                       <td>16</td>
                       <td>
-                        <span className="badge bg-primary-subtle text-white">4.21%</span>
+                        <span className="badge bg-primary-subtle text-primary">4.21%</span>
                       </td>
                       <td className="text-dark fw-bold small">₹4.20 Cr</td>
                     </tr>
@@ -248,7 +248,7 @@ export default function ReportsPage() {
                       <td>245</td>
                       <td>11</td>
                       <td>
-                        <span className="badge bg-primary-subtle text-white">4.49%</span>
+                        <span className="badge bg-primary-subtle text-primary">4.49%</span>
                       </td>
                       <td className="text-dark fw-bold small">₹2.85 Cr</td>
                     </tr>
@@ -324,7 +324,7 @@ export default function ReportsPage() {
                   <td className="text-dark fw-bold">24 Units</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
-                      <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#151616" }}>
+                      <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#E2E8F0" }}>
                         <div className="progress-bar bg-success" style={{ width: "94%" }}></div>
                       </div>
                       <span className="text-success small fw-bold">94%</span>
@@ -357,7 +357,7 @@ export default function ReportsPage() {
                   <td className="text-dark fw-bold">19 Units</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
-                      <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#151616" }}>
+                      <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#E2E8F0" }}>
                         <div className="progress-bar bg-success" style={{ width: "88%" }}></div>
                       </div>
                       <span className="text-success small fw-bold">88%</span>
@@ -390,7 +390,7 @@ export default function ReportsPage() {
                   <td className="text-dark fw-bold">15 Units</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
-                      <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#151616" }}>
+                      <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#E2E8F0" }}>
                         <div className="progress-bar bg-primary" style={{ width: "82%" }}></div>
                       </div>
                       <span className="text-primary small fw-bold">82%</span>
@@ -398,7 +398,7 @@ export default function ReportsPage() {
                   </td>
                   <td className="text-dark fw-bold">₹3.90 Cr</td>
                   <td className="text-end">
-                    <span className="badge bg-primary-subtle text-white px-3 py-1 rounded-pill">
+                    <span className="badge bg-primary-subtle text-primary px-3 py-1 rounded-pill">
                       On Track
                     </span>
                   </td>
@@ -423,7 +423,7 @@ export default function ReportsPage() {
                   <td className="text-dark fw-bold">12 Units</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
-                      <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#151616" }}>
+                      <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#E2E8F0" }}>
                         <div className="progress-bar bg-warning" style={{ width: "75%" }}></div>
                       </div>
                       <span className="text-warning small fw-bold">75%</span>

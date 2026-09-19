@@ -132,8 +132,8 @@ export default function QuotationDetailsPage() {
     return (
       <AdminLayout>
         <div className="page-body">
-          <div className="card bg-dark border-secondary border-opacity-25 p-5 text-center my-4">
-            <h4 className="text-white fw-bold">Quotation Not Found</h4>
+          <div className="card shadow-sm p-5 text-center my-4">
+            <h4 className="text-dark fw-bold">Quotation Not Found</h4>
             <p className="text-secondary small mb-3">
               The requested quotation does not exist or you don't have permission to access it.
             </p>

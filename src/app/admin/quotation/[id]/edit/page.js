@@ -445,7 +445,7 @@ export default function QuotationEditPage() {
 
                 <div className="card-body p-0">
                   <div className="table-responsive">
-                    <table className="table table-dark align-middle mb-0">
+                    <table className="table table-custom align-middle mb-0">
                       <thead className="border-bottom border-secondary border-opacity-25 text-secondary small text-uppercase">
                         <tr>
                           <th style={{ width: "35%" }} className="py-3 px-3">Item Particulars</th>
@@ -465,7 +465,7 @@ export default function QuotationEditPage() {
                               <td className="py-3 px-3">
                                 <input
                                   type="text"
-                                  className="form-control form-control-sm mb-1 text-white fw-semibold"
+                                  className="form-control form-control-sm mb-1 text-dark fw-semibold"
                                   placeholder="Item Name *"
                                   value={item.item_name}
                                   onChange={(e) => handleItemChange(index, "item_name", e.target.value)}
@@ -536,7 +536,7 @@ export default function QuotationEditPage() {
                                 </select>
                               </td>
 
-                              <td className="py-3 px-3 text-end fw-bold text-white fs-6">
+                              <td className="py-3 px-3 text-end fw-bold text-dark fs-6">
                                 ₹{lineTotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
                               </td>
 
@@ -560,25 +560,25 @@ export default function QuotationEditPage() {
               </div>
 
               {/* Commercial Summary Box */}
-              <div className="card mb-4 bg-dark border-secondary border-opacity-25">
+              <div className="card mb-4 shadow-sm">
                 <div className="card-body">
                   <h6 className="card-title text-uppercase text-secondary small fw-bold mb-3">
                     Commercial Summary
                   </h6>
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <div className="p-3 rounded-2 bg-dark border border-secondary border-opacity-10">
-                        <div className="d-flex justify-content-between text-white-50 small mb-2">
+                      <div className="p-3 rounded-2 bg-light border">
+                        <div className="d-flex justify-content-between text-secondary small mb-2">
                           <span>Items Subtotal:</span>
-                          <span className="text-white fw-semibold">₹{subtotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+                          <span className="text-dark fw-semibold">₹{subtotal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
                         </div>
-                        <div className="d-flex justify-content-between text-white-50 small mb-2">
+                        <div className="d-flex justify-content-between text-secondary small mb-2">
                           <span className="text-danger">Total Promotional Discount:</span>
                           <span className="text-danger fw-semibold">- ₹{totalDiscount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
                         </div>
-                        <div className="d-flex justify-content-between text-white-50 small">
+                        <div className="d-flex justify-content-between text-secondary small">
                           <span>Total Applicable GST / Tax:</span>
-                          <span className="text-white fw-semibold">₹{totalTax.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+                          <span className="text-dark fw-semibold">₹{totalTax.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
                         </div>
                       </div>
                     </div>
@@ -642,7 +642,7 @@ export default function QuotationEditPage() {
               </div>
 
               {/* Action Buttons Bar */}
-              <div className="card bg-dark border-secondary border-opacity-25 p-3">
+              <div className="card shadow-sm p-3">
                 <div className="d-flex align-items-center justify-content-between">
                   <Link href={`/admin/quotation/${quotationId}`} className="btn btn-outline-custom">
                     Cancel

@@ -233,7 +233,7 @@ export default function LeadSourcePage() {
           <div className="card-header d-flex justify-content-between align-items-center">
             <div className="d-flex align-items-center gap-2">
               <h5 className="card-title mb-0">Lead Acquisition Sources</h5>
-              <span className="badge bg-primary-subtle text-white rounded-pill px-2">
+              <span className="badge bg-primary-subtle text-primary rounded-pill px-2">
                 {filteredSources.length} Sources
               </span>
             </div>

@@ -196,10 +196,10 @@ export default function UpdatePricePage() {
 
           {/* Real-Time Price Calculation Summary Box */}
           <div className="col-xl-5">
-            <div className="card h-100" style={{ border: "1px solid #6D7B24", background: "#181a1b" }}>
+            <div className="card h-100 shadow-sm" style={{ border: "1px solid #6D7B24" }}>
               <div className="card-header border-bottom" style={{ borderColor: "var(--border-color) !important" }}>
-                <span className="badge bg-primary-subtle text-white px-2 py-1 mb-1">Live Calculation</span>
-                <h5 className="card-title text-white mb-0">Estimated On-Road Breakdown</h5>
+                <span className="badge bg-primary-subtle text-primary px-2 py-1 mb-1">Live Calculation</span>
+                <h5 className="card-title text-dark mb-0">Estimated On-Road Breakdown</h5>
                 <span className="text-muted small">
                   {selectedBrand} • {selectedModel} ({selectedVariant})
                 </span>
@@ -209,26 +209,26 @@ export default function UpdatePricePage() {
                 <div className="d-flex flex-column gap-2">
                   <div className="d-flex justify-content-between text-secondary small py-1 border-bottom" style={{ borderColor: "var(--border-color) !important" }}>
                     <span>Ex-Showroom Price</span>
-                    <span className="text-white fw-bold">₹{exShowroom.toLocaleString("en-IN")}</span>
+                    <span className="text-dark fw-bold">₹{exShowroom.toLocaleString("en-IN")}</span>
                   </div>
 
                   <div className="d-flex justify-content-between text-secondary small py-1 border-bottom" style={{ borderColor: "var(--border-color) !important" }}>
                     <span>RTO & Road Tax (~10%)</span>
-                    <span className="text-white fw-bold">₹{rtoCharges.toLocaleString("en-IN")}</span>
+                    <span className="text-dark fw-bold">₹{rtoCharges.toLocaleString("en-IN")}</span>
                   </div>
 
                   <div className="d-flex justify-content-between text-secondary small py-1 border-bottom" style={{ borderColor: "var(--border-color) !important" }}>
                     <span>Comprehensive Insurance (1+3 Yr)</span>
-                    <span className="text-white fw-bold">₹{insurance.toLocaleString("en-IN")}</span>
+                    <span className="text-dark fw-bold">₹{insurance.toLocaleString("en-IN")}</span>
                   </div>
 
                   <div className="d-flex justify-content-between text-secondary small py-1 border-bottom" style={{ borderColor: "var(--border-color) !important" }}>
                     <span>Fastag & Logistics</span>
-                    <span className="text-white fw-bold">₹{fastagOther.toLocaleString("en-IN")}</span>
+                    <span className="text-dark fw-bold">₹{fastagOther.toLocaleString("en-IN")}</span>
                   </div>
                 </div>
 
-                <div className="p-3 rounded-3 mt-4" style={{ background: "#202224", border: "1px solid var(--border-color)" }}>
+                <div className="p-3 rounded-3 mt-4" style={{ background: "rgba(88, 99, 42, 0.08)", border: "1px solid var(--border-color)" }}>
                   <span className="text-muted small fw-semibold">Total Estimated On-Road Price:</span>
                   <div className="text-warning fw-bold fs-3 mt-1">₹{totalOnRoad.toLocaleString("en-IN")}</div>
                   <span className="text-success small">

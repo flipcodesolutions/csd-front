@@ -2274,7 +2274,7 @@ label.text-white,
 
 /* ==========================================================================
    HIGH-CONTRAST TEXT INSIDE DARK / BLACK CONTAINERS
-   (Overrides modal-body-custom to prevent dark-on-dark text)
+   (Overrides modal-body-custom to prevent dark-on-dark text in dark choice boxes)
    ========================================================================== */
 .modal-body-custom [style*="background: #181"],
 .modal-body-custom [style*="background:#181"],
@@ -2287,16 +2287,7 @@ label.text-white,
 .modal-body-custom [style*="background: rgb(21, 23, 24)"],
 .modal-body-custom .dark-selection-box,
 .modal-body-custom .bg-dark,
-[style*="background: #181"],
-[style*="background:#181"],
-[style*="background: #161"],
-[style*="background:#161"],
-[style*="background: #151"],
-[style*="background:#151"],
-[style*="background: rgb(24, 26, 27)"],
-[style*="background: rgb(22, 24, 25)"],
-.dark-selection-box,
-.bg-dark {
+.dark-selection-box {
     color: #FFFFFF !important;
 }
 
@@ -3255,17 +3246,6 @@ label.text-white,
     color: #000000;
 }
 
-/* Override utility classes in content to black (except buttons, badges, avatars, dots) */
-.app-main-content .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator):not(.custom-crm-toast *),
-.page-body .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator):not(.custom-crm-toast *),
-.modal-body .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator),
-.modal-body-custom .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator),
-.card .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator),
-.table-custom .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator),
-.se-portal-root main .text-white:not(.btn):not(.btn *):not(.badge):not(.badge *):not(.avatar):not(.progress-bar):not(.badge-dot):not(.badge-dot-indicator) {
-    color: #000000 !important;
-}
-
 /* Strict Preservation for Top Bar / Header */
 .app-header,
 .app-header .header-profile-name,
@@ -3321,7 +3301,7 @@ label.text-white,
 
 /* ==========================================================================
    HIGH-CONTRAST TEXT INSIDE DARK / BLACK CONTAINERS
-   (Overrides global black enforcement to prevent dark-on-dark text)
+   (Only for designated dark selection boxes, never for white cards)
    ========================================================================== */
 .modal-body-custom [style*="background: #181"],
 .modal-body-custom [style*="background:#181"],
@@ -3329,15 +3309,56 @@ label.text-white,
 .modal-body-custom [style*="background:#161"],
 .modal-body-custom [style*="background: #151"],
 .modal-body-custom [style*="background:#151"],
+.modal-body-custom .dark-selection-box,
 .modal-body-custom .bg-dark,
-[style*="background: #181"],
-[style*="background:#181"],
-[style*="background: #161"],
-[style*="background:#161"],
-[style*="background: #151"],
-[style*="background:#151"],
-.bg-dark {
+.dark-selection-box {
     color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   ANTI-INVISIBILITY / HIGH CONTRAST ENFORCEMENT ON LIGHT SURFACES
+   Prevents white text on light backgrounds anywhere across the app
+   ========================================================================== */
+.page-title,
+.page-title.text-white,
+h1.page-title,
+h1.page-title.text-white {
+    color: #000000 !important;
+}
+
+.card .card-title,
+.card-header .card-title,
+.card .card-title.text-white,
+.card-header .card-title.text-white {
+    color: #000000 !important;
+}
+
+.card label,
+.card .form-label,
+.card .form-check-label {
+    color: #000000 !important;
+}
+
+/* Subtle badges must always have contrasting colored text, never white */
+.badge.bg-primary-subtle,
+.badge.bg-primary-subtle.text-white,
+.badge.bg-primary-subtle * {
+    color: var(--primary) !important;
+    background-color: var(--primary-light-bg) !important;
+}
+
+.badge.bg-secondary-subtle,
+.badge.bg-secondary-subtle.text-white,
+.badge.bg-secondary-subtle * {
+    color: var(--secondary) !important;
+    background-color: var(--secondary-light) !important;
+}
+
+.badge.bg-dark-subtle,
+.badge.bg-dark-subtle.text-white,
+.badge.bg-dark-subtle * {
+    color: #000000 !important;
+    background-color: #E2E8F0 !important;
 }
 
 /* Radio / Checkbox labels, spans, and text inside dark containers */
@@ -3451,4 +3472,10 @@ label.text-white,
 .dark-selection-box .form-check-label.text-success,
 .dark-selection-box .text-success {
     color: #22C55E !important;
+}
+
+.modal-body-custom .dark-selection-box .form-check-label,
+.modal-body-custom .dark-selection-box label,
+.modal-body-custom .dark-selection-box span {
+    color: #FFFFFF !important;
 }

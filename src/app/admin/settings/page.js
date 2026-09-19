@@ -336,7 +336,7 @@ export default function SettingsPage() {
             {activeTab === "security" && (
               <div className="card">
                 <div className="card-header">
-                  <h5 className="card-title mb-1">Security & Session Management</h5>
+                  <h5 className="card-title mb-1 text-dark">Security & Session Management</h5>
                   <p className="text-muted small mb-0">Two-factor auth and CRM login permissions</p>
                 </div>
 
