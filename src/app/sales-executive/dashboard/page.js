@@ -42,32 +42,8 @@ export default function SalesExecutiveDashboardPage() {
   return (
     <AdminLayout>
       <div className="page-body">
-        {/* Page Breadcrumbs & Header Actions */}
-        <div className="page-header-wrapper">
-          <div>
-            <ul className="breadcrumb-custom">
-              <li className="breadcrumb-item">
-                <Link href="/sales-executive/dashboard">Sales Desk</Link>
-              </li>
-              <li className="breadcrumb-item active">Dashboard</li>
-            </ul>
-            <h1 className="page-title mt-1">Sales Executive Conversion Desk</h1>
-          </div>
-
-          <div className="page-header-actions d-flex align-items-center gap-2">
-            <Link href="/sales-executive/leads" className="btn btn-outline-custom">
-              <i className="bi bi-funnel-fill"></i>
-              <span>My Assigned Leads</span>
-            </Link>
-            <button className="btn btn-primary" onClick={() => setShowAddLeadModal(true)}>
-              <i className="bi bi-plus-circle"></i>
-              <span>Add New Lead</span>
-            </button>
-          </div>
-        </div>
-
         {/* Sales Executive Dashboard Body */}
-        <SalesExecutiveDashboard />
+        <SalesExecutiveDashboard onAddLead={() => setShowAddLeadModal(true)} />
 
         {/* Quick Add Lead Modal */}
         {showAddLeadModal && (
