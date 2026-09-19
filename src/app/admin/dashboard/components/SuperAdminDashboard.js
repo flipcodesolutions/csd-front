@@ -6,593 +6,884 @@ import { useToast } from "@/app/components/Toast";
 
 export default function SuperAdminDashboard({ onAddLead }) {
   const { showToast } = useToast();
-  const [chartPeriod, setChartPeriod] = useState("6m");
+
+  // Modals state
+  const [showCustomerModal, setShowCustomerModal] = useState(false);
+  const [showReqModal, setShowReqModal] = useState(false);
+
+  // Quick Customer Form
+  const [custForm, setCustForm] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    city: "Ahmedabad",
+  });
+
+  // Quick Requirement Form
+  const [reqForm, setReqForm] = useState({
+    customerName: "",
+    model: "Hyundai Creta",
+    budget: "₹15 - 20 Lakhs",
+    priority: "Hot",
+  });
+
+  // Approvals State (Interactive Approve / Reject)
+  const [approvals, setApprovals] = useState([
+    {
+      id: 1,
+      name: "Rajesh Patel",
+      badge: "DISCOUNT",
+      badgeBg: "#FEE2E2",
+      badgeColor: "#DC2626",
+      borderAccent: "#DC2626",
+      vehicle: "Hyundai Creta Automatic",
+      detail: "Proposed: ₹16,25,000 (Margin: 4%)",
+      status: "pending",
+    },
+    {
+      id: 2,
+      name: "Amit Singh",
+      badge: "SOURCING",
+      badgeBg: "#FEF3C7",
+      badgeColor: "#D97706",
+      borderAccent: "#F59E0B",
+      vehicle: "Mahindra Scorpio-N Z8L",
+      detail: "Vendor Premium: +₹45k",
+      status: "pending",
+    },
+  ]);
+
+  // Handle Approve / Reject
+  const handleApprovalAction = (id, action) => {
+    const item = approvals.find((a) => a.id === id);
+    if (!item) return;
+
+    if (action === "Approve") {
+      showToast(`Approved ${item.badge} request for ${item.name}!`, "success");
+    } else {
+      showToast(`Rejected ${item.badge} request for ${item.name}.`, "warning");
+    }
+
+    setApprovals((prev) => prev.filter((a) => a.id !== id));
+  };
+
+  const handleSaveCustomer = (e) => {
+    e.preventDefault();
+    showToast(`Customer ${custForm.name} registered successfully!`, "success");
+    setShowCustomerModal(false);
+    setCustForm({ name: "", phone: "", email: "", city: "Ahmedabad" });
+  };
+
+  const handleSaveRequirement = (e) => {
+    e.preventDefault();
+    showToast(`Requirement added for ${reqForm.customerName} (${reqForm.model})!`, "success");
+    setShowReqModal(false);
+    setReqForm({ customerName: "", model: "Hyundai Creta", budget: "₹15 - 20 Lakhs", priority: "Hot" });
+  };
 
   return (
-    <div>
-      {/* 4 Key Metric KPI Stat Cards */}
+    <div className="container-fluid px-0 pb-5">
+      {/* ----------------------------------------------------
+          1. HEADER SECTION: Business Overview & Date Pill
+          ---------------------------------------------------- */}
+      <div className="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+        <div>
+          <h1
+            className="fw-bolder mb-1 text-dark"
+            style={{ fontSize: "1.85rem", letterSpacing: "-0.5px" }}
+          >
+            Business Overview
+          </h1>
+          <p className="text-secondary small mb-0">Here&apos;s your business overview for today</p>
+        </div>
+
+        {/* Date Pill */}
+        <div>
+          <span
+            className="badge fw-semibold px-3 py-2 border text-dark"
+            style={{
+              backgroundColor: "#F3F4F6",
+              borderColor: "#E5E7EB",
+              borderRadius: "20px",
+              fontSize: "0.82rem",
+            }}
+          >
+            25 Aug 2026
+          </span>
+        </div>
+      </div>
+
+      {/* ----------------------------------------------------
+          2. QUICK ACTION BUTTONS ROW
+          ---------------------------------------------------- */}
+      <div className="d-flex align-items-center gap-2 overflow-auto pb-2 mb-4" style={{ whiteSpace: "nowrap" }}>
+        {/* + Lead (Solid Navy Button) */}
+        <button
+          type="button"
+          className="btn text-white d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2 fw-semibold shadow-sm"
+          style={{
+            backgroundColor: "#0D1554",
+            borderRadius: "14px",
+            minWidth: "105px",
+            height: "44px",
+            fontSize: "0.86rem",
+            border: "none",
+          }}
+          onClick={onAddLead}
+        >
+          <i className="bi bi-plus-lg fs-6"></i>
+          <span>+ Lead</span>
+        </button>
+
+        {/* + Customer */}
+        <button
+          type="button"
+          className="btn bg-white border d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2 fw-semibold text-dark shadow-sm"
+          style={{
+            borderColor: "#E5E7EB",
+            borderRadius: "14px",
+            minWidth: "125px",
+            height: "44px",
+            fontSize: "0.86rem",
+          }}
+          onClick={() => setShowCustomerModal(true)}
+        >
+          <i className="bi bi-person-plus text-secondary fs-6"></i>
+          <span>+ Customer</span>
+        </button>
+
+        {/* + Req */}
+        <button
+          type="button"
+          className="btn bg-white border d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2 fw-semibold text-dark shadow-sm"
+          style={{
+            borderColor: "#E5E7EB",
+            borderRadius: "14px",
+            minWidth: "105px",
+            height: "44px",
+            fontSize: "0.86rem",
+          }}
+          onClick={() => setShowReqModal(true)}
+        >
+          <i className="bi bi-card-checklist text-secondary fs-6"></i>
+          <span>+ Req</span>
+        </button>
+
+        {/* + Quote */}
+        <Link
+          href="/admin/quotation/create"
+          className="btn bg-white border d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2 fw-semibold text-dark shadow-sm text-decoration-none"
+          style={{
+            borderColor: "#E5E7EB",
+            borderRadius: "14px",
+            minWidth: "105px",
+            height: "44px",
+            fontSize: "0.86rem",
+          }}
+        >
+          <i className="bi bi-file-earmark-text text-secondary fs-6"></i>
+          <span>+ Quote</span>
+        </Link>
+
+        {/* Booking */}
+        <Link
+          href="/admin/quotation"
+          className="btn bg-white border d-inline-flex align-items-center justify-content-center gap-2 px-3 py-2 fw-semibold text-dark shadow-sm text-decoration-none"
+          style={{
+            borderColor: "#E5E7EB",
+            borderRadius: "14px",
+            minWidth: "115px",
+            height: "44px",
+            fontSize: "0.86rem",
+          }}
+        >
+          <i className="bi bi-car-front text-secondary fs-6"></i>
+          <span>Booking</span>
+        </Link>
+      </div>
+
+      {/* ----------------------------------------------------
+          3. 8 KPI STAT CARDS 
+          ---------------------------------------------------- */}
       <div className="row g-3 mb-4">
-        <div className="col-xl-3 col-sm-6">
-          <div className="card stat-card">
-            <div className="stat-card-header">
-              <span className="stat-card-title">Total Inquiries</span>
-              <div className="stat-icon-box primary">
-                <i className="bi bi-funnel-fill"></i>
-              </div>
+        {/* Card 1: TOTAL LEADS */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <span
+                className="text-muted fw-bold text-uppercase small"
+                style={{ fontSize: "0.7rem", letterSpacing: "0.6px" }}
+              >
+                TOTAL LEADS
+              </span>
+              <span
+                className="badge fw-bold px-2 py-1 rounded-pill"
+                style={{ backgroundColor: "#DCFCE7", color: "#16A34A", fontSize: "0.7rem" }}
+              >
+                ↑ 12%
+              </span>
             </div>
-            <div className="stat-card-value">1,480</div>
-            <div className="stat-change positive">
-              <i className="bi bi-arrow-up-short"></i>
-              <span>+18.4% vs last month</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-xl-3 col-sm-6">
-          <div className="card stat-card">
-            <div className="stat-card-header">
-              <span className="stat-card-title">Gross Dealership Volume</span>
-              <div className="stat-icon-box success">
-                <i className="bi bi-currency-rupee"></i>
-              </div>
-            </div>
-            <div className="stat-card-value">₹12.45 Cr</div>
-            <div className="stat-change positive">
-              <i className="bi bi-trophy-fill"></i>
-              <span>64 Units delivered</span>
+            <div className="fw-bolder text-dark" style={{ fontSize: "1.9rem", lineHeight: "1" }}>
+              248
             </div>
           </div>
         </div>
 
-        <div className="col-xl-3 col-sm-6">
-          <div className="card stat-card">
-            <div className="stat-card-header">
-              <span className="stat-card-title">Pipeline Conversion</span>
-              <div className="stat-icon-box info">
-                <i className="bi bi-graph-up-arrow"></i>
-              </div>
+        {/* Card 2: ACTIVE REQ */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div
+              className="text-muted fw-bold text-uppercase small mb-2"
+              style={{ fontSize: "0.7rem", letterSpacing: "0.6px" }}
+            >
+              ACTIVE REQ
             </div>
-            <div className="stat-card-value">32.4%</div>
-            <div className="stat-change positive">
-              <i className="bi bi-arrow-up-short"></i>
-              <span>+4.2% industry benchmark</span>
+            <div className="fw-bolder text-dark" style={{ fontSize: "1.9rem", lineHeight: "1" }}>
+              86
             </div>
           </div>
         </div>
 
-        <div className="col-xl-3 col-sm-6">
-          <div className="card stat-card">
-            <div className="stat-card-header">
-              <span className="stat-card-title">Active Team / Staff</span>
-              <div className="stat-icon-box warning">
-                <i className="bi bi-people-fill"></i>
-              </div>
+        {/* Card 3: ACTIVE QUOTES */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div
+              className="text-muted fw-bold text-uppercase small mb-2"
+              style={{ fontSize: "0.7rem", letterSpacing: "0.6px" }}
+            >
+              ACTIVE QUOTES
             </div>
-            <div className="stat-card-value">38 Users</div>
-            <div className="stat-change text-warning">
-              <i className="bi bi-shield-check"></i>
-              <span>5 Active Roles configured</span>
+            <div className="fw-bolder text-dark" style={{ fontSize: "1.9rem", lineHeight: "1" }}>
+              34
+            </div>
+          </div>
+        </div>
+
+        {/* Card 4: CONFIRMED */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div
+              className="text-muted fw-bold text-uppercase small mb-2"
+              style={{ fontSize: "0.7rem", letterSpacing: "0.6px" }}
+            >
+              CONFIRMED
+            </div>
+            <div className="fw-bolder text-dark" style={{ fontSize: "1.9rem", lineHeight: "1" }}>
+              19
+            </div>
+          </div>
+        </div>
+
+        {/* Card 5: PENDING PAY */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div
+              className="text-muted fw-bold text-uppercase small mb-2"
+              style={{ fontSize: "0.7rem", letterSpacing: "0.6px" }}
+            >
+              PENDING PAY
+            </div>
+            <div className="fw-bolder" style={{ fontSize: "1.9rem", lineHeight: "1", color: "#DC2626" }}>
+              ₹12.4L
+            </div>
+          </div>
+        </div>
+
+        {/* Card 6: IN PROCESS */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div
+              className="text-muted fw-bold text-uppercase small mb-2"
+              style={{ fontSize: "0.7rem", letterSpacing: "0.6px" }}
+            >
+              IN PROCESS
+            </div>
+            <div className="fw-bolder text-dark" style={{ fontSize: "1.9rem", lineHeight: "1" }}>
+              27
+            </div>
+          </div>
+        </div>
+
+        {/* Card 7: DELIVERIES */}
+        <div className="col-6 col-md-3">
+          <div className="card h-100 border rounded-4 p-3 bg-white shadow-sm">
+            <div
+              className="text-muted fw-bold text-uppercase small mb-2"
+              style={{ fontSize: "0.7rem", letterSpacing: "0.6px" }}
+            >
+              DELIVERIES
+            </div>
+            <div className="fw-bolder" style={{ fontSize: "1.9rem", lineHeight: "1", color: "#16A34A" }}>
+              142
+            </div>
+          </div>
+        </div>
+
+        {/* Card 8: GROSS PROFIT (Subtle tinted card background) */}
+        <div className="col-6 col-md-3">
+          <div
+            className="card h-100 border rounded-4 p-3 shadow-sm"
+            style={{ backgroundColor: "#F3F4F6", borderColor: "#E5E7EB" }}
+          >
+            <div
+              className="text-muted fw-bold text-uppercase small mb-2"
+              style={{ fontSize: "0.7rem", letterSpacing: "0.6px" }}
+            >
+              GROSS PROFIT
+            </div>
+            <div className="fw-bolder text-dark" style={{ fontSize: "1.9rem", lineHeight: "1" }}>
+              ₹28.6L
             </div>
           </div>
         </div>
       </div>
 
-      {/* Visual Charts Row */}
-      <div className="row g-4 mb-4">
-        {/* Monthly Inquiries vs Deals Chart */}
-        <div className="col-xl-8">
-          <div className="card h-100">
-            <div className="card-header d-flex align-items-center justify-content-between">
-              <div>
-                <h5 className="card-title mb-1">Dealership Monthly Performance & Velocity</h5>
-                <p className="text-muted small mb-0">Total vehicle inquiries compared with final closed bookings across all brands</p>
-              </div>
-              <div className="btn-group btn-group-sm">
-                <button
-                  type="button"
-                  className={`btn ${chartPeriod === "6m" ? "btn-primary" : "btn-outline-custom"}`}
-                  onClick={() => setChartPeriod("6m")}
-                >
-                  6 Months
-                </button>
-                <button
-                  type="button"
-                  className={`btn ${chartPeriod === "1y" ? "btn-primary" : "btn-outline-custom"}`}
-                  onClick={() => setChartPeriod("1y")}
-                >
-                  1 Year
-                </button>
-              </div>
+      {/* ----------------------------------------------------
+          4. MAIN SECTION: 2 
+          ---------------------------------------------------- */}
+      <div className="row g-4">
+        {/* Left Column (Desktop: col-lg-7, col-xl-8) */}
+        <div className="col-12 col-lg-7 col-xl-8">
+          {/* SECTION: SALES PIPELINE */}
+          <div className="card border rounded-4 p-4 bg-white shadow-sm mb-4">
+            <div className="d-flex align-items-center gap-2 mb-4">
+              <i className="bi bi-graph-up-arrow text-dark fs-5"></i>
+              <h5 className="fw-bold text-dark mb-0 fs-6">Sales Pipeline</h5>
             </div>
 
-            <div className="card-body">
-              <div style={{ height: "260px", display: "flex", alignItems: "flex-end", gap: "20px", paddingBottom: "20px", borderBottom: "1px solid var(--border-color)" }}>
-                {(chartPeriod === "6m"
-                  ? [
-                      { m: "Mar", inq: 75, deals: 16 },
-                      { m: "Apr", inq: 90, deals: 21 },
-                      { m: "May", inq: 105, deals: 18 },
-                      { m: "Jun", inq: 130, deals: 26 },
-                      { m: "Jul", inq: 120, deals: 24 },
-                      { m: "Aug", inq: 155, deals: 32 },
-                    ]
-                  : [
-                      { m: "Sep", inq: 45, deals: 8 },
-                      { m: "Oct", inq: 55, deals: 11 },
-                      { m: "Nov", inq: 60, deals: 14 },
-                      { m: "Dec", inq: 72, deals: 16 },
-                      { m: "Jan", inq: 58, deals: 12 },
-                      { m: "Feb", inq: 62, deals: 14 },
-                      { m: "Mar", inq: 75, deals: 16 },
-                      { m: "Apr", inq: 90, deals: 21 },
-                      { m: "May", inq: 105, deals: 18 },
-                      { m: "Jun", inq: 130, deals: 26 },
-                      { m: "Jul", inq: 120, deals: 24 },
-                      { m: "Aug", inq: 155, deals: 32 },
-                    ]
-                ).map((item, idx) => (
-                  <div key={idx} className="flex-grow-1 text-center" style={{ height: "100%", display: "flex", flexDirection: "column", justifyContent: "flex-end", alignItems: "center" }}>
-                    <div className="d-flex align-items-flex-end gap-1" style={{ height: "80%", alignItems: "flex-end", width: "100%", justifyContent: "center" }}>
-                      {/* Inquiries Bar */}
-                      <div
+            {/* Pipeline Stage Pills */}
+            <div className="row g-3 text-center">
+              {/* Stage 1: Lead */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 text-white fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#0D1554",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  120
+                </div>
+                <span className="fw-bold small text-dark d-block" style={{ fontSize: "0.82rem" }}>
+                  Lead
+                </span>
+              </div>
+
+              {/* Stage 2: Requirement */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 text-white fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#0D1554",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  85
+                </div>
+                <span className="fw-bold small text-dark d-block" style={{ fontSize: "0.82rem" }}>
+                  Requirement
+                </span>
+              </div>
+
+              {/* Stage 3: Quotation */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#F3F4F6",
+                    borderColor: "#E5E7EB",
+                    color: "#1E293B",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  60
+                </div>
+                <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.82rem" }}>
+                  Quotation
+                </span>
+              </div>
+
+              {/* Stage 4: Negotiation */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#F3F4F6",
+                    borderColor: "#E5E7EB",
+                    color: "#1E293B",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  45
+                </div>
+                <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.82rem" }}>
+                  Negotiation
+                </span>
+              </div>
+
+              {/* Stage 5: Booking */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#F3F4F6",
+                    borderColor: "#E5E7EB",
+                    color: "#1E293B",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  30
+                </div>
+                <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.82rem" }}>
+                  Booking
+                </span>
+              </div>
+
+              {/* Stage 6: Delivered (Light Green) */}
+              <div className="col-4 col-sm-4 col-md-2">
+                <div
+                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                  style={{
+                    width: "56px",
+                    height: "56px",
+                    backgroundColor: "#DCFCE7",
+                    borderColor: "#BBF7D0",
+                    color: "#16A34A",
+                    borderRadius: "14px",
+                    fontSize: "1.15rem",
+                  }}
+                >
+                  24
+                </div>
+                <span className="fw-bold small d-block" style={{ fontSize: "0.82rem", color: "#16A34A" }}>
+                  Delivered
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* SECTION: PENDING APPROVALS */}
+          <div className="mb-4">
+            <div className="d-flex align-items-center justify-content-between mb-3">
+              <div className="d-flex align-items-center gap-2">
+                <i className="bi bi-shield-exclamation text-danger fs-5"></i>
+                <h5 className="fw-bold text-dark mb-0 fs-6">Pending Approvals</h5>
+              </div>
+              {approvals.length > 0 && (
+                <span
+                  className="badge fw-bold px-2 py-1 rounded-2"
+                  style={{ backgroundColor: "#FEE2E2", color: "#DC2626", fontSize: "0.75rem" }}
+                >
+                  {approvals.length} Action Req
+                </span>
+              )}
+            </div>
+
+            {approvals.length === 0 ? (
+              <div className="card border rounded-4 p-4 text-center text-muted bg-white">
+                <i className="bi bi-check-circle-fill text-success fs-3 mb-2"></i>
+                <p className="mb-0 fw-semibold">All pending discount and sourcing approvals cleared!</p>
+              </div>
+            ) : (
+              <div className="d-flex flex-column gap-3">
+                {approvals.map((app) => (
+                  <div
+                    key={app.id}
+                    className="card border rounded-4 p-3 bg-white shadow-sm position-relative overflow-hidden"
+                    style={{ borderLeft: `5px solid ${app.borderAccent}` }}
+                  >
+                    <div className="d-flex align-items-start justify-content-between mb-1">
+                      <div>
+                        <h6 className="fw-bold text-dark mb-0 fs-6">{app.name}</h6>
+                        <div className="text-secondary small mt-1">{app.vehicle}</div>
+                      </div>
+                      <span
+                        className="badge fw-bold px-2 py-1 rounded-1"
                         style={{
-                          height: `${(item.inq / 170) * 100}%`,
-                          width: "16px",
-                          background: "var(--primary)",
-                          borderRadius: "4px 4px 0 0",
-                          transition: "height 0.3s ease",
+                          backgroundColor: app.badgeBg,
+                          color: app.badgeColor,
+                          fontSize: "0.72rem",
+                          letterSpacing: "0.5px",
                         }}
-                        title={`Inquiries: ${item.inq}`}
-                      ></div>
-                      {/* Deals Bar */}
-                      <div
-                        style={{
-                          height: `${(item.deals / 40) * 100}%`,
-                          width: "14px",
-                          background: "var(--accent-orange)",
-                          borderRadius: "4px 4px 0 0",
-                          transition: "height 0.3s ease",
-                        }}
-                        title={`Deals Closed: ${item.deals}`}
-                      ></div>
+                      >
+                        {app.badge}
+                      </span>
                     </div>
-                    <span className="text-muted small mt-2" style={{ fontSize: "0.75rem" }}>
-                      {item.m}
-                    </span>
+
+                    <div className="text-secondary small mb-3" style={{ fontSize: "0.82rem" }}>
+                      {app.detail}
+                    </div>
+
+                    {/* Action Buttons: Approve & Reject */}
+                    <div className="d-flex gap-2">
+                      <button
+                        type="button"
+                        className="btn flex-fill text-white py-2 fw-semibold shadow-sm"
+                        style={{
+                          backgroundColor: "#0D1554",
+                          borderRadius: "10px",
+                          fontSize: "0.88rem",
+                          border: "none",
+                        }}
+                        onClick={() => handleApprovalAction(app.id, "Approve")}
+                      >
+                        Approve
+                      </button>
+                      <button
+                        type="button"
+                        className="btn flex-fill bg-white border py-2 fw-semibold shadow-sm"
+                        style={{
+                          borderColor: "#E5E7EB",
+                          color: "#DC2626",
+                          borderRadius: "10px",
+                          fontSize: "0.88rem",
+                        }}
+                        onClick={() => handleApprovalAction(app.id, "Reject")}
+                      >
+                        Reject
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
-
-              {/* Chart Legend */}
-              <div className="d-flex justify-content-center gap-4 mt-3">
-                <div className="d-flex align-items-center gap-2">
-                  <span style={{ width: "14px", height: "14px", background: "var(--primary)", borderRadius: "3px" }}></span>
-                  <span className="text-muted small">Total Inquiries</span>
-                </div>
-                <div className="d-flex align-items-center gap-2">
-                  <span style={{ width: "14px", height: "14px", background: "var(--accent-orange)", borderRadius: "3px" }}></span>
-                  <span className="text-muted small">Deals Closed (Units)</span>
-                </div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
-        {/* Lead Status Breakdown Donut Card */}
-        <div className="col-xl-4">
-          <div className="card h-100">
-            <div className="card-header">
-              <h5 className="card-title mb-1">Pipeline Stage Distribution</h5>
-              <p className="text-muted small mb-0">Active leads categorized across Dealership stages</p>
+        {/* Right Column (Desktop: col-lg-5, col-xl-4) */}
+        <div className="col-12 col-lg-5 col-xl-4">
+          {/* SECTION: UPCOMING DELIVERIES */}
+          <div className="card border rounded-4 p-3 bg-white shadow-sm mb-4">
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <i className="bi bi-truck text-dark fs-5"></i>
+              <h5 className="fw-bold text-dark mb-0 fs-6">Upcoming Deliveries</h5>
             </div>
 
-            <div className="card-body d-flex flex-column justify-content-between">
-              <div className="py-2 text-center">
-                <div
-                  style={{
-                    width: "160px",
-                    height: "160px",
-                    borderRadius: "50%",
-                    background: "conic-gradient(#58632A 0% 28%, #000080 28% 63%, #EE6800 63% 85%, #15803D 85% 100%)",
-                    margin: "0 auto",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
+            <div className="d-flex flex-column">
+              {/* Delivery Item 1 */}
+              <div className="py-2 d-flex align-items-center justify-content-between">
+                <div>
+                  <h6 className="fw-bold text-dark mb-0 small">Rajesh Patel</h6>
+                  <span className="text-secondary small" style={{ fontSize: "0.78rem" }}>
+                    Tomorrow • Ahmedabad
+                  </span>
+                </div>
+                <span
+                  className="badge fw-bold px-2 py-1 rounded-2"
+                  style={{ backgroundColor: "#DCFCE7", color: "#16A34A", fontSize: "0.72rem" }}
                 >
-                  <div
-                    style={{
-                      width: "110px",
-                      height: "110px",
-                      borderRadius: "50%",
-                      background: "var(--card-bg)",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      boxShadow: "inset 0 1px 4px rgba(0,0,0,0.08)"
-                    }}
-                  >
-                    <span className="fw-bold fs-4" style={{ color: "var(--text-primary)" }}>1,480</span>
-                    <span className="text-muted" style={{ fontSize: "0.72rem" }}>
-                      Total Leads
-                    </span>
-                  </div>
-                </div>
+                  Ready for Delivery
+                </span>
               </div>
+              <hr className="my-2" style={{ borderColor: "#F1F5F9" }} />
 
-              <div className="row g-2 mt-3">
-                <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                    <div className="d-flex align-items-center gap-2">
-                      <span style={{ width: "10px", height: "10px", background: "var(--primary)", borderRadius: "50%" }}></span>
-                      <span className="small fw-bold" style={{ color: "var(--text-primary)" }}>New Lead</span>
-                    </div>
-                    <div className="fs-6 fw-bold mt-1" style={{ color: "var(--text-primary)" }}>28% (414)</div>
-                  </div>
+              {/* Delivery Item 2 */}
+              <div className="py-2 d-flex align-items-center justify-content-between">
+                <div>
+                  <h6 className="fw-bold text-dark mb-0 small">Neha Sharma</h6>
+                  <span className="text-secondary small" style={{ fontSize: "0.78rem" }}>
+                    28 Aug • Surat
+                  </span>
                 </div>
+                <span
+                  className="badge fw-bold px-2 py-1 rounded-2"
+                  style={{ backgroundColor: "#FEF3C7", color: "#D97706", fontSize: "0.72rem" }}
+                >
+                  PDI Pending
+                </span>
+              </div>
+              <hr className="my-2" style={{ borderColor: "#F1F5F9" }} />
 
-                <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                    <div className="d-flex align-items-center gap-2">
-                      <span style={{ width: "10px", height: "10px", background: "var(--secondary)", borderRadius: "50%" }}></span>
-                      <span className="small fw-bold" style={{ color: "var(--text-primary)" }}>Contacted</span>
-                    </div>
-                    <div className="fs-6 fw-bold mt-1" style={{ color: "var(--text-primary)" }}>35% (518)</div>
-                  </div>
+              {/* Delivery Item 3 */}
+              <div className="py-2 d-flex align-items-center justify-content-between">
+                <div>
+                  <h6 className="fw-bold text-dark mb-0 small">Vikram Desai</h6>
+                  <span className="text-secondary small" style={{ fontSize: "0.78rem" }}>
+                    30 Aug • Vadodara
+                  </span>
                 </div>
-
-                <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                    <div className="d-flex align-items-center gap-2">
-                      <span style={{ width: "10px", height: "10px", background: "var(--accent-orange)", borderRadius: "50%" }}></span>
-                      <span className="small fw-bold" style={{ color: "var(--text-primary)" }}>Qualified / TD</span>
-                    </div>
-                    <div className="fs-6 fw-bold mt-1" style={{ color: "var(--text-primary)" }}>22% (325)</div>
-                  </div>
-                </div>
-
-                <div className="col-6">
-                  <div className="p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                    <div className="d-flex align-items-center gap-2">
-                      <span style={{ width: "10px", height: "10px", background: "#15803D", borderRadius: "50%" }}></span>
-                      <span className="small fw-bold" style={{ color: "var(--text-primary)" }}>Won / Booked</span>
-                    </div>
-                    <div className="fs-6 fw-bold mt-1" style={{ color: "var(--text-primary)" }}>15% (223)</div>
-                  </div>
-                </div>
+                <span
+                  className="badge fw-bold px-2 py-1 rounded-2"
+                  style={{ backgroundColor: "#E0E7FF", color: "#4F46E5", fontSize: "0.72rem" }}
+                >
+                  In Transit
+                </span>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Master Data Quick Launch Grid */}
-      <div className="card mb-4">
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <div>
-            <h5 className="card-title mb-0">System Master Control & Catalogs</h5>
-            <span className="text-muted small">Instant management links for Super Admin</span>
-          </div>
-          <span className="badge bg-primary-subtle text-white">Master Modules</span>
-        </div>
-        <div className="card-body">
-          <div className="row g-3">
-            <div className="col-md-3 col-sm-6">
-              <Link href="/admin/users" className="text-decoration-none">
-                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <i className="bi bi-people-fill text-primary fs-3 mb-2 d-block"></i>
-                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Users & Roles</div>
-                  <div className="text-muted small">Manage 5 User Roles</div>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-3 col-sm-6">
-              <Link href="/admin/brand" className="text-decoration-none">
-                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <i className="bi bi-shield-shaded text-warning fs-3 mb-2 d-block"></i>
-                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Brands & OEM</div>
-                  <div className="text-muted small">Maruti, Tata, RE, etc.</div>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-3 col-sm-6">
-              <Link href="/admin/model" className="text-decoration-none">
-                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <i className="bi bi-car-front-fill text-success fs-3 mb-2 d-block"></i>
-                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Models & Variants</div>
-                  <div className="text-muted small">2W & 4W Vehicles</div>
-                </div>
-              </Link>
-            </div>
-            <div className="col-md-3 col-sm-6">
-              <Link href="/admin/settings" className="text-decoration-none">
-                <div className="p-3 rounded-3 text-center transition-all" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <i className="bi bi-gear-fill text-info fs-3 mb-2 d-block"></i>
-                  <div className="fw-bold" style={{ color: "var(--text-primary)" }}>Security & System</div>
-                  <div className="text-muted small">Global Permissions</div>
-                </div>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Section: Recent Inquiries Table & Top Sales Consultants */}
-      <div className="row g-4">
-        {/* Recent Inquiries Table */}
-        <div className="col-xl-8">
-          <div className="card h-100">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <div>
-                <h5 className="card-title mb-0">Global Inquiries Pipeline</h5>
-                <span className="text-muted small">Live customer pipeline entries across all departments</span>
-              </div>
-              <Link href="/admin/leads" className="btn btn-sm btn-outline-custom">
-                <span>View All Leads</span>
-                <i className="bi bi-arrow-right ms-1"></i>
-              </Link>
+          {/* SECTION: RECENT ACTIVITY */}
+          <div className="card border rounded-4 p-3 bg-white shadow-sm mb-4">
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <i className="bi bi-clock-history text-dark fs-5"></i>
+              <h5 className="fw-bold text-dark mb-0 fs-6">Recent Activity</h5>
             </div>
 
-            <div className="table-responsive">
-              <table className="table table-custom">
-                <thead>
-                  <tr>
-                    <th>Customer Name</th>
-                    <th>Interested Vehicle</th>
-                    <th>Priority</th>
-                    <th>Assigned Rep</th>
-                    <th>Status</th>
-                    <th className="text-end">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <div className="d-flex align-items-center gap-2">
-                        <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#3b82f6", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff", fontSize: "0.85rem" }}>
-                          R
-                        </div>
-                        <div>
-                          <div className="text-white fw-bold small">Rajesh Verma</div>
-                          <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                            +91 98231 44520
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="text-white fw-semibold small">Tata Safari Adventure Plus</span>
-                      <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-                        Diesel AT • Dark Edition
-                      </div>
-                    </td>
-                    <td>
-                      <span className="badge bg-danger-subtle text-danger px-2 py-1 rounded-pill small">
-                        <i className="bi bi-fire me-1"></i>Hot
-                      </span>
-                    </td>
-                    <td>
-                      <span className="text-secondary small">Vikram Singh</span>
-                    </td>
-                    <td>
-                      <span className="badge-custom badge-active">
-                        <span className="badge-dot-indicator"></span>New Inquiry
-                      </span>
-                    </td>
-                    <td className="text-end">
-                      <Link href="/admin/leads" className="btn btn-xs btn-outline-custom">
-                        <i className="bi bi-eye"></i>
-                      </Link>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div className="d-flex align-items-center gap-2">
-                        <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#10b981", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff", fontSize: "0.85rem" }}>
-                          P
-                        </div>
-                        <div>
-                          <div className="text-white fw-bold small">Priya Menon</div>
-                          <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                            +91 97410 88231
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="text-white fw-semibold small">Hyundai Creta SX (O) Turbo</span>
-                      <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-                        Petrol 7-Speed DCT
-                      </div>
-                    </td>
-                    <td>
-                      <span className="badge bg-warning-subtle text-warning px-2 py-1 rounded-pill small">
-                        <i className="bi bi-sun-fill me-1"></i>Warm
-                      </span>
-                    </td>
-                    <td>
-                      <span className="text-secondary small">Rahul Verma</span>
-                    </td>
-                    <td>
-                      <span className="badge-custom badge-pending">
-                        <span className="badge-dot-indicator"></span>Contacted
-                      </span>
-                    </td>
-                    <td className="text-end">
-                      <Link href="/admin/leads" className="btn btn-xs btn-outline-custom">
-                        <i className="bi bi-eye"></i>
-                      </Link>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div className="d-flex align-items-center gap-2">
-                        <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#f59e0b", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff", fontSize: "0.85rem" }}>
-                          A
-                        </div>
-                        <div>
-                          <div className="text-white fw-bold small">Amit Patel</div>
-                          <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                            +91 99012 34567
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="text-white fw-semibold small">Mahindra Thar Roxx AX7L 4x4</span>
-                      <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-                        Diesel AT • Stealth Black
-                      </div>
-                    </td>
-                    <td>
-                      <span className="badge bg-danger-subtle text-danger px-2 py-1 rounded-pill small">
-                        <i className="bi bi-fire me-1"></i>Hot
-                      </span>
-                    </td>
-                    <td>
-                      <span className="text-secondary small">David Miller</span>
-                    </td>
-                    <td>
-                      <span className="badge-custom badge-completed">
-                        <span className="badge-dot-indicator"></span>TD Scheduled
-                      </span>
-                    </td>
-                    <td className="text-end">
-                      <Link href="/admin/leads" className="btn btn-xs btn-outline-custom">
-                        <i className="bi bi-eye"></i>
-                      </Link>
-                    </td>
-                  </tr>
-
-                  <tr>
-                    <td>
-                      <div className="d-flex align-items-center gap-2">
-                        <div style={{ width: 32, height: 32, borderRadius: "50%", background: "#8b5cf6", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff", fontSize: "0.85rem" }}>
-                          S
-                        </div>
-                        <div>
-                          <div className="text-white fw-bold small">Sunita Rao</div>
-                          <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                            +91 98860 11223
-                          </span>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <span className="text-white fw-semibold small">Maruti Grand Vitara Alpha Hybrid</span>
-                      <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-                        e-CVT Strong Hybrid
-                      </div>
-                    </td>
-                    <td>
-                      <span className="badge bg-warning-subtle text-warning px-2 py-1 rounded-pill small">
-                        <i className="bi bi-sun-fill me-1"></i>Warm
-                      </span>
-                    </td>
-                    <td>
-                      <span className="text-secondary small">Rahul Verma</span>
-                    </td>
-                    <td>
-                      <span className="badge-custom badge-active">
-                        <span className="badge-dot-indicator"></span>Quotation Sent
-                      </span>
-                    </td>
-                    <td className="text-end">
-                      <Link href="/admin/leads" className="btn btn-xs btn-outline-custom">
-                        <i className="bi bi-eye"></i>
-                      </Link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        {/* Top Performing Sales Reps */}
-        <div className="col-xl-4">
-          <div className="card h-100">
-            <div className="card-header d-flex justify-content-between align-items-center">
-              <h5 className="card-title mb-0">Top Performing Reps</h5>
-              <span className="badge bg-success-subtle text-success rounded-pill">This Month</span>
-            </div>
-
-            <div className="card-body">
-              <div className="d-flex flex-column gap-3">
-                <div className="d-flex align-items-center justify-content-between p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <div className="d-flex align-items-center gap-2">
-                    <div style={{ width: 34, height: 34, borderRadius: "50%", background: "var(--primary)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
-                      V
-                    </div>
-                    <div>
-                      <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>Vikram Singh</div>
-                      <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                        Senior Sales Consultant
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-end">
-                    <div className="text-warning fw-bold small">24 Deals</div>
-                    <span className="text-success" style={{ fontSize: "0.75rem" }}>
-                      94% Target
-                    </span>
-                  </div>
-                </div>
-
-                <div className="d-flex align-items-center justify-content-between p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <div className="d-flex align-items-center gap-2">
-                    <div style={{ width: 34, height: 34, borderRadius: "50%", background: "var(--secondary)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
-                      R
-                    </div>
-                    <div>
-                      <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>Rahul Verma</div>
-                      <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                        Sales Executive
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-end">
-                    <div className="text-warning fw-bold small">19 Deals</div>
-                    <span className="text-success" style={{ fontSize: "0.75rem" }}>
-                      88% Target
-                    </span>
-                  </div>
-                </div>
-
-                <div className="d-flex align-items-center justify-content-between p-2 rounded-3" style={{ background: "#F7F7F5", border: "1px solid var(--border-color)" }}>
-                  <div className="d-flex align-items-center gap-2">
-                    <div style={{ width: 34, height: 34, borderRadius: "50%", background: "var(--accent-orange)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold", color: "#fff" }}>
-                      D
-                    </div>
-                    <div>
-                      <div className="fw-bold small" style={{ color: "var(--text-primary)" }}>David Miller</div>
-                      <span className="text-muted" style={{ fontSize: "0.75rem" }}>
-                        Sales Executive (2W/4W)
-                      </span>
-                    </div>
-                  </div>
-                  <div className="text-end">
-                    <div className="text-warning fw-bold small">15 Deals</div>
-                    <span className="text-success" style={{ fontSize: "0.75rem" }}>
-                      82% Target
-                    </span>
-                  </div>
-                </div>
+            {/* Vertical Activity Timeline */}
+            <div className="position-relative ps-3">
+              {/* Activity 1 */}
+              <div className="position-relative mb-4">
+                <span
+                  className="position-absolute rounded-circle"
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: "#2563EB",
+                    left: "-18px",
+                    top: "4px",
+                  }}
+                ></span>
+                {/* Connecting Line */}
+                <div
+                  className="position-absolute"
+                  style={{
+                    width: "2px",
+                    backgroundColor: "#E2E8F0",
+                    left: "-14px",
+                    top: "16px",
+                    bottom: "-16px",
+                  }}
+                ></div>
+                <div className="fw-semibold text-dark small">New lead created Rahul Patel</div>
+                <span className="text-muted" style={{ fontSize: "0.74rem" }}>
+                  10 min ago
+                </span>
               </div>
 
-              <div className="mt-4 pt-3 border-top d-flex justify-content-between align-items-center" style={{ borderColor: "var(--border-color) !important" }}>
-                <span className="text-muted small">Need team reallocation?</span>
-                <Link href="/admin/users" className="btn btn-xs btn-primary">
-                  Manage Team
-                </Link>
+              {/* Activity 2 */}
+              <div className="position-relative mb-4">
+                <span
+                  className="position-absolute rounded-circle"
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: "#16A34A",
+                    left: "-18px",
+                    top: "4px",
+                  }}
+                ></span>
+                {/* Connecting Line */}
+                <div
+                  className="position-absolute"
+                  style={{
+                    width: "2px",
+                    backgroundColor: "#E2E8F0",
+                    left: "-14px",
+                    top: "16px",
+                    bottom: "-16px",
+                  }}
+                ></div>
+                <div className="fw-semibold text-dark small">Payment received ₹50,000 for BKG-042</div>
+                <span className="text-muted" style={{ fontSize: "0.74rem" }}>
+                  45 min ago
+                </span>
+              </div>
+
+              {/* Activity 3 */}
+              <div className="position-relative">
+                <span
+                  className="position-absolute rounded-circle"
+                  style={{
+                    width: "10px",
+                    height: "10px",
+                    backgroundColor: "#F59E0B",
+                    left: "-18px",
+                    top: "4px",
+                  }}
+                ></span>
+                <div className="fw-semibold text-dark small">Quotation sent to Amit Kumar (Creta SX)</div>
+                <span className="text-muted" style={{ fontSize: "0.74rem" }}>
+                  2 hours ago
+                </span>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* ----------------------------------------------------
+          5. MODALS (Quick Customer & Requirement)
+          ---------------------------------------------------- */}
+      {/* Quick Add Customer Modal */}
+      {showCustomerModal && (
+        <div className="modal-backdrop-custom" onClick={() => setShowCustomerModal(false)}>
+          <div className="modal-dialog-custom modal-md" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-custom" style={{ backgroundColor: "#0D1554", color: "#fff" }}>
+              <h5 className="modal-title-custom text-white mb-0 fs-6">
+                <i className="bi bi-person-plus-fill me-2"></i> Add New Customer
+              </h5>
+              <button
+                type="button"
+                className="btn-close btn-close-white"
+                onClick={() => setShowCustomerModal(false)}
+              ></button>
+            </div>
+
+            <form onSubmit={handleSaveCustomer}>
+              <div className="modal-body-custom">
+                <div className="row g-3">
+                  <div className="col-12">
+                    <label className="form-label fw-semibold small">Customer Full Name *</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="e.g. Ramesh Chandra"
+                      required
+                      value={custForm.name}
+                      onChange={(e) => setCustForm({ ...custForm, name: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-md-6">
+                    <label className="form-label fw-semibold small">Phone Number *</label>
+                    <input
+                      type="tel"
+                      className="form-control"
+                      placeholder="+91 98765 43210"
+                      required
+                      value={custForm.phone}
+                      onChange={(e) => setCustForm({ ...custForm, phone: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-md-6">
+                    <label className="form-label fw-semibold small">Email Address</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      placeholder="customer@email.com"
+                      value={custForm.email}
+                      onChange={(e) => setCustForm({ ...custForm, email: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-12">
+                    <label className="form-label fw-semibold small">City / Location</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="e.g. Ahmedabad, Surat"
+                      value={custForm.city}
+                      onChange={(e) => setCustForm({ ...custForm, city: e.target.value })}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="modal-footer-custom">
+                <button
+                  type="button"
+                  className="btn btn-light border px-3"
+                  onClick={() => setShowCustomerModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn text-white px-4 fw-semibold"
+                  style={{ backgroundColor: "#0D1554" }}
+                >
+                  Save Customer
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Add Requirement Modal */}
+      {showReqModal && (
+        <div className="modal-backdrop-custom" onClick={() => setShowReqModal(false)}>
+          <div className="modal-dialog-custom modal-md" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header-custom" style={{ backgroundColor: "#0D1554", color: "#fff" }}>
+              <h5 className="modal-title-custom text-white mb-0 fs-6">
+                <i className="bi bi-card-checklist me-2"></i> Add Customer Requirement
+              </h5>
+              <button
+                type="button"
+                className="btn-close btn-close-white"
+                onClick={() => setShowReqModal(false)}
+              ></button>
+            </div>
+
+            <form onSubmit={handleSaveRequirement}>
+              <div className="modal-body-custom">
+                <div className="row g-3">
+                  <div className="col-12">
+                    <label className="form-label fw-semibold small">Customer Name *</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="e.g. Anand Sharma"
+                      required
+                      value={reqForm.customerName}
+                      onChange={(e) => setReqForm({ ...reqForm, customerName: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-md-6">
+                    <label className="form-label fw-semibold small">Vehicle Model *</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="e.g. Creta SX Opt"
+                      required
+                      value={reqForm.model}
+                      onChange={(e) => setReqForm({ ...reqForm, model: e.target.value })}
+                    />
+                  </div>
+
+                  <div className="col-md-6">
+                    <label className="form-label fw-semibold small">Budget Range</label>
+                    <select
+                      className="form-select"
+                      value={reqForm.budget}
+                      onChange={(e) => setReqForm({ ...reqForm, budget: e.target.value })}
+                    >
+                      <option value="₹10 - 15 Lakhs">₹10 - 15 Lakhs</option>
+                      <option value="₹15 - 20 Lakhs">₹15 - 20 Lakhs</option>
+                      <option value="₹20 - 25 Lakhs">₹20 - 25 Lakhs</option>
+                      <option value="Above ₹25 Lakhs">Above ₹25 Lakhs</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="modal-footer-custom">
+                <button
+                  type="button"
+                  className="btn btn-light border px-3"
+                  onClick={() => setShowReqModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn text-white px-4 fw-semibold"
+                  style={{ backgroundColor: "#0D1554" }}
+                >
+                  Save Requirement
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
