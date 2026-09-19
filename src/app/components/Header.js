@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "./Toast";
+import { hasPermission, hasRole } from "@/utils/auth";
 
 export default function Header({ onToggleSidebar, onQuickAddLead }) {
   const router = useRouter();
@@ -62,6 +63,8 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
     router.push("/login");
   };
 
+  const canCreateLead = hasPermission("lead.create", currentUser) || hasRole(["admin", "manager"], currentUser);
+
   return (
     <header className="app-header">
       <div className="header-left">
@@ -88,20 +91,32 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
       </div>
 
       <div className="header-right">
-        {/* Quick Add Action */}
-        <button
-          className="btn btn-sm btn-primary d-none d-sm-inline-flex align-items-center gap-1"
-          onClick={() => {
-            if (onQuickAddLead) {
-              onQuickAddLead();
-            } else {
-              router.push(currentUser?.role === "Sales Executive" ? "/sales-executive/leads" : "/admin/leads");
-            }
-          }}
-        >
-          <i className="bi bi-plus-lg"></i>
-          <span>{currentUser?.role === "Sales Executive" ? "View Leads" : "New Lead"}</span>
-        </button>
+        {/* Quick Add Action for Admin and Manager */}
+        {canCreateLead ? (
+          <button
+            className="btn btn-sm btn-primary d-none d-sm-inline-flex align-items-center gap-1"
+            onClick={() => {
+              if (onQuickAddLead) {
+                onQuickAddLead();
+              } else {
+                router.push("/admin/leads?action=create");
+              }
+            }}
+          >
+            <i className="bi bi-plus-lg"></i>
+            <span>New Lead</span>
+          </button>
+        ) : currentUser?.role === "Sales Executive" ? (
+          <button
+            className="btn btn-sm btn-outline-primary d-none d-sm-inline-flex align-items-center gap-1 text-white"
+            onClick={() => {
+              router.push("/sales-executive/leads");
+            }}
+          >
+            <i className="bi bi-funnel-fill me-1"></i>
+            <span>My Leads</span>
+          </button>
+        ) : null}
 
         {/* Notifications Dropdown */}
         <div className="dropdown position-relative" ref={notifRef}>

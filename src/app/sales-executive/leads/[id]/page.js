@@ -400,7 +400,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
                   <div className="small fw-bold text-uppercase" style={{ letterSpacing: "0.5px", color: "var(--accent-orange)" }}>
                     Next Scheduled Interaction
                   </div>
-                  <div className="text-white fw-bold fs-5">
+                  <div className="text-dark fw-bold fs-5">
                     {nextFollowUpDate} {nextFollowUpTime ? `at ${nextFollowUpTime}` : ""}
                   </div>
                 </div>
