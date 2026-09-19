@@ -280,7 +280,7 @@ export default function LeadStatusPage() {
                         <span className="text-muted small">{index + 1}</span>
                       </td>
                       <td>
-                        <h6 className="mb-0 text-white fw-bold">{item.name}</h6>
+                        <h6 className="mb-0 text-dark fw-bold">{item.name}</h6>
                       </td>
                       <td>
                         {item.status === "Active" ? (
@@ -357,7 +357,7 @@ export default function LeadStatusPage() {
                 <div className="modal-body-custom py-3">
                   {/* Status Name Field */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -373,7 +373,7 @@ export default function LeadStatusPage() {
 
                   {/* Status State Field */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status State <span className="text-danger">*</span>
                     </label>
                     <select
@@ -430,7 +430,7 @@ export default function LeadStatusPage() {
                 <div className="modal-body-custom py-3">
                   {/* Status Name Field */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -446,7 +446,7 @@ export default function LeadStatusPage() {
 
                   {/* Status State Field */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status State <span className="text-danger">*</span>
                     </label>
                     <select
@@ -500,7 +500,7 @@ export default function LeadStatusPage() {
               </div>
 
               <div className="modal-body-custom">
-                <p className="text-white mb-0">
+                <p className="text-dark mb-0">
                   Are you sure you want to delete pipeline status <strong>"{deleteTarget.name}"</strong>?
                 </p>
               </div>

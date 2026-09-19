@@ -280,7 +280,7 @@ export default function LeadSourcePage() {
                         <span className="text-muted small">{index + 1}</span>
                       </td>
                       <td>
-                        <h6 className="mb-0 text-white fw-bold">{source.title}</h6>
+                        <h6 className="mb-0 text-dark fw-bold">{source.title}</h6>
                       </td>
                       <td>
                         {source.status === "Active" ? (
@@ -357,7 +357,7 @@ export default function LeadSourcePage() {
                 <div className="modal-body-custom py-3">
                   {/* Title Field */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Title <span className="text-danger">*</span>
                     </label>
                     <input
@@ -373,7 +373,7 @@ export default function LeadSourcePage() {
 
                   {/* Status Field */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -430,7 +430,7 @@ export default function LeadSourcePage() {
                 <div className="modal-body-custom py-3">
                   {/* Title Field */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Title <span className="text-danger">*</span>
                     </label>
                     <input
@@ -446,7 +446,7 @@ export default function LeadSourcePage() {
 
                   {/* Status Field */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -500,7 +500,7 @@ export default function LeadSourcePage() {
               </div>
 
               <div className="modal-body-custom">
-                <p className="text-white mb-0">
+                <p className="text-dark mb-0">
                   Are you sure you want to delete lead source <strong>"{deleteTarget.title}"</strong>?
                 </p>
               </div>

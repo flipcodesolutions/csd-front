@@ -219,62 +219,62 @@ export default function ReportsPage() {
                   <tbody>
                     <tr>
                       <td>
-                        <span className="text-white fw-semibold small">Showroom Walk-in</span>
+                        <span className="text-dark fw-semibold small">Showroom Walk-in</span>
                       </td>
                       <td>420</td>
                       <td>28</td>
                       <td>
                         <span className="badge bg-success-subtle text-success">6.67%</span>
                       </td>
-                      <td className="text-white fw-bold small">₹8.95 Cr</td>
+                      <td className="text-dark fw-bold small">₹8.95 Cr</td>
                     </tr>
 
                     <tr>
                       <td>
-                        <span className="text-white fw-semibold small">Meta Ads (FB/Insta)</span>
+                        <span className="text-dark fw-semibold small">Meta Ads (FB/Insta)</span>
                       </td>
                       <td>380</td>
                       <td>16</td>
                       <td>
                         <span className="badge bg-primary-subtle text-white">4.21%</span>
                       </td>
-                      <td className="text-white fw-bold small">₹4.20 Cr</td>
+                      <td className="text-dark fw-bold small">₹4.20 Cr</td>
                     </tr>
 
                     <tr>
                       <td>
-                        <span className="text-white fw-semibold small">Website Inquiry</span>
+                        <span className="text-dark fw-semibold small">Website Inquiry</span>
                       </td>
                       <td>245</td>
                       <td>11</td>
                       <td>
                         <span className="badge bg-primary-subtle text-white">4.49%</span>
                       </td>
-                      <td className="text-white fw-bold small">₹2.85 Cr</td>
+                      <td className="text-dark fw-bold small">₹2.85 Cr</td>
                     </tr>
 
                     <tr>
                       <td>
-                        <span className="text-white fw-semibold small">Customer Referral</span>
+                        <span className="text-dark fw-semibold small">Customer Referral</span>
                       </td>
                       <td>115</td>
                       <td>7</td>
                       <td>
                         <span className="badge bg-success-subtle text-success">6.08%</span>
                       </td>
-                      <td className="text-white fw-bold small">₹1.85 Cr</td>
+                      <td className="text-dark fw-bold small">₹1.85 Cr</td>
                     </tr>
 
                     <tr>
                       <td>
-                        <span className="text-white fw-semibold small">CarDekho / CarWale</span>
+                        <span className="text-dark fw-semibold small">CarDekho / CarWale</span>
                       </td>
                       <td>124</td>
                       <td>2</td>
                       <td>
                         <span className="badge bg-secondary text-white">1.61%</span>
                       </td>
-                      <td className="text-white fw-bold small">₹0.60 Cr</td>
+                      <td className="text-dark fw-bold small">₹0.60 Cr</td>
                     </tr>
                   </tbody>
                 </table>
@@ -311,7 +311,7 @@ export default function ReportsPage() {
                       <span className="badge bg-warning text-dark fw-bold rounded-circle p-2">#1</span>
                       <img src="/image/avatar-1.svg" alt="Vikram" className="avatar" />
                       <div>
-                        <div className="text-white fw-bold small">Vikram Singh</div>
+                        <div className="text-dark fw-bold small">Vikram Singh</div>
                         <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                           Senior Sales Consultant
                         </span>
@@ -321,7 +321,7 @@ export default function ReportsPage() {
                   <td>Main Showroom (Delhi)</td>
                   <td>310</td>
                   <td>112</td>
-                  <td className="text-white fw-bold">24 Units</td>
+                  <td className="text-dark fw-bold">24 Units</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
                       <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#151616" }}>
@@ -330,7 +330,7 @@ export default function ReportsPage() {
                       <span className="text-success small fw-bold">94%</span>
                     </div>
                   </td>
-                  <td className="text-white fw-bold">₹7.15 Cr</td>
+                  <td className="text-dark fw-bold">₹7.15 Cr</td>
                   <td className="text-end">
                     <span className="badge bg-success-subtle text-success px-3 py-1 rounded-pill">
                       Outstanding
@@ -344,7 +344,7 @@ export default function ReportsPage() {
                       <span className="badge bg-secondary text-white fw-bold rounded-circle p-2">#2</span>
                       <img src="/image/avatar-2.svg" alt="Ananya" className="avatar" />
                       <div>
-                        <div className="text-white fw-bold small">Ananya Roy</div>
+                        <div className="text-dark fw-bold small">Ananya Roy</div>
                         <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                           Automotive Advisor
                         </span>
@@ -354,7 +354,7 @@ export default function ReportsPage() {
                   <td>South City Branch</td>
                   <td>280</td>
                   <td>94</td>
-                  <td className="text-white fw-bold">19 Units</td>
+                  <td className="text-dark fw-bold">19 Units</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
                       <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#151616" }}>
@@ -363,7 +363,7 @@ export default function ReportsPage() {
                       <span className="text-success small fw-bold">88%</span>
                     </div>
                   </td>
-                  <td className="text-white fw-bold">₹4.85 Cr</td>
+                  <td className="text-dark fw-bold">₹4.85 Cr</td>
                   <td className="text-end">
                     <span className="badge bg-success-subtle text-success px-3 py-1 rounded-pill">
                       Exceeding
@@ -377,7 +377,7 @@ export default function ReportsPage() {
                       <span className="badge bg-secondary text-white fw-bold rounded-circle p-2">#3</span>
                       <img src="/image/avatar-3.svg" alt="Rohan" className="avatar" />
                       <div>
-                        <div className="text-white fw-bold small">Rohan Mehta</div>
+                        <div className="text-dark fw-bold small">Rohan Mehta</div>
                         <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                           Sales Executive
                         </span>
@@ -387,7 +387,7 @@ export default function ReportsPage() {
                   <td>West Hub (Gurgaon)</td>
                   <td>240</td>
                   <td>78</td>
-                  <td className="text-white fw-bold">15 Units</td>
+                  <td className="text-dark fw-bold">15 Units</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
                       <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#151616" }}>
@@ -396,7 +396,7 @@ export default function ReportsPage() {
                       <span className="text-primary small fw-bold">82%</span>
                     </div>
                   </td>
-                  <td className="text-white fw-bold">₹3.90 Cr</td>
+                  <td className="text-dark fw-bold">₹3.90 Cr</td>
                   <td className="text-end">
                     <span className="badge bg-primary-subtle text-white px-3 py-1 rounded-pill">
                       On Track
@@ -410,7 +410,7 @@ export default function ReportsPage() {
                       <span className="badge bg-secondary text-white fw-bold rounded-circle p-2">#4</span>
                       <img src="/image/avatar-4.svg" alt="Sneha" className="avatar" />
                       <div>
-                        <div className="text-white fw-bold small">Sneha Joshi</div>
+                        <div className="text-dark fw-bold small">Sneha Joshi</div>
                         <span className="text-muted" style={{ fontSize: "0.75rem" }}>
                           Relationship Manager
                         </span>
@@ -420,7 +420,7 @@ export default function ReportsPage() {
                   <td>Main Showroom (Delhi)</td>
                   <td>190</td>
                   <td>62</td>
-                  <td className="text-white fw-bold">12 Units</td>
+                  <td className="text-dark fw-bold">12 Units</td>
                   <td>
                     <div className="d-flex align-items-center gap-2">
                       <div className="progress flex-grow-1" style={{ height: "6px", width: "80px", background: "#151616" }}>
@@ -429,7 +429,7 @@ export default function ReportsPage() {
                       <span className="text-warning small fw-bold">75%</span>
                     </div>
                   </td>
-                  <td className="text-white fw-bold">₹2.55 Cr</td>
+                  <td className="text-dark fw-bold">₹2.55 Cr</td>
                   <td className="text-end">
                     <span className="badge bg-warning-subtle text-warning px-3 py-1 rounded-pill">
                       Satisfactory

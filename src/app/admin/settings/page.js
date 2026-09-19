@@ -69,7 +69,7 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     className={`list-group-item list-group-item-action d-flex align-items-center gap-2 py-3 border-0 rounded-2 ${
-                      activeTab === "profile" ? "bg-primary text-white" : "bg-transparent text-white"
+                      activeTab === "profile" ? "bg-primary text-white" : "bg-transparent text-dark"
                     }`}
                     onClick={() => setActiveTab("profile")}
                   >
@@ -80,7 +80,7 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     className={`list-group-item list-group-item-action d-flex align-items-center gap-2 py-3 border-0 rounded-2 ${
-                      activeTab === "notifications" ? "bg-primary text-white" : "bg-transparent text-white"
+                      activeTab === "notifications" ? "bg-primary text-white" : "bg-transparent text-dark"
                     }`}
                     onClick={() => setActiveTab("notifications")}
                   >
@@ -91,7 +91,7 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     className={`list-group-item list-group-item-action d-flex align-items-center gap-2 py-3 border-0 rounded-2 ${
-                      activeTab === "whatsapp" ? "bg-primary text-white" : "bg-transparent text-white"
+                      activeTab === "whatsapp" ? "bg-primary text-white" : "bg-transparent text-dark"
                     }`}
                     onClick={() => setActiveTab("whatsapp")}
                   >
@@ -102,7 +102,7 @@ export default function SettingsPage() {
                   <button
                     type="button"
                     className={`list-group-item list-group-item-action d-flex align-items-center gap-2 py-3 border-0 rounded-2 ${
-                      activeTab === "security" ? "bg-primary text-white" : "bg-transparent text-white"
+                      activeTab === "security" ? "bg-primary text-white" : "bg-transparent text-dark"
                     }`}
                     onClick={() => setActiveTab("security")}
                   >
@@ -128,7 +128,7 @@ export default function SettingsPage() {
                   <form onSubmit={handleSaveSettings}>
                     <div className="row g-3">
                       <div className="col-md-6">
-                        <label className="form-label text-white fw-semibold small">Dealership Trade Name</label>
+                        <label className="form-label text-dark fw-semibold small">Dealership Trade Name</label>
                         <input
                           type="text"
                           className="form-control"
@@ -138,7 +138,7 @@ export default function SettingsPage() {
                       </div>
 
                       <div className="col-md-6">
-                        <label className="form-label text-white fw-semibold small">GSTIN Registration Number</label>
+                        <label className="form-label text-dark fw-semibold small">GSTIN Registration Number</label>
                         <input
                           type="text"
                           className="form-control font-monospace"
@@ -148,7 +148,7 @@ export default function SettingsPage() {
                       </div>
 
                       <div className="col-md-6">
-                        <label className="form-label text-white fw-semibold small">Official Hotline Phone</label>
+                        <label className="form-label text-dark fw-semibold small">Official Hotline Phone</label>
                         <input
                           type="tel"
                           className="form-control"
@@ -158,7 +158,7 @@ export default function SettingsPage() {
                       </div>
 
                       <div className="col-md-6">
-                        <label className="form-label text-white fw-semibold small">Support & Inquiries Email</label>
+                        <label className="form-label text-dark fw-semibold small">Support & Inquiries Email</label>
                         <input
                           type="email"
                           className="form-control"
@@ -168,7 +168,7 @@ export default function SettingsPage() {
                       </div>
 
                       <div className="col-12">
-                        <label className="form-label text-white fw-semibold small">Main Showroom Physical Address</label>
+                        <label className="form-label text-dark fw-semibold small">Main Showroom Physical Address</label>
                         <input
                           type="text"
                           className="form-control"
@@ -178,7 +178,7 @@ export default function SettingsPage() {
                       </div>
 
                       <div className="col-12">
-                        <label className="form-label text-white fw-semibold small">Showroom Operating Hours</label>
+                        <label className="form-label text-dark fw-semibold small">Showroom Operating Hours</label>
                         <input
                           type="text"
                           className="form-control"
@@ -294,7 +294,7 @@ export default function SettingsPage() {
                   <form onSubmit={handleSaveSettings}>
                     <div className="row g-3">
                       <div className="col-12">
-                        <label className="form-label text-white fw-semibold small">WhatsApp Business API Token</label>
+                        <label className="form-label text-dark fw-semibold small">WhatsApp Business API Token</label>
                         <input
                           type="password"
                           className="form-control font-monospace"
@@ -304,7 +304,7 @@ export default function SettingsPage() {
                       </div>
 
                       <div className="col-md-6">
-                        <label className="form-label text-white fw-semibold small">SMS DLT Header / Sender ID</label>
+                        <label className="form-label text-dark fw-semibold small">SMS DLT Header / Sender ID</label>
                         <input
                           type="text"
                           className="form-control font-monospace"
@@ -314,7 +314,7 @@ export default function SettingsPage() {
                       </div>
 
                       <div className="col-md-6">
-                        <label className="form-label text-white fw-semibold small">API Gateway Status</label>
+                        <label className="form-label text-dark fw-semibold small">API Gateway Status</label>
                         <div className="p-2 rounded-2 d-flex align-items-center gap-2" style={{ background: "#181a1b", border: "1px solid var(--border-color)" }}>
                           <span style={{ width: "10px", height: "10px", background: "#22c55e", borderRadius: "50%" }}></span>
                           <span className="text-success fw-bold small">Connected & Active</span>

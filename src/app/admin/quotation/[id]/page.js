@@ -462,7 +462,7 @@ export default function QuotationDetailsPage() {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label text-white small fw-semibold">
+                    <label className="form-label text-dark small fw-semibold">
                       Recipient Customer Email <span className="text-danger">*</span>
                     </label>
                     <input
@@ -479,7 +479,7 @@ export default function QuotationDetailsPage() {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label text-white small fw-semibold">Email Subject</label>
+                    <label className="form-label text-dark small fw-semibold">Email Subject</label>
                     <input
                       type="text"
                       className="form-control"
@@ -489,7 +489,7 @@ export default function QuotationDetailsPage() {
                   </div>
 
                   <div className="mb-2">
-                    <label className="form-label text-white small fw-semibold">Personalized Message / Notes</label>
+                    <label className="form-label text-dark small fw-semibold">Personalized Message / Notes</label>
                     <textarea
                       className="form-control"
                       rows="3"

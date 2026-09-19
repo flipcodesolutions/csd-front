@@ -83,7 +83,7 @@ export default function UpdatePricePage() {
                 <form onSubmit={handleSavePrice}>
                   <div className="row g-3">
                     <div className="col-md-4">
-                      <label className="form-label text-white fw-semibold small">Vehicle Brand</label>
+                      <label className="form-label text-dark fw-semibold small">Vehicle Brand</label>
                       <select
                         className="form-select"
                         value={selectedBrand}
@@ -99,7 +99,7 @@ export default function UpdatePricePage() {
                     </div>
 
                     <div className="col-md-4">
-                      <label className="form-label text-white fw-semibold small">Model</label>
+                      <label className="form-label text-dark fw-semibold small">Model</label>
                       <select
                         className="form-select"
                         value={selectedModel}
@@ -115,7 +115,7 @@ export default function UpdatePricePage() {
                     </div>
 
                     <div className="col-md-4">
-                      <label className="form-label text-white fw-semibold small">Variant</label>
+                      <label className="form-label text-dark fw-semibold small">Variant</label>
                       <select
                         className="form-select"
                         value={selectedVariant}
@@ -131,7 +131,7 @@ export default function UpdatePricePage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Ex-Showroom Base Price (₹) *</label>
+                      <label className="form-label text-dark fw-semibold small">Ex-Showroom Base Price (₹) *</label>
                       <div className="input-group">
                         <span className="input-group-text">₹</span>
                         <input
@@ -145,7 +145,7 @@ export default function UpdatePricePage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">RTO & Registration Tax (₹)</label>
+                      <label className="form-label text-dark fw-semibold small">RTO & Registration Tax (₹)</label>
                       <div className="input-group">
                         <span className="input-group-text">₹</span>
                         <input
@@ -158,7 +158,7 @@ export default function UpdatePricePage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Comprehensive Insurance (₹)</label>
+                      <label className="form-label text-dark fw-semibold small">Comprehensive Insurance (₹)</label>
                       <div className="input-group">
                         <span className="input-group-text">₹</span>
                         <input
@@ -171,7 +171,7 @@ export default function UpdatePricePage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Fastag / Hypothecation (₹)</label>
+                      <label className="form-label text-dark fw-semibold small">Fastag / Hypothecation (₹)</label>
                       <div className="input-group">
                         <span className="input-group-text">₹</span>
                         <input
@@ -265,14 +265,14 @@ export default function UpdatePricePage() {
                 <tr>
                   <td>Jan 28, 2026</td>
                   <td>
-                    <span className="text-white fw-semibold small">Adventure Plus Dark Edition</span>
+                    <span className="text-dark fw-semibold small">Adventure Plus Dark Edition</span>
                     <div className="text-muted" style={{ fontSize: "0.72rem" }}>
                       Safari
                     </div>
                   </td>
                   <td>Tata Motors</td>
                   <td className="text-muted">₹25,80,000</td>
-                  <td className="text-white fw-bold">₹26,19,000</td>
+                  <td className="text-dark fw-bold">₹26,19,000</td>
                   <td>
                     <span className="text-danger small fw-bold">+₹39,000</span>
                   </td>
@@ -287,14 +287,14 @@ export default function UpdatePricePage() {
                 <tr>
                   <td>Jan 22, 2026</td>
                   <td>
-                    <span className="text-white fw-semibold small">Alpha+ Strong Hybrid</span>
+                    <span className="text-dark fw-semibold small">Alpha+ Strong Hybrid</span>
                     <div className="text-muted" style={{ fontSize: "0.72rem" }}>
                       Grand Vitara
                     </div>
                   </td>
                   <td>Maruti Suzuki</td>
                   <td className="text-muted">₹19,75,000</td>
-                  <td className="text-white fw-bold">₹19,99,000</td>
+                  <td className="text-dark fw-bold">₹19,99,000</td>
                   <td>
                     <span className="text-danger small fw-bold">+₹24,000</span>
                   </td>
@@ -309,14 +309,14 @@ export default function UpdatePricePage() {
                 <tr>
                   <td>Jan 15, 2026</td>
                   <td>
-                    <span className="text-white fw-semibold small">AX7L 4x4 AT</span>
+                    <span className="text-dark fw-semibold small">AX7L 4x4 AT</span>
                     <div className="text-muted" style={{ fontSize: "0.72rem" }}>
                       Thar Roxx
                     </div>
                   </td>
                   <td>Mahindra</td>
                   <td className="text-muted">₹22,10,000</td>
-                  <td className="text-white fw-bold">₹22,49,000</td>
+                  <td className="text-dark fw-bold">₹22,49,000</td>
                   <td>
                     <span className="text-danger small fw-bold">+₹39,000</span>
                   </td>
@@ -331,14 +331,14 @@ export default function UpdatePricePage() {
                 <tr>
                   <td>Jan 10, 2026</td>
                   <td>
-                    <span className="text-white fw-semibold small">Legender 4x4 AT</span>
+                    <span className="text-dark fw-semibold small">Legender 4x4 AT</span>
                     <div className="text-muted" style={{ fontSize: "0.72rem" }}>
                       Fortuner
                     </div>
                   </td>
                   <td>Toyota Kirloskar</td>
                   <td className="text-muted">₹47,20,000</td>
-                  <td className="text-white fw-bold">₹48,00,000</td>
+                  <td className="text-dark fw-bold">₹48,00,000</td>
                   <td>
                     <span className="text-danger small fw-bold">+₹80,000</span>
                   </td>

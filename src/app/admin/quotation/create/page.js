@@ -543,7 +543,7 @@ function SendQuotationPageContent() {
               <li className="breadcrumb-item">Sales</li>
               <li className="breadcrumb-item active">Send Quotation</li>
             </ul>
-            <h1 className="page-title mt-1 fw-bold fs-3 text-white">Official Vehicle Quotation</h1>
+            <h1 className="page-title mt-1 fw-bold fs-3">Official Vehicle Quotation</h1>
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2 flex-wrap">
@@ -1312,7 +1312,7 @@ function SendQuotationPageContent() {
               <form onSubmit={handleSendEmailSubmit}>
                 <div className="modal-body-custom">
                   <div className="mb-3">
-                    <label className="form-label text-white small fw-semibold">
+                    <label className="form-label text-dark small fw-semibold">
                       Client Email Address <span className="text-danger">*</span>
                     </label>
                     <input
@@ -1326,7 +1326,7 @@ function SendQuotationPageContent() {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label text-white small fw-semibold">Subject</label>
+                    <label className="form-label text-dark small fw-semibold">Subject</label>
                     <input
                       type="text"
                       className="form-control"
@@ -1336,7 +1336,7 @@ function SendQuotationPageContent() {
                   </div>
 
                   <div className="mb-2">
-                    <label className="form-label text-white small fw-semibold">Message Note</label>
+                    <label className="form-label text-dark small fw-semibold">Message Note</label>
                     <textarea
                       className="form-control"
                       rows="3"

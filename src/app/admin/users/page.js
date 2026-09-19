@@ -431,13 +431,13 @@ export default function UsersPage() {
                             </div>
                           )}
                           <div>
-                            <h6 className="mb-0 text-white fw-bold">{user.name}</h6>
+                            <h6 className="mb-0 text-dark fw-bold">{user.name}</h6>
                             <span className="text-muted small">{user.email}</span>
                           </div>
                         </div>
                       </td>
                       <td>
-                        <span className="text-white small">
+                        <span className="text-dark small">
                           <i className="bi bi-telephone me-1 text-muted"></i>
                           {user.phone || "N/A"}
                         </span>
@@ -453,7 +453,7 @@ export default function UsersPage() {
                               ? "bg-primary-subtle text-primary"
                               : user.role === "Customer"
                               ? "bg-info-subtle text-info"
-                              : "bg-secondary-subtle text-white"
+                              : "bg-secondary-subtle text-dark"
                           }`}
                         >
                           {user.role}
@@ -546,7 +546,7 @@ export default function UsersPage() {
                 <div className="modal-body-custom py-3">
                   {/* Full Name */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Full Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -562,7 +562,7 @@ export default function UsersPage() {
 
                   {/* Email Address */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Email Address <span className="text-danger">*</span>
                     </label>
                     <input
@@ -577,7 +577,7 @@ export default function UsersPage() {
 
                   {/* Account Password */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Account Password <span className="text-danger">*</span>
                     </label>
                     <div className="input-icon-box">
@@ -603,7 +603,7 @@ export default function UsersPage() {
 
                   {/* Profile Photo */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small mb-1">
+                    <label className="form-label text-dark fw-bold small mb-1">
                       Profile Photo <span className="text-danger">*</span>
                     </label>
                     <input
@@ -619,7 +619,7 @@ export default function UsersPage() {
 
                   {/* Contact No */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Contact No <span className="text-danger">*</span>
                     </label>
                     <input
@@ -634,7 +634,7 @@ export default function UsersPage() {
 
                   {/* Role (Enum) */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Role (Enum) <span className="text-danger">*</span>
                     </label>
                     <select
@@ -700,7 +700,7 @@ export default function UsersPage() {
                 <div className="modal-body-custom py-3">
                   {/* Full Name */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Full Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -715,7 +715,7 @@ export default function UsersPage() {
 
                   {/* Email Address */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Email Address <span className="text-danger">*</span>
                     </label>
                     <input
@@ -729,7 +729,7 @@ export default function UsersPage() {
 
                   {/* Password (Optional update) */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Password (Leave blank to keep current)
                     </label>
                     <input
@@ -743,7 +743,7 @@ export default function UsersPage() {
 
                   {/* Profile Photo */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small mb-1">Profile Photo</label>
+                    <label className="form-label text-dark fw-bold small mb-1">Profile Photo</label>
                     <input
                       type="file"
                       className="form-control"
@@ -757,7 +757,7 @@ export default function UsersPage() {
 
                   {/* Contact No */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Contact No <span className="text-danger">*</span>
                     </label>
                     <input
@@ -771,7 +771,7 @@ export default function UsersPage() {
 
                   {/* Role (Enum) */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Role (Enum) <span className="text-danger">*</span>
                     </label>
                     <select
@@ -790,7 +790,7 @@ export default function UsersPage() {
 
                   {/* Status */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">Status</label>
+                    <label className="form-label text-dark fw-bold small">Status</label>
                     <select
                       className="form-select"
                       value={editUser.status}
@@ -842,7 +842,7 @@ export default function UsersPage() {
               </div>
 
               <div className="modal-body-custom">
-                <p className="text-white mb-0">
+                <p className="text-dark mb-0">
                   Are you sure you want to delete user <strong>"{deleteTarget.name}"</strong>?
                 </p>
               </div>

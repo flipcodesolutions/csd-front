@@ -1394,6 +1394,13 @@ label {
     cursor: pointer;
 }
 
+/* Prevent accidental text-white on form labels across all pages */
+.form-label.text-white,
+label.text-white,
+.form-check-label.text-white {
+    color: var(--text-primary) !important;
+}
+
 .form-control,
 .form-select {
     background-color: #FFFFFF !important;
@@ -1727,6 +1734,7 @@ label {
         opacity: 0;
         transform: translateY(-8px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1796,6 +1804,7 @@ label {
         opacity: 0;
         transform: translateX(50px) scale(0.95);
     }
+
     to {
         opacity: 1;
         transform: translateX(0) scale(1);
@@ -1938,9 +1947,20 @@ label {
 }
 
 @keyframes timerPulse {
-    0% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.3; transform: scale(0.85); }
-    100% { opacity: 1; transform: scale(1); }
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: scale(0.85);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 .timer-dot {
@@ -2188,6 +2208,7 @@ label {
         opacity: 0;
         transform: translateY(-20px) scale(0.97);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -2219,6 +2240,141 @@ label {
     overflow-y: auto;
     background: #FFFFFF;
     color: var(--text-primary);
+}
+
+/* Ensure text inside white modal dialogs is never white */
+.modal-body-custom .form-label,
+.modal-body-custom .form-check-label,
+.modal-body-custom h1,
+.modal-body-custom h2,
+.modal-body-custom h3,
+.modal-body-custom h4,
+.modal-body-custom h5,
+.modal-body-custom h6,
+.modal-body-custom p,
+.modal-body-custom strong:not(.btn *):not(.badge *),
+.modal-body-custom span.text-white:not(.badge):not(.btn),
+.modal-body-custom div.text-white:not(.badge):not(.btn),
+.modal-body-custom .text-white:not(.badge):not(.btn) {
+    color: var(--text-primary) !important;
+}
+
+/* ==========================================================================
+   HIGH-CONTRAST TEXT INSIDE DARK / BLACK CONTAINERS
+   (Overrides modal-body-custom to prevent dark-on-dark text)
+   ========================================================================== */
+.modal-body-custom [style*="background: #181"],
+.modal-body-custom [style*="background:#181"],
+.modal-body-custom [style*="background: #161"],
+.modal-body-custom [style*="background:#161"],
+.modal-body-custom [style*="background: #151"],
+.modal-body-custom [style*="background:#151"],
+.modal-body-custom .bg-dark,
+[style*="background: #181"],
+[style*="background:#181"],
+[style*="background: #161"],
+[style*="background:#161"],
+[style*="background: #151"],
+[style*="background:#151"],
+.bg-dark {
+    color: #FFFFFF !important;
+}
+
+/* Radio / Checkbox labels, spans, and text inside dark containers */
+.modal-body-custom [style*="background: #181"] .form-check-label,
+.modal-body-custom [style*="background:#181"] .form-check-label,
+.modal-body-custom [style*="background: #161"] .form-check-label,
+.modal-body-custom [style*="background:#161"] .form-check-label,
+.modal-body-custom .bg-dark .form-check-label,
+.modal-body-custom [style*="background: #181"] label,
+.modal-body-custom [style*="background:#181"] label,
+.modal-body-custom [style*="background: #181"] span:not(.badge),
+.modal-body-custom [style*="background:#181"] span:not(.badge),
+.modal-body-custom [style*="background: #161"] span:not(.badge),
+.modal-body-custom [style*="background:#161"] span:not(.badge),
+.modal-body-custom [style*="background: #181"] p,
+.modal-body-custom [style*="background:#181"] p,
+.modal-body-custom [style*="background: #181"] strong:not(.badge),
+.modal-body-custom [style*="background:#181"] strong:not(.badge),
+.modal-body-custom [style*="background: #161"] strong:not(.badge),
+.modal-body-custom [style*="background:#161"] strong:not(.badge),
+.modal-body-custom .bg-dark span:not(.badge),
+.modal-body-custom .bg-dark div,
+.modal-body-custom .bg-dark p,
+.modal-body-custom .bg-dark strong:not(.badge) {
+    color: #FFFFFF !important;
+}
+
+/* Status & Priority colors inside dark containers */
+.modal-body-custom [style*="background: #181"] .text-danger,
+.modal-body-custom [style*="background:#181"] .text-danger,
+.modal-body-custom .bg-dark .text-danger,
+[style*="background: #181"] .text-danger,
+.bg-dark .text-danger,
+.modal-body-custom [style*="background: #181"] .form-check-label.text-danger,
+.modal-body-custom [style*="background:#181"] .form-check-label.text-danger {
+    color: #F87171 !important;
+}
+
+.modal-body-custom [style*="background: #181"] .text-warning,
+.modal-body-custom [style*="background:#181"] .text-warning,
+.modal-body-custom .bg-dark .text-warning,
+[style*="background: #181"] .text-warning,
+.bg-dark .text-warning,
+.modal-body-custom [style*="background: #181"] .form-check-label.text-warning,
+.modal-body-custom [style*="background:#181"] .form-check-label.text-warning {
+    color: #FBBF24 !important;
+}
+
+.modal-body-custom [style*="background: #181"] .text-info,
+.modal-body-custom [style*="background:#181"] .text-info,
+.modal-body-custom .bg-dark .text-info,
+[style*="background: #181"] .text-info,
+.bg-dark .text-info,
+.modal-body-custom [style*="background: #181"] .form-check-label.text-info,
+.modal-body-custom [style*="background:#181"] .form-check-label.text-info {
+    color: #38BDF8 !important;
+}
+
+.modal-body-custom [style*="background: #181"] .text-success,
+.modal-body-custom [style*="background:#181"] .text-success,
+.modal-body-custom .bg-dark .text-success,
+[style*="background: #181"] .text-success,
+.bg-dark .text-success,
+.modal-body-custom [style*="background: #181"] .form-check-label.text-success,
+.modal-body-custom [style*="background:#181"] .form-check-label.text-success {
+    color: #4ADE80 !important;
+}
+
+.modal-body-custom [style*="background: #181"] .text-primary,
+.modal-body-custom [style*="background:#181"] .text-primary,
+.modal-body-custom .bg-dark .text-primary,
+[style*="background: #181"] .text-primary,
+.bg-dark .text-primary {
+    color: #60A5FA !important;
+}
+
+.modal-body-custom [style*="background: #181"] .text-muted,
+.modal-body-custom [style*="background:#181"] .text-muted,
+.modal-body-custom [style*="background: #161"] .text-muted,
+.modal-body-custom [style*="background:#161"] .text-muted,
+.modal-body-custom .bg-dark .text-muted,
+[style*="background: #181"] .text-muted,
+.bg-dark .text-muted {
+    color: #94A3B8 !important;
+}
+
+/* Ensure text inside table cells is visible on light backgrounds */
+.table-custom tbody td h1,
+.table-custom tbody td h2,
+.table-custom tbody td h3,
+.table-custom tbody td h4,
+.table-custom tbody td h5,
+.table-custom tbody td h6,
+.table-custom tbody td .text-white:not(.badge):not(.btn),
+.table-custom tbody td span.text-white:not(.badge):not(.btn),
+.table-custom tbody td div.text-white:not(.badge):not(.btn) {
+    color: var(--text-primary) !important;
 }
 
 .modal-footer-custom {

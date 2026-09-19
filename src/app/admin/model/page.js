@@ -355,27 +355,25 @@ export default function ModelPage() {
                       <td>
                         <div className="d-flex align-items-center gap-2">
                           <i
-                            className={`bi ${
-                              item.vehicle_segment === "2 Wheeler"
+                            className={`bi ${item.vehicle_segment === "2 Wheeler"
                                 ? "bi-bicycle text-warning"
                                 : "bi-car-front-fill text-info"
-                            }`}
+                              }`}
                           ></i>
-                          <h6 className="mb-0 text-white fw-bold">{item.name}</h6>
+                          <h6 className="mb-0 text-dark fw-bold">{item.name}</h6>
                         </div>
                       </td>
                       <td>
-                        <span className="badge bg-secondary-subtle text-white">
+                        <span className="badge bg-secondary-subtle text-dark">
                           {item.brand?.name || "N/A"}
                         </span>
                       </td>
                       <td>
                         <span
-                          className={`badge ${
-                            item.vehicle_segment === "2 Wheeler"
+                          className={`badge ${item.vehicle_segment === "2 Wheeler"
                               ? "bg-warning-subtle text-warning"
                               : "bg-info-subtle text-info"
-                          } small`}
+                            } small`}
                         >
                           {item.vehicle_segment}
                         </span>
@@ -395,10 +393,10 @@ export default function ModelPage() {
                         <span className="text-muted small">
                           {item.created_at
                             ? new Date(item.created_at).toLocaleDateString("en-IN", {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                              })
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            })
                             : "N/A"}
                         </span>
                       </td>
@@ -457,7 +455,7 @@ export default function ModelPage() {
                 <div className="modal-body-custom py-3">
                   {/* Vehicle Segment (Radio Buttons) */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small mb-1">
+                    <label className="form-label text-dark fw-bold small mb-1">
                       Vehicle Segment <span className="text-danger">*</span>
                     </label>
                     <div
@@ -474,7 +472,7 @@ export default function ModelPage() {
                           checked={formData.vehicle_segment === "2 Wheeler"}
                           onChange={(e) => setFormData({ ...formData, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-white small" htmlFor="addRadio2W">
+                        <label className="form-check-label text-dark small" htmlFor="addRadio2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -489,7 +487,7 @@ export default function ModelPage() {
                           checked={formData.vehicle_segment === "4 Wheeler"}
                           onChange={(e) => setFormData({ ...formData, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-white small" htmlFor="addRadio4W">
+                        <label className="form-check-label text-dark small" htmlFor="addRadio4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>
@@ -498,7 +496,7 @@ export default function ModelPage() {
 
                   {/* Select Brand Dropdown */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Select Brand <span className="text-danger">*</span>
                     </label>
                     <select
@@ -518,7 +516,7 @@ export default function ModelPage() {
 
                   {/* Model Name Input */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Model Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -534,7 +532,7 @@ export default function ModelPage() {
 
                   {/* Status Dropdown */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -591,7 +589,7 @@ export default function ModelPage() {
                 <div className="modal-body-custom py-3">
                   {/* Vehicle Segment (Radio Buttons) */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small mb-1">
+                    <label className="form-label text-dark fw-bold small mb-1">
                       Vehicle Segment <span className="text-danger">*</span>
                     </label>
                     <div
@@ -608,7 +606,7 @@ export default function ModelPage() {
                           checked={editModel.vehicle_segment === "2 Wheeler"}
                           onChange={(e) => setEditModel({ ...editModel, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-white small" htmlFor="editRadio2W">
+                        <label className="form-check-label text-dark small" htmlFor="editRadio2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -623,7 +621,7 @@ export default function ModelPage() {
                           checked={editModel.vehicle_segment === "4 Wheeler"}
                           onChange={(e) => setEditModel({ ...editModel, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label text-white small" htmlFor="editRadio4W">
+                        <label className="form-check-label text-dark small" htmlFor="editRadio4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>
@@ -632,7 +630,7 @@ export default function ModelPage() {
 
                   {/* Select Brand Dropdown */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Select Brand <span className="text-danger">*</span>
                     </label>
                     <select
@@ -652,7 +650,7 @@ export default function ModelPage() {
 
                   {/* Model Name Input */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Model Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -668,7 +666,7 @@ export default function ModelPage() {
 
                   {/* Status Dropdown */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -722,7 +720,7 @@ export default function ModelPage() {
               </div>
 
               <div className="modal-body-custom">
-                <p className="text-white mb-0">
+                <p className="text-dark mb-0">
                   Are you sure you want to delete model <strong>"{deleteTarget.name}"</strong>?
                 </p>
               </div>

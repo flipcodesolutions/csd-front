@@ -411,10 +411,10 @@ export default function VariantPage() {
                         <span className="text-muted small">{index + 1}</span>
                       </td>
                       <td>
-                        <h6 className="mb-0 text-white fw-bold">{item.name}</h6>
+                        <h6 className="mb-0 text-dark fw-bold">{item.name}</h6>
                       </td>
                       <td>
-                        <span className="badge bg-secondary-subtle text-white">
+                        <span className="badge bg-secondary-subtle text-dark">
                           {item.model?.name || "N/A"}
                         </span>
                       </td>
@@ -504,7 +504,7 @@ export default function VariantPage() {
                 <div className="modal-body-custom py-3">
                   {/* Select Brand Dropdown */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Select Brand <span className="text-danger">*</span>
                     </label>
                     <select
@@ -532,7 +532,7 @@ export default function VariantPage() {
 
                   {/* Select Model Dropdown */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Select Model <span className="text-danger">*</span>
                     </label>
                     <select
@@ -552,7 +552,7 @@ export default function VariantPage() {
 
                   {/* Variant Name Input */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Variant Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -567,7 +567,7 @@ export default function VariantPage() {
 
                   {/* Price (₹ Ex-Showroom / CSD) Input */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Price (₹ Ex-Showroom / CSD) <span className="text-danger">*</span>
                     </label>
                     <div className="input-group">
@@ -595,7 +595,7 @@ export default function VariantPage() {
 
                   {/* Status Dropdown */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -652,7 +652,7 @@ export default function VariantPage() {
                 <div className="modal-body-custom py-3">
                   {/* Select Brand Dropdown */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Select Brand <span className="text-danger">*</span>
                     </label>
                     <select
@@ -680,7 +680,7 @@ export default function VariantPage() {
 
                   {/* Select Model Dropdown */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Select Model <span className="text-danger">*</span>
                     </label>
                     <select
@@ -700,7 +700,7 @@ export default function VariantPage() {
 
                   {/* Variant Name Input */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Variant Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -715,7 +715,7 @@ export default function VariantPage() {
 
                   {/* Price (₹ Ex-Showroom / CSD) Input */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Price (₹ Ex-Showroom / CSD) <span className="text-danger">*</span>
                     </label>
                     <div className="input-group">
@@ -743,7 +743,7 @@ export default function VariantPage() {
 
                   {/* Status Dropdown */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -797,7 +797,7 @@ export default function VariantPage() {
               </div>
 
               <div className="modal-body-custom">
-                <p className="text-white mb-0">
+                <p className="text-dark mb-0">
                   Are you sure you want to delete vehicle variant <strong>"{deleteTarget.name}"</strong>?
                 </p>
               </div>

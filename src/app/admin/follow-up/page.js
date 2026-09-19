@@ -179,7 +179,7 @@ export default function FollowUpPage() {
                     <div className="d-flex align-items-center gap-2">
                       <img src="/image/avatar-1.svg" alt="Rajesh" className="avatar" />
                       <div>
-                        <div className="text-white fw-bold small">Rajesh Verma</div>
+                        <div className="text-dark fw-bold small">Rajesh Verma</div>
                         <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                           +91 98231 44520 • New Delhi
                         </div>
@@ -187,7 +187,7 @@ export default function FollowUpPage() {
                     </div>
                   </td>
                   <td>
-                    <span className="text-white fw-semibold small">Tata Safari Adventure Plus</span>
+                    <span className="text-dark fw-semibold small">Tata Safari Adventure Plus</span>
                     <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                       Dark Edition Diesel AT
                     </div>
@@ -207,7 +207,7 @@ export default function FollowUpPage() {
                     </span>
                   </td>
                   <td>
-                    <span className="text-white small">Vikram Singh</span>
+                    <span className="text-dark small">Vikram Singh</span>
                   </td>
                   <td>
                     <span className="badge bg-danger-subtle text-danger px-2 py-1 rounded-pill small">
@@ -238,7 +238,7 @@ export default function FollowUpPage() {
                     <div className="d-flex align-items-center gap-2">
                       <img src="/image/avatar-2.svg" alt="Priya" className="avatar" />
                       <div>
-                        <div className="text-white fw-bold small">Priya Menon</div>
+                        <div className="text-dark fw-bold small">Priya Menon</div>
                         <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                           +91 97410 88231 • Bengaluru
                         </div>
@@ -246,7 +246,7 @@ export default function FollowUpPage() {
                     </div>
                   </td>
                   <td>
-                    <span className="text-white fw-semibold small">Hyundai Creta SX (O) Turbo</span>
+                    <span className="text-dark fw-semibold small">Hyundai Creta SX (O) Turbo</span>
                     <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                       Petrol 7-Speed DCT
                     </div>
@@ -266,7 +266,7 @@ export default function FollowUpPage() {
                     </span>
                   </td>
                   <td>
-                    <span className="text-white small">Ananya Roy</span>
+                    <span className="text-dark small">Ananya Roy</span>
                   </td>
                   <td>
                     <span className="badge bg-warning-subtle text-warning px-2 py-1 rounded-pill small">
@@ -297,7 +297,7 @@ export default function FollowUpPage() {
                     <div className="d-flex align-items-center gap-2">
                       <img src="/image/avatar-3.svg" alt="Amit" className="avatar" />
                       <div>
-                        <div className="text-white fw-bold small">Amit Patel</div>
+                        <div className="text-dark fw-bold small">Amit Patel</div>
                         <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                           +91 99012 34567 • Ahmedabad
                         </div>
@@ -305,7 +305,7 @@ export default function FollowUpPage() {
                     </div>
                   </td>
                   <td>
-                    <span className="text-white fw-semibold small">Mahindra Thar Roxx AX7L</span>
+                    <span className="text-dark fw-semibold small">Mahindra Thar Roxx AX7L</span>
                     <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                       4x4 Diesel AT
                     </div>
@@ -319,13 +319,13 @@ export default function FollowUpPage() {
                     </div>
                   </td>
                   <td>
-                    <div className="text-white fw-bold small">Tomorrow • 10:00 AM</div>
+                    <div className="text-dark fw-bold small">Tomorrow • 10:00 AM</div>
                     <span className="text-muted" style={{ fontSize: "0.72rem" }}>
                       Down payment collection
                     </span>
                   </td>
                   <td>
-                    <span className="text-white small">Vikram Singh</span>
+                    <span className="text-dark small">Vikram Singh</span>
                   </td>
                   <td>
                     <span className="badge bg-danger-subtle text-danger px-2 py-1 rounded-pill small">
@@ -356,7 +356,7 @@ export default function FollowUpPage() {
                     <div className="d-flex align-items-center gap-2">
                       <img src="/image/avatar-4.svg" alt="Sunita" className="avatar" />
                       <div>
-                        <div className="text-white fw-bold small">Sunita Rao</div>
+                        <div className="text-dark fw-bold small">Sunita Rao</div>
                         <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                           +91 98860 11223 • Hyderabad
                         </div>
@@ -364,7 +364,7 @@ export default function FollowUpPage() {
                     </div>
                   </td>
                   <td>
-                    <span className="text-white fw-semibold small">Maruti Grand Vitara Hybrid</span>
+                    <span className="text-dark fw-semibold small">Maruti Grand Vitara Hybrid</span>
                     <div className="text-muted" style={{ fontSize: "0.75rem" }}>
                       Alpha Strong Hybrid e-CVT
                     </div>
@@ -378,13 +378,13 @@ export default function FollowUpPage() {
                     </div>
                   </td>
                   <td>
-                    <div className="text-white fw-bold small">Sep 05, 2026</div>
+                    <div className="text-dark fw-bold small">Sep 05, 2026</div>
                     <span className="text-muted" style={{ fontSize: "0.72rem" }}>
                       Follow-up on quote
                     </span>
                   </td>
                   <td>
-                    <span className="text-white small">Rohan Mehta</span>
+                    <span className="text-dark small">Rohan Mehta</span>
                   </td>
                   <td>
                     <span className="badge bg-warning-subtle text-warning px-2 py-1 rounded-pill small">
@@ -432,7 +432,7 @@ export default function FollowUpPage() {
                 <div className="modal-body-custom">
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Customer Name</label>
+                      <label className="form-label text-dark fw-semibold small">Customer Name</label>
                       <input
                         type="text"
                         className="form-control"
@@ -443,7 +443,7 @@ export default function FollowUpPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Phone Number</label>
+                      <label className="form-label text-dark fw-semibold small">Phone Number</label>
                       <input
                         type="tel"
                         className="form-control"
@@ -454,7 +454,7 @@ export default function FollowUpPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Call Outcome</label>
+                      <label className="form-label text-dark fw-semibold small">Call Outcome</label>
                       <select
                         className="form-select"
                         value={callLog.outcome}
@@ -471,7 +471,7 @@ export default function FollowUpPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white fw-semibold small">Next Action Date</label>
+                      <label className="form-label text-dark fw-semibold small">Next Action Date</label>
                       <input
                         type="date"
                         className="form-control"
@@ -481,7 +481,7 @@ export default function FollowUpPage() {
                     </div>
 
                     <div className="col-12">
-                      <label className="form-label text-white fw-semibold small">Call Notes & Conversation Summary</label>
+                      <label className="form-label text-dark fw-semibold small">Call Notes & Conversation Summary</label>
                       <textarea
                         className="form-control"
                         rows="3"

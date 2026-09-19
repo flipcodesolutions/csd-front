@@ -406,7 +406,7 @@ export default function BrandPage() {
                                 {brand.name.charAt(0)}
                               </div>
                             )}
-                            <h6 className="mb-0 text-white fw-bold">{brand.name}</h6>
+                            <h6 className="mb-0 text-dark fw-bold">{brand.name}</h6>
                           </div>
                         </td>
                         <td>
@@ -414,9 +414,8 @@ export default function BrandPage() {
                             {types.map((t, idx) => (
                               <span
                                 key={idx}
-                                className={`badge ${
-                                  t === "2 Wheeler" ? "bg-warning-subtle text-warning" : "bg-info-subtle text-info"
-                                } small`}
+                                className={`badge ${t === "2 Wheeler" ? "bg-warning-subtle text-warning" : "bg-info-subtle text-info"
+                                  } small`}
                                 style={{ fontSize: "11px" }}
                               >
                                 <i className={`bi ${t === "2 Wheeler" ? "bi-bicycle" : "bi-car-front"} me-1`}></i>
@@ -440,10 +439,10 @@ export default function BrandPage() {
                           <span className="text-muted small">
                             {brand.created_at
                               ? new Date(brand.created_at).toLocaleDateString("en-IN", {
-                                  day: "2-digit",
-                                  month: "short",
-                                  year: "numeric",
-                                })
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              })
                               : "N/A"}
                           </span>
                         </td>
@@ -506,7 +505,7 @@ export default function BrandPage() {
                 <div className="modal-body-custom py-3">
                   {/* Brand Name */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Brand Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -522,7 +521,7 @@ export default function BrandPage() {
 
                   {/* Vehicle Type */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small mb-1">
+                    <label className="form-label text-dark fw-bold small mb-1">
                       Vehicle Type <span className="text-danger">*</span>
                     </label>
                     <div
@@ -537,7 +536,7 @@ export default function BrandPage() {
                           checked={formData.vehicle_type.includes("2 Wheeler")}
                           onChange={() => handleTypeToggle("2 Wheeler")}
                         />
-                        <label className="form-check-label text-white small" htmlFor="addCheck2W">
+                        <label className="form-check-label text-dark small" htmlFor="addCheck2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -550,7 +549,7 @@ export default function BrandPage() {
                           checked={formData.vehicle_type.includes("4 Wheeler")}
                           onChange={() => handleTypeToggle("4 Wheeler")}
                         />
-                        <label className="form-check-label text-white small" htmlFor="addCheck4W">
+                        <label className="form-check-label text-dark small" htmlFor="addCheck4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>
@@ -562,7 +561,7 @@ export default function BrandPage() {
 
                   {/* Brand Logo Image */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small mb-1">
+                    <label className="form-label text-dark fw-bold small mb-1">
                       Brand Logo Image <span className="text-danger">*</span>
                     </label>
                     <input
@@ -578,7 +577,7 @@ export default function BrandPage() {
 
                   {/* Status */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -635,7 +634,7 @@ export default function BrandPage() {
                 <div className="modal-body-custom py-3">
                   {/* Brand Name */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Brand Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -651,7 +650,7 @@ export default function BrandPage() {
 
                   {/* Vehicle Type */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small mb-1">
+                    <label className="form-label text-dark fw-bold small mb-1">
                       Vehicle Type <span className="text-danger">*</span>
                     </label>
                     <div
@@ -669,7 +668,7 @@ export default function BrandPage() {
                           }
                           onChange={() => handleEditTypeToggle("2 Wheeler")}
                         />
-                        <label className="form-check-label text-white small" htmlFor="editCheck2W">
+                        <label className="form-check-label text-dark small" htmlFor="editCheck2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -685,7 +684,7 @@ export default function BrandPage() {
                           }
                           onChange={() => handleEditTypeToggle("4 Wheeler")}
                         />
-                        <label className="form-check-label text-white small" htmlFor="editCheck4W">
+                        <label className="form-check-label text-dark small" htmlFor="editCheck4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>
@@ -697,7 +696,7 @@ export default function BrandPage() {
 
                   {/* Brand Logo Image */}
                   <div className="mb-3">
-                    <label className="form-label text-white fw-bold small mb-1">
+                    <label className="form-label text-dark fw-bold small mb-1">
                       Brand Logo Image (Optional change)
                     </label>
                     <input
@@ -713,7 +712,7 @@ export default function BrandPage() {
 
                   {/* Status */}
                   <div className="mb-2">
-                    <label className="form-label text-white fw-bold small">
+                    <label className="form-label text-dark fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -767,7 +766,7 @@ export default function BrandPage() {
               </div>
 
               <div className="modal-body-custom">
-                <p className="text-white mb-0">
+                <p className="text-dark mb-0">
                   Are you sure you want to delete brand <strong>"{deleteTarget.name}"</strong>?
                 </p>
               </div>

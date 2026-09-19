@@ -568,70 +568,70 @@ export default function LoginPage() {
           FORGOT PASSWORD MODAL
           ---------------------------------------------------- */}
       {showForgotModal && (
-        <div className="crm-modal-backdrop">
-          <div className="crm-modal-box">
-            <div className="crm-modal-header">
-              <h3 className="crm-modal-title">
+        <div className="modal-backdrop-custom" onClick={() => setShowForgotModal(false)}>
+          <div className="modal-dialog-custom" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "480px" }}>
+            <div className="modal-header-custom">
+              <h5 className="modal-title-custom">
                 <i className="bi bi-key-fill text-warning"></i>
                 <span>Reset Password</span>
-              </h3>
+              </h5>
               <button
                 type="button"
-                className="crm-modal-close"
+                className="btn-close btn-close-white"
                 onClick={() => setShowForgotModal(false)}
-              >
-                &times;
-              </button>
+              ></button>
             </div>
 
-            {resetSent ? (
-              <div className="text-center py-3">
-                <i className="bi bi-envelope-check-fill text-success display-4 d-block mb-2"></i>
-                <h5 className="text-white fw-bold">Instructions Sent</h5>
-                <p className="text-muted small">
-                  Password reset authorization link has been dispatched to{" "}
-                  <strong className="text-white">{resetEmail}</strong>. Please check your inbox.
-                </p>
-                <button
-                  type="button"
-                  className="btn btn-warning btn-sm fw-bold px-4 mt-2"
-                  onClick={() => setShowForgotModal(false)}
-                >
-                  Return to Sign In
-                </button>
-              </div>
-            ) : (
-              <form onSubmit={handleForgotSubmit}>
-                <p className="text-muted small mb-3">
-                  Enter your registered dealership work email address to receive password reset instructions:
-                </p>
-                <div className="custom-input-group mb-3">
-                  <div className="input-icon-box">
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="name@dealership.com"
-                      required
-                      value={resetEmail}
-                      onChange={(e) => setResetEmail(e.target.value)}
-                    />
-                    <i className="bi bi-envelope input-icon"></i>
-                  </div>
-                </div>
-                <div className="d-flex justify-content-end gap-2">
+            <div className="modal-body-custom">
+              {resetSent ? (
+                <div className="text-center py-3">
+                  <i className="bi bi-envelope-check-fill text-success display-4 d-block mb-2"></i>
+                  <h5 className="text-dark fw-bold">Instructions Sent</h5>
+                  <p className="text-muted small">
+                    Password reset authorization link has been dispatched to{" "}
+                    <strong className="text-dark">{resetEmail}</strong>. Please check your inbox.
+                  </p>
                   <button
                     type="button"
-                    className="btn btn-outline-secondary btn-sm"
+                    className="btn btn-warning btn-sm fw-bold px-4 mt-2"
                     onClick={() => setShowForgotModal(false)}
                   >
-                    Cancel
-                  </button>
-                  <button type="submit" className="btn btn-warning btn-sm fw-bold">
-                    Send Reset Link
+                    Return to Sign In
                   </button>
                 </div>
-              </form>
-            )}
+              ) : (
+                <form onSubmit={handleForgotSubmit}>
+                  <p className="text-muted small mb-3">
+                    Enter your registered dealership work email address to receive password reset instructions:
+                  </p>
+                  <div className="custom-input-group mb-3">
+                    <div className="input-icon-box">
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="name@dealership.com"
+                        required
+                        value={resetEmail}
+                        onChange={(e) => setResetEmail(e.target.value)}
+                      />
+                      <i className="bi bi-envelope input-icon"></i>
+                    </div>
+                  </div>
+                  <div className="d-flex justify-content-end gap-2">
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary btn-sm"
+                      onClick={() => setShowForgotModal(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button type="submit" className="btn btn-warning btn-sm fw-bold">
+                      Send Reset Link
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       )}

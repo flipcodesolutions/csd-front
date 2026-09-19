@@ -280,7 +280,7 @@ export default function QuotationEditPage() {
                 <div className="card-body">
                   <div className="row g-3">
                     <div className="col-12">
-                      <label className="form-label text-white small fw-semibold">
+                      <label className="form-label text-dark small fw-semibold">
                         Customer Full Name <span className="text-danger">*</span>
                       </label>
                       <input
@@ -293,7 +293,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-12">
-                      <label className="form-label text-white small fw-semibold">Company Name</label>
+                      <label className="form-label text-dark small fw-semibold">Company Name</label>
                       <input
                         type="text"
                         className="form-control"
@@ -303,7 +303,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white small fw-semibold">Phone Number</label>
+                      <label className="form-label text-dark small fw-semibold">Phone Number</label>
                       <input
                         type="tel"
                         className="form-control"
@@ -313,7 +313,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white small fw-semibold">Email Address</label>
+                      <label className="form-label text-dark small fw-semibold">Email Address</label>
                       <input
                         type="email"
                         className="form-control"
@@ -323,7 +323,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-12">
-                      <label className="form-label text-white small fw-semibold">Address / City</label>
+                      <label className="form-label text-dark small fw-semibold">Address / City</label>
                       <textarea
                         className="form-control"
                         rows="2"
@@ -346,7 +346,7 @@ export default function QuotationEditPage() {
                 <div className="card-body">
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label text-white small fw-semibold">Quotation Number</label>
+                      <label className="form-label text-dark small fw-semibold">Quotation Number</label>
                       <input
                         type="text"
                         className="form-control text-primary fw-bold"
@@ -357,7 +357,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white small fw-semibold">Status</label>
+                      <label className="form-label text-dark small fw-semibold">Status</label>
                       <select
                         className="form-select"
                         value={status}
@@ -372,7 +372,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white small fw-semibold">Quotation Date</label>
+                      <label className="form-label text-dark small fw-semibold">Quotation Date</label>
                       <input
                         type="date"
                         className="form-control"
@@ -383,7 +383,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white small fw-semibold">Valid Until</label>
+                      <label className="form-label text-dark small fw-semibold">Valid Until</label>
                       <input
                         type="date"
                         className="form-control"
@@ -393,7 +393,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-12">
-                      <label className="form-label text-white small fw-semibold">
+                      <label className="form-label text-dark small fw-semibold">
                         Subject Line <span className="text-danger">*</span>
                       </label>
                       <input
@@ -406,7 +406,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-12">
-                      <label className="form-label text-white small fw-semibold">Description / Remarks</label>
+                      <label className="form-label text-dark small fw-semibold">Description / Remarks</label>
                       <textarea
                         className="form-control"
                         rows="2"
@@ -609,7 +609,7 @@ export default function QuotationEditPage() {
                 <div className="card-body">
                   <div className="row g-3">
                     <div className="col-md-6">
-                      <label className="form-label text-white small fw-semibold">Payment Terms</label>
+                      <label className="form-label text-dark small fw-semibold">Payment Terms</label>
                       <textarea
                         className="form-control"
                         rows="2"
@@ -619,7 +619,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label text-white small fw-semibold">Delivery Terms</label>
+                      <label className="form-label text-dark small fw-semibold">Delivery Terms</label>
                       <textarea
                         className="form-control"
                         rows="2"
@@ -629,7 +629,7 @@ export default function QuotationEditPage() {
                     </div>
 
                     <div className="col-12">
-                      <label className="form-label text-white small fw-semibold">Notes / Terms & Conditions</label>
+                      <label className="form-label text-dark small fw-semibold">Notes / Terms & Conditions</label>
                       <textarea
                         className="form-control"
                         rows="3"

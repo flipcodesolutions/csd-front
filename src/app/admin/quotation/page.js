@@ -1325,15 +1325,15 @@ export default function QuotationMainPage() {
                           </Link>
                         </td>
                         <td className="py-3 px-3">
-                          <div className="text-white fw-semibold">{quote.customer_name}</div>
+                          <div className="text-dark fw-semibold">{quote.customer_name}</div>
                           <span className="text-secondary small">{quote.customer_phone || quote.customer_email || "-"}</span>
                         </td>
                         <td className="py-3 px-3">
-                          <div className="text-white small fw-medium text-truncate" style={{ maxWidth: "250px" }}>
+                          <div className="text-dark small fw-medium text-truncate" style={{ maxWidth: "250px" }}>
                             {quote.subject}
                           </div>
                         </td>
-                        <td className="py-3 px-3 text-white small">{quote.quotation_date}</td>
+                        <td className="py-3 px-3 text-dark small">{quote.quotation_date}</td>
                         <td className="py-3 px-3 text-end text-success fw-bold">
                           ₹{Number(quote.grand_total).toLocaleString("en-IN")}
                         </td>
@@ -1386,7 +1386,7 @@ export default function QuotationMainPage() {
               <form onSubmit={handleSendEmailSubmit}>
                 <div className="modal-body-custom">
                   <div className="mb-3">
-                    <label className="form-label text-white small fw-semibold">
+                    <label className="form-label text-dark small fw-semibold">
                       Client Email Address <span className="text-danger">*</span>
                     </label>
                     <input
@@ -1400,7 +1400,7 @@ export default function QuotationMainPage() {
                   </div>
 
                   <div className="mb-3">
-                    <label className="form-label text-white small fw-semibold">Subject</label>
+                    <label className="form-label text-dark small fw-semibold">Subject</label>
                     <input
                       type="text"
                       className="form-control"
@@ -1410,7 +1410,7 @@ export default function QuotationMainPage() {
                   </div>
 
                   <div className="mb-2">
-                    <label className="form-label text-white small fw-semibold">Message Note</label>
+                    <label className="form-label text-dark small fw-semibold">Message Note</label>
                     <textarea
                       className="form-control"
                       rows="3"
