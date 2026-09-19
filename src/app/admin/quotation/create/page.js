@@ -1297,9 +1297,9 @@ function SendQuotationPageContent() {
           <div className="modal-backdrop-custom" onClick={() => !isSendingEmail && setShowEmailModal(false)}>
             <div className="modal-dialog-custom" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "520px" }}>
               <div className="modal-header-custom">
-                <h5 className="modal-title-custom d-flex align-items-center gap-2">
+                <h5 className="modal-title-custom text-white d-flex align-items-center gap-2 mb-0" style={{ color: "#FFFFFF" }}>
                   <i className="bi bi-envelope-fill text-warning"></i>
-                  <span>Email Quotation to Client</span>
+                  <span style={{ color: "#FFFFFF" }}>Email Quotation to Client</span>
                 </h5>
                 <button
                   type="button"

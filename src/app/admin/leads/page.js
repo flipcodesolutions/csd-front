@@ -1086,8 +1086,8 @@ export default function LeadsPage() {
                         <td>
                           <span
                             className={`badge ${lead.assigned_by_display && lead.assigned_by_display !== "-"
-                                ? "bg-secondary-subtle text-black border border-secondary fw-semibold"
-                                : "text-muted"
+                              ? "bg-secondary-subtle text-black border border-secondary fw-semibold"
+                              : "text-muted"
                               } small px-2 py-1`}
                             style={{ fontSize: "11px" }}
                           >

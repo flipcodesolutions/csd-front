@@ -2222,16 +2222,29 @@ label.text-white,
     padding: 1.25rem 1.5rem;
     border-bottom: 1px solid rgba(217, 221, 204, 0.15);
     background: #131C27;
+    color: #FFFFFF !important;
 }
 
 .modal-title-custom {
     font-size: 1.15rem;
     font-weight: 700;
-    color: var(--header-title-color);
+    color: #FFFFFF !important;
     margin: 0;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+}
+
+.modal-header-custom h1:not(.text-danger),
+.modal-header-custom h2:not(.text-danger),
+.modal-header-custom h3:not(.text-danger),
+.modal-header-custom h4:not(.text-danger),
+.modal-header-custom h5:not(.text-danger),
+.modal-header-custom h6:not(.text-danger),
+.modal-header-custom .modal-title-custom:not(.text-danger),
+.modal-header-custom span:not(.text-danger):not(.badge):not(.btn *),
+.modal-header-custom div:not(.text-danger):not(.badge) {
+    color: #FFFFFF !important;
 }
 
 .modal-body-custom {
@@ -2269,6 +2282,10 @@ label.text-white,
 .modal-body-custom [style*="background:#161"],
 .modal-body-custom [style*="background: #151"],
 .modal-body-custom [style*="background:#151"],
+.modal-body-custom [style*="background: rgb(24, 26, 27)"],
+.modal-body-custom [style*="background: rgb(22, 24, 25)"],
+.modal-body-custom [style*="background: rgb(21, 23, 24)"],
+.modal-body-custom .dark-selection-box,
 .modal-body-custom .bg-dark,
 [style*="background: #181"],
 [style*="background:#181"],
@@ -2276,6 +2293,9 @@ label.text-white,
 [style*="background:#161"],
 [style*="background: #151"],
 [style*="background:#151"],
+[style*="background: rgb(24, 26, 27)"],
+[style*="background: rgb(22, 24, 25)"],
+.dark-selection-box,
 .bg-dark {
     color: #FFFFFF !important;
 }
@@ -2285,19 +2305,31 @@ label.text-white,
 .modal-body-custom [style*="background:#181"] .form-check-label,
 .modal-body-custom [style*="background: #161"] .form-check-label,
 .modal-body-custom [style*="background:#161"] .form-check-label,
+.modal-body-custom [style*="background: rgb(24, 26, 27)"] .form-check-label,
+.modal-body-custom [style*="background: rgb(22, 24, 25)"] .form-check-label,
+.modal-body-custom .dark-selection-box .form-check-label,
 .modal-body-custom .bg-dark .form-check-label,
 .modal-body-custom [style*="background: #181"] label,
 .modal-body-custom [style*="background:#181"] label,
+.modal-body-custom [style*="background: rgb(24, 26, 27)"] label,
+.modal-body-custom [style*="background: rgb(22, 24, 25)"] label,
+.modal-body-custom .dark-selection-box label,
 .modal-body-custom [style*="background: #181"] span:not(.badge),
 .modal-body-custom [style*="background:#181"] span:not(.badge),
 .modal-body-custom [style*="background: #161"] span:not(.badge),
 .modal-body-custom [style*="background:#161"] span:not(.badge),
+.modal-body-custom [style*="background: rgb(24, 26, 27)"] span:not(.badge),
+.modal-body-custom [style*="background: rgb(22, 24, 25)"] span:not(.badge),
+.modal-body-custom .dark-selection-box span:not(.badge),
 .modal-body-custom [style*="background: #181"] p,
 .modal-body-custom [style*="background:#181"] p,
 .modal-body-custom [style*="background: #181"] strong:not(.badge),
 .modal-body-custom [style*="background:#181"] strong:not(.badge),
 .modal-body-custom [style*="background: #161"] strong:not(.badge),
 .modal-body-custom [style*="background:#161"] strong:not(.badge),
+.modal-body-custom [style*="background: rgb(24, 26, 27)"] strong:not(.badge),
+.modal-body-custom [style*="background: rgb(22, 24, 25)"] strong:not(.badge),
+.modal-body-custom .dark-selection-box strong:not(.badge),
 .modal-body-custom .bg-dark span:not(.badge),
 .modal-body-custom .bg-dark div,
 .modal-body-custom .bg-dark p,

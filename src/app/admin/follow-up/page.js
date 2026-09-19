@@ -418,7 +418,7 @@ export default function FollowUpPage() {
           <div className="modal-backdrop-custom" onClick={() => setShowLogModal(false)}>
             <div className="modal-dialog-custom modal-lg" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header-custom">
-                <h5 className="modal-title-custom">
+                <h5 className="modal-title-custom text-white mb-0 fs-5 fw-bold" style={{ color: "#FFFFFF" }}>
                   <i className="bi bi-telephone-outbound-fill text-primary"></i> Log Call Interaction
                 </h5>
                 <button

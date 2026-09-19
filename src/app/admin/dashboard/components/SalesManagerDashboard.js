@@ -308,130 +308,130 @@ export default function SalesManagerDashboard() {
             <div className="card border rounded-4 p-4 bg-white shadow-sm mb-0">
               {/* Pipeline Stage Pills (6 stages in responsive grid) */}
               <div className="row g-3 text-center">
-              {/* Stage 1: New Lead */}
-              <div className="col-4 col-sm-4 col-md-2">
-                <div
-                  className="d-flex align-items-center justify-content-center mx-auto mb-2 text-white fw-bold shadow-sm"
-                  style={{
-                    width: "56px",
-                    height: "56px",
-                    backgroundColor: "#0D1527",
-                    borderRadius: "14px",
-                    fontSize: "1.15rem",
-                  }}
-                >
-                  120
+                {/* Stage 1: New Lead */}
+                <div className="col-4 col-sm-4 col-md-2">
+                  <div
+                    className="d-flex align-items-center justify-content-center mx-auto mb-2 text-white fw-bold shadow-sm"
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      backgroundColor: "#0D1527",
+                      borderRadius: "14px",
+                      fontSize: "1.15rem",
+                    }}
+                  >
+                    120
+                  </div>
+                  <span className="fw-bold small text-dark d-block" style={{ fontSize: "0.8rem" }}>
+                    New Lead
+                  </span>
                 </div>
-                <span className="fw-bold small text-dark d-block" style={{ fontSize: "0.8rem" }}>
-                  New Lead
-                </span>
-              </div>
 
-              {/* Stage 2: Contacted */}
-              <div className="col-4 col-sm-4 col-md-2">
-                <div
-                  className="d-flex align-items-center justify-content-center mx-auto mb-2 text-white fw-bold shadow-sm"
-                  style={{
-                    width: "56px",
-                    height: "56px",
-                    backgroundColor: "#0D1527",
-                    borderRadius: "14px",
-                    fontSize: "1.15rem",
-                  }}
-                >
-                  85
+                {/* Stage 2: Contacted */}
+                <div className="col-4 col-sm-4 col-md-2">
+                  <div
+                    className="d-flex align-items-center justify-content-center mx-auto mb-2 text-white fw-bold shadow-sm"
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      backgroundColor: "#0D1527",
+                      borderRadius: "14px",
+                      fontSize: "1.15rem",
+                    }}
+                  >
+                    85
+                  </div>
+                  <span className="fw-bold small text-dark d-block" style={{ fontSize: "0.8rem" }}>
+                    Contacted
+                  </span>
                 </div>
-                <span className="fw-bold small text-dark d-block" style={{ fontSize: "0.8rem" }}>
-                  Contacted
-                </span>
-              </div>
 
-              {/* Stage 3: Requirement */}
-              <div className="col-4 col-sm-4 col-md-2">
-                <div
-                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
-                  style={{
-                    width: "56px",
-                    height: "56px",
-                    backgroundColor: "#F3F4F6",
-                    borderColor: "#E5E7EB",
-                    color: "#1E293B",
-                    borderRadius: "14px",
-                    fontSize: "1.15rem",
-                  }}
-                >
-                  60
+                {/* Stage 3: Requirement */}
+                <div className="col-4 col-sm-4 col-md-2">
+                  <div
+                    className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      backgroundColor: "#F3F4F6",
+                      borderColor: "#E5E7EB",
+                      color: "#1E293B",
+                      borderRadius: "14px",
+                      fontSize: "1.15rem",
+                    }}
+                  >
+                    60
+                  </div>
+                  <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.8rem" }}>
+                    Requirement
+                  </span>
                 </div>
-                <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.8rem" }}>
-                  Requirement
-                </span>
-              </div>
 
-              {/* Stage 4: Quotation */}
-              <div className="col-4 col-sm-4 col-md-2">
-                <div
-                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
-                  style={{
-                    width: "56px",
-                    height: "56px",
-                    backgroundColor: "#F3F4F6",
-                    borderColor: "#E5E7EB",
-                    color: "#1E293B",
-                    borderRadius: "14px",
-                    fontSize: "1.15rem",
-                  }}
-                >
-                  45
+                {/* Stage 4: Quotation */}
+                <div className="col-4 col-sm-4 col-md-2">
+                  <div
+                    className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      backgroundColor: "#F3F4F6",
+                      borderColor: "#E5E7EB",
+                      color: "#1E293B",
+                      borderRadius: "14px",
+                      fontSize: "1.15rem",
+                    }}
+                  >
+                    45
+                  </div>
+                  <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.8rem" }}>
+                    Quotation
+                  </span>
                 </div>
-                <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.8rem" }}>
-                  Quotation
-                </span>
-              </div>
 
-              {/* Stage 5: Negotiation */}
-              <div className="col-4 col-sm-4 col-md-2">
-                <div
-                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
-                  style={{
-                    width: "56px",
-                    height: "56px",
-                    backgroundColor: "#F3F4F6",
-                    borderColor: "#E5E7EB",
-                    color: "#1E293B",
-                    borderRadius: "14px",
-                    fontSize: "1.15rem",
-                  }}
-                >
-                  30
+                {/* Stage 5: Negotiation */}
+                <div className="col-4 col-sm-4 col-md-2">
+                  <div
+                    className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      backgroundColor: "#F3F4F6",
+                      borderColor: "#E5E7EB",
+                      color: "#1E293B",
+                      borderRadius: "14px",
+                      fontSize: "1.15rem",
+                    }}
+                  >
+                    30
+                  </div>
+                  <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.8rem" }}>
+                    Negotiation
+                  </span>
                 </div>
-                <span className="fw-bold small text-secondary d-block" style={{ fontSize: "0.8rem" }}>
-                  Negotiation
-                </span>
-              </div>
 
-              {/* Stage 6: Booking (Green) */}
-              <div className="col-4 col-sm-4 col-md-2">
-                <div
-                  className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
-                  style={{
-                    width: "56px",
-                    height: "56px",
-                    backgroundColor: "#DCFCE7",
-                    borderColor: "#BBF7D0",
-                    color: "#16A34A",
-                    borderRadius: "14px",
-                    fontSize: "1.15rem",
-                  }}
-                >
-                  24
+                {/* Stage 6: Booking (Green) */}
+                <div className="col-4 col-sm-4 col-md-2">
+                  <div
+                    className="d-flex align-items-center justify-content-center mx-auto mb-2 border fw-bold shadow-sm"
+                    style={{
+                      width: "56px",
+                      height: "56px",
+                      backgroundColor: "#DCFCE7",
+                      borderColor: "#BBF7D0",
+                      color: "#16A34A",
+                      borderRadius: "14px",
+                      fontSize: "1.15rem",
+                    }}
+                  >
+                    24
+                  </div>
+                  <span className="fw-bold small d-block" style={{ fontSize: "0.8rem", color: "#16A34A" }}>
+                    Booking
+                  </span>
                 </div>
-                <span className="fw-bold small d-block" style={{ fontSize: "0.8rem", color: "#16A34A" }}>
-                  Booking
-                </span>
               </div>
             </div>
           </div>
-        </div>
 
           {/* SECTION: ACTIVE REQUIREMENTS */}
           <div className="mb-4">

@@ -152,7 +152,7 @@ export default function DashboardPage() {
           <div className="modal-backdrop-custom" onClick={() => setShowAddLeadModal(false)}>
             <div className="modal-dialog-custom modal-lg" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header-custom">
-                <h5 className="modal-title-custom">
+                <h5 className="modal-title-custom text-white mb-0 fs-5 fw-bold" style={{ color: "#FFFFFF" }}>
                   <i className="bi bi-person-plus-fill text-primary"></i> Add New Lead & Inquiry
                 </h5>
                 <button

@@ -360,11 +360,11 @@ export default function ModelPage() {
                                 : "bi-car-front-fill text-info"
                               }`}
                           ></i>
-                          <h6 className="mb-0 text-dark fw-bold">{item.name}</h6>
+                          <h6 className="mb-0 text-white fw-bold">{item.name}</h6>
                         </div>
                       </td>
                       <td>
-                        <span className="badge bg-secondary-subtle text-dark">
+                        <span className="badge bg-secondary-subtle text-white">
                           {item.brand?.name || "N/A"}
                         </span>
                       </td>
@@ -455,11 +455,11 @@ export default function ModelPage() {
                 <div className="modal-body-custom py-3">
                   {/* Vehicle Segment (Radio Buttons) */}
                   <div className="mb-3">
-                    <label className="form-label text-dark fw-bold small mb-1">
+                    <label className="form-label text-white fw-bold small mb-1">
                       Vehicle Segment <span className="text-danger">*</span>
                     </label>
                     <div
-                      className="p-2 rounded-2 d-flex align-items-center gap-4 dark-selection-box"
+                      className="p-2 rounded-2 d-flex align-items-center gap-4"
                       style={{ background: "#181A1B", border: "1px solid #33383B" }}
                     >
                       <div className="form-check mb-0">
@@ -472,7 +472,7 @@ export default function ModelPage() {
                           checked={formData.vehicle_segment === "2 Wheeler"}
                           onChange={(e) => setFormData({ ...formData, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="addRadio2W">
+                        <label className="form-check-label text-white small" htmlFor="addRadio2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -487,7 +487,7 @@ export default function ModelPage() {
                           checked={formData.vehicle_segment === "4 Wheeler"}
                           onChange={(e) => setFormData({ ...formData, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="addRadio4W">
+                        <label className="form-check-label text-white small" htmlFor="addRadio4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>
@@ -496,7 +496,7 @@ export default function ModelPage() {
 
                   {/* Select Brand Dropdown */}
                   <div className="mb-3">
-                    <label className="form-label text-dark fw-bold small">
+                    <label className="form-label text-white fw-bold small">
                       Select Brand <span className="text-danger">*</span>
                     </label>
                     <select
@@ -516,7 +516,7 @@ export default function ModelPage() {
 
                   {/* Model Name Input */}
                   <div className="mb-3">
-                    <label className="form-label text-dark fw-bold small">
+                    <label className="form-label text-white fw-bold small">
                       Model Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -532,7 +532,7 @@ export default function ModelPage() {
 
                   {/* Status Dropdown */}
                   <div className="mb-2">
-                    <label className="form-label text-dark fw-bold small">
+                    <label className="form-label text-white fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -589,11 +589,11 @@ export default function ModelPage() {
                 <div className="modal-body-custom py-3">
                   {/* Vehicle Segment (Radio Buttons) */}
                   <div className="mb-3">
-                    <label className="form-label text-dark fw-bold small mb-1">
+                    <label className="form-label text-white fw-bold small mb-1">
                       Vehicle Segment <span className="text-danger">*</span>
                     </label>
                     <div
-                      className="p-2 rounded-2 d-flex align-items-center gap-4 dark-selection-box"
+                      className="p-2 rounded-2 d-flex align-items-center gap-4"
                       style={{ background: "#181A1B", border: "1px solid #33383B" }}
                     >
                       <div className="form-check mb-0">
@@ -606,7 +606,7 @@ export default function ModelPage() {
                           checked={editModel.vehicle_segment === "2 Wheeler"}
                           onChange={(e) => setEditModel({ ...editModel, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="editRadio2W">
+                        <label className="form-check-label text-white small" htmlFor="editRadio2W">
                           <i className="bi bi-bicycle text-info me-1"></i> 2 Wheeler
                         </label>
                       </div>
@@ -621,7 +621,7 @@ export default function ModelPage() {
                           checked={editModel.vehicle_segment === "4 Wheeler"}
                           onChange={(e) => setEditModel({ ...editModel, vehicle_segment: e.target.value })}
                         />
-                        <label className="form-check-label small" style={{ color: "#FFFFFF" }} htmlFor="editRadio4W">
+                        <label className="form-check-label text-white small" htmlFor="editRadio4W">
                           <i className="bi bi-car-front-fill text-primary me-1"></i> 4 Wheeler
                         </label>
                       </div>
@@ -630,7 +630,7 @@ export default function ModelPage() {
 
                   {/* Select Brand Dropdown */}
                   <div className="mb-3">
-                    <label className="form-label text-dark fw-bold small">
+                    <label className="form-label text-white fw-bold small">
                       Select Brand <span className="text-danger">*</span>
                     </label>
                     <select
@@ -650,7 +650,7 @@ export default function ModelPage() {
 
                   {/* Model Name Input */}
                   <div className="mb-3">
-                    <label className="form-label text-dark fw-bold small">
+                    <label className="form-label text-white fw-bold small">
                       Model Name <span className="text-danger">*</span>
                     </label>
                     <input
@@ -666,7 +666,7 @@ export default function ModelPage() {
 
                   {/* Status Dropdown */}
                   <div className="mb-2">
-                    <label className="form-label text-dark fw-bold small">
+                    <label className="form-label text-white fw-bold small">
                       Status <span className="text-danger">*</span>
                     </label>
                     <select
@@ -720,7 +720,7 @@ export default function ModelPage() {
               </div>
 
               <div className="modal-body-custom">
-                <p className="text-dark mb-0">
+                <p className="text-white mb-0">
                   Are you sure you want to delete model <strong>"{deleteTarget.name}"</strong>?
                 </p>
               </div>

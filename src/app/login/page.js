@@ -571,9 +571,9 @@ export default function LoginPage() {
         <div className="modal-backdrop-custom" onClick={() => setShowForgotModal(false)}>
           <div className="modal-dialog-custom" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "480px" }}>
             <div className="modal-header-custom">
-              <h5 className="modal-title-custom">
+              <h5 className="modal-title-custom text-white d-flex align-items-center gap-2 mb-0" style={{ color: "#FFFFFF" }}>
                 <i className="bi bi-key-fill text-warning"></i>
-                <span>Reset Password</span>
+                <span style={{ color: "#FFFFFF" }}>Reset Password</span>
               </h5>
               <button
                 type="button"

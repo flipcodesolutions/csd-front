@@ -87,7 +87,7 @@ function AdminLayoutInner({ children }) {
         <div className="modal-backdrop-custom" onClick={() => setShowQuickLeadModal(false)}>
           <div className="modal-dialog-custom" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header-custom">
-              <h5 className="modal-title-custom">
+              <h5 className="modal-title-custom text-white mb-0 fs-5 fw-bold" style={{ color: "#FFFFFF" }}>
                 <i className="bi bi-person-plus-fill text-primary"></i> Quick Add New Lead
               </h5>
               <button

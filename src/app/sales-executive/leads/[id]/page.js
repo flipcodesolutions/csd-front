@@ -728,7 +728,7 @@ export default function SalesExecutiveLeadDetailsPage({ params }) {
           <div className="modal-backdrop-custom" onClick={() => setShowModal(false)}>
             <div className="modal-dialog-custom modal-lg" onClick={(e) => e.stopPropagation()}>
               <div className="modal-header-custom">
-                <h5 className="modal-title-custom">
+                <h5 className="modal-title-custom text-white mb-0 fs-5 fw-bold" style={{ color: "#FFFFFF" }}>
                   <i className="bi bi-telephone-plus-fill text-primary"></i> Log Follow-Up Interaction
                 </h5>
                 <button

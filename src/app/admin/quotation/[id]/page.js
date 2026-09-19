@@ -432,9 +432,9 @@ export default function QuotationDetailsPage() {
           <div className="modal-backdrop-custom" onClick={() => !isSendingEmail && setShowSendModal(false)}>
             <div className="modal-dialog-custom" onClick={(e) => e.stopPropagation()} style={{ maxWidth: "550px" }}>
               <div className="modal-header-custom">
-                <h5 className="modal-title-custom d-flex align-items-center gap-2">
+                <h5 className="modal-title-custom text-white d-flex align-items-center gap-2 mb-0" style={{ color: "#FFFFFF" }}>
                   <i className="bi bi-send-fill text-warning"></i>
-                  <span>Send Quotation to Customer</span>
+                  <span style={{ color: "#FFFFFF" }}>Send Quotation to Customer</span>
                 </h5>
                 <button
                   type="button"

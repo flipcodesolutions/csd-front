@@ -38,8 +38,10 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
   };
 
   const [currentUser, setCurrentUser] = useState(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (typeof window !== "undefined") {
       const userStr = localStorage.getItem("user");
       if (userStr) {
@@ -92,30 +94,32 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
 
       <div className="header-right">
         {/* Quick Add Action for Admin and Manager */}
-        {canCreateLead ? (
-          <button
-            className="btn btn-sm btn-primary d-none d-sm-inline-flex align-items-center gap-1"
-            onClick={() => {
-              if (onQuickAddLead) {
-                onQuickAddLead();
-              } else {
-                router.push("/admin/leads?action=create");
-              }
-            }}
-          >
-            <i className="bi bi-plus-lg"></i>
-            <span>New Lead</span>
-          </button>
-        ) : currentUser?.role === "Sales Executive" ? (
-          <button
-            className="btn btn-sm btn-outline-primary d-none d-sm-inline-flex align-items-center gap-1 text-white"
-            onClick={() => {
-              router.push("/sales-executive/leads");
-            }}
-          >
-            <i className="bi bi-funnel-fill me-1"></i>
-            <span>My Leads</span>
-          </button>
+        {mounted ? (
+          canCreateLead ? (
+            <button
+              className="btn btn-sm btn-primary d-none d-sm-inline-flex align-items-center gap-1"
+              onClick={() => {
+                if (onQuickAddLead) {
+                  onQuickAddLead();
+                } else {
+                  router.push("/admin/leads?action=create");
+                }
+              }}
+            >
+              <i className="bi bi-plus-lg"></i>
+              <span>New Lead</span>
+            </button>
+          ) : currentUser?.role === "Sales Executive" ? (
+            <button
+              className="btn btn-sm btn-outline-primary d-none d-sm-inline-flex align-items-center gap-1 text-white"
+              onClick={() => {
+                router.push("/sales-executive/leads");
+              }}
+            >
+              <i className="bi bi-funnel-fill me-1"></i>
+              <span>My Leads</span>
+            </button>
+          ) : null
         ) : null}
 
         {/* Notifications Dropdown */}
@@ -237,7 +241,7 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
                 width: 36,
                 height: 36,
                 borderRadius: "50%",
-                background: currentUser?.role === "Sales Executive"
+                background: mounted && currentUser?.role === "Sales Executive"
                   ? "linear-gradient(135deg, #58632A, #3F4912)"
                   : "linear-gradient(135deg, #000080, #131C27)",
                 display: "flex",
@@ -249,14 +253,14 @@ export default function Header({ onToggleSidebar, onQuickAddLead }) {
                 boxShadow: "0 2px 6px rgba(0,0,0,0.3)"
               }}
             >
-              {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : "A"}
+              {mounted && currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : "A"}
             </div>
             <div className="header-profile-info d-none d-md-flex flex-column text-start">
               <span className="header-profile-name text-white fw-bold small">
-                {currentUser?.name || "Alexander Vance"}
+                {mounted ? (currentUser?.name || "Admin User") : "Admin User"}
               </span>
               <span className="header-profile-role" style={{ fontSize: "0.75rem", color: "var(--header-title-color)" }}>
-                {typeof currentUser?.role === "object" ? (currentUser.role.title || currentUser.role.name || "Super Admin") : (currentUser?.role || "Super Admin")}
+                {mounted ? (typeof currentUser?.role === "object" ? (currentUser.role.title || currentUser.role.name || "Super Admin") : (currentUser?.role || "Super Admin")) : "Super Admin"}
               </span>
             </div>
             <i className="bi bi-chevron-down fs-7" style={{ color: "var(--header-title-color)" }}></i>
