@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "./Toast";
+import { canAccessAdminPath } from "@/utils/auth";
 
 export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
   const pathname = usePathname();
@@ -40,6 +41,7 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
   const userRole = typeof currentUser?.role === "object"
     ? (currentUser.role.title || currentUser.role.name || "Super Admin")
     : (currentUser?.role || "Super Admin");
+  const canNavigate = (path) => canAccessAdminPath(path, currentUser);
 
   const handleLogout = () => {
     if (typeof window !== "undefined") {
@@ -96,7 +98,7 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
           <>
             <div className="nav-section-title">Conversion Desk</div>
             <ul className="sidebar-nav">
-              <li className="nav-item">
+              {canNavigate("/sales-executive/dashboard") && <li className="nav-item">
                 <Link
                   href="/sales-executive/dashboard"
                   className={`nav-link ${isLinkActive("/sales-executive/dashboard") ? "active" : ""}`}
@@ -105,8 +107,8 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <i className="bi bi-grid-1x2-fill"></i>
                   <span>Sales Dashboard</span>
                 </Link>
-              </li>
-              <li className="nav-item">
+              </li>}
+              {canNavigate("/sales-executive/leads") && <li className="nav-item">
                 <Link
                   href="/sales-executive/leads"
                   className={`nav-link ${isLinkActive("/sales-executive/leads") ? "active" : ""}`}
@@ -115,8 +117,18 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <i className="bi bi-funnel-fill"></i>
                   <span>My Assigned Leads</span>
                 </Link>
-              </li>
-              <li className="nav-item">
+              </li>}
+              {canNavigate("/admin/leads") && <li className="nav-item">
+                <Link
+                  href="/admin/leads"
+                  className={`nav-link ${isLinkActive("/admin/leads") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-funnel"></i>
+                  <span>Leads Pipeline</span>
+                </Link>
+              </li>}
+              {canNavigate("/admin/follow-up") && <li className="nav-item">
                 <Link
                   href="/admin/follow-up"
                   className={`nav-link ${isLinkActive("/admin/follow-up") ? "active" : ""}`}
@@ -125,8 +137,8 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <i className="bi bi-telephone-outbound-fill"></i>
                   <span>Follow-Ups & Notes</span>
                 </Link>
-              </li>
-              <li className="nav-item">
+              </li>}
+              {canNavigate("/admin/quotation") && <li className="nav-item">
                 <Link
                   href="/admin/quotation"
                   className={`nav-link ${isLinkActive("/admin/quotation") ? "active" : ""}`}
@@ -135,7 +147,7 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <i className="bi bi-file-earmark-spreadsheet-fill"></i>
                   <span>Send Quotation</span>
                 </Link>
-              </li>
+              </li>}
             </ul>
 
             <div className="nav-section-title">Vehicle Inventory</div>
@@ -150,7 +162,7 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <span>Brands</span>
                 </Link>
               </li>
-              <li className="nav-item">
+              {canNavigate("/admin/model") && <li className="nav-item">
                 <Link
                   href="/admin/model"
                   className={`nav-link ${isLinkActive("/admin/model") ? "active" : ""}`}
@@ -159,8 +171,8 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <i className="bi bi-car-front-fill"></i>
                   <span>Models</span>
                 </Link>
-              </li>
-              <li className="nav-item">
+              </li>}
+              {canNavigate("/admin/variant") && <li className="nav-item">
                 <Link
                   href="/admin/variant"
                   className={`nav-link ${isLinkActive("/admin/variant") ? "active" : ""}`}
@@ -169,7 +181,7 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <i className="bi bi-tag-fill"></i>
                   <span>Variants & Prices</span>
                 </Link>
-              </li>
+              </li>}
             </ul>
           </>
         )}
@@ -191,7 +203,7 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <span>Manager Dashboard</span>
                 </Link>
               </li>
-              <li className="nav-item">
+              {canNavigate("/admin/leads") && <li className="nav-item">
                 <Link
                   href="/admin/leads"
                   className={`nav-link ${isLinkActive("/admin/leads") ? "active" : ""}`}
@@ -200,7 +212,7 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <i className="bi bi-funnel-fill"></i>
                   <span>Team Leads Pipeline</span>
                 </Link>
-              </li>
+              </li>}
               <li className="nav-item">
                 <Link
                   href="/admin/follow-up"
@@ -284,7 +296,7 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
             =================================================================== */}
         {userRole === "Receptionist" && (
           <>
-            <div className="nav-section-title">Front Desk Desk</div>
+            <div className="nav-section-title">Front Desk</div>
             <ul className="sidebar-nav">
               <li className="nav-item">
                 <Link
@@ -316,40 +328,44 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <span>Scheduled Visits</span>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link
+                  href="/admin/quotation"
+                  className={`nav-link ${isLinkActive("/admin/quotation") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-calculator-fill"></i>
+                  <span>Auto Calculator & Quote</span>
+                </Link>
+              </li>
             </ul>
 
-            <div className="nav-section-title">Showroom Catalog</div>
+            <div className="nav-section-title">Vehicle Inventory</div>
             <ul className="sidebar-nav">
-              <li className="nav-item">
-                <Link
-                  href="/admin/brand"
-                  className={`nav-link ${isLinkActive("/admin/brand") ? "active" : ""}`}
-                  onClick={onCloseMobile}
-                >
-                  <i className="bi bi-shield-shaded"></i>
-                  <span>Brands</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  href="/admin/model"
-                  className={`nav-link ${isLinkActive("/admin/model") ? "active" : ""}`}
-                  onClick={onCloseMobile}
-                >
-                  <i className="bi bi-car-front-fill"></i>
-                  <span>Vehicle Models</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  href="/admin/variant"
-                  className={`nav-link ${isLinkActive("/admin/variant") ? "active" : ""}`}
-                  onClick={onCloseMobile}
-                >
-                  <i className="bi bi-tag-fill"></i>
-                  <span>Variants</span>
-                </Link>
-              </li>
+              {canNavigate("/admin/brand") && (
+                <li className="nav-item">
+                  <Link
+                    href="/admin/brand"
+                    className={`nav-link ${isLinkActive("/admin/brand") ? "active" : ""}`}
+                    onClick={onCloseMobile}
+                  >
+                    <i className="bi bi-shield-shaded"></i>
+                    <span>Brands</span>
+                  </Link>
+                </li>
+              )}
+              {canNavigate("/admin/variant") && (
+                <li className="nav-item">
+                  <Link
+                    href="/admin/variant"
+                    className={`nav-link ${isLinkActive("/admin/variant") ? "active" : ""}`}
+                    onClick={onCloseMobile}
+                  >
+                    <i className="bi bi-tag-fill"></i>
+                    <span>Variants & Pricing</span>
+                  </Link>
+                </li>
+              )}
             </ul>
           </>
         )}
@@ -373,46 +389,12 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
               </li>
               <li className="nav-item">
                 <Link
-                  href="/admin/quotation"
-                  className={`nav-link ${isLinkActive("/admin/quotation") ? "active" : ""}`}
-                  onClick={onCloseMobile}
-                >
-                  <i className="bi bi-file-earmark-spreadsheet-fill"></i>
-                  <span>Quotations & Invoicing</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  href="/admin/leads"
-                  className={`nav-link ${isLinkActive("/admin/leads") ? "active" : ""}`}
-                  onClick={onCloseMobile}
-                >
-                  <i className="bi bi-cash-stack"></i>
-                  <span>Deals & Bookings</span>
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
                   href="/admin/reports"
                   className={`nav-link ${isLinkActive("/admin/reports") ? "active" : ""}`}
                   onClick={onCloseMobile}
                 >
                   <i className="bi bi-bar-chart-line-fill"></i>
                   <span>Financial Reports</span>
-                </Link>
-              </li>
-            </ul>
-
-            <div className="nav-section-title">Pricing Master</div>
-            <ul className="sidebar-nav">
-              <li className="nav-item">
-                <Link
-                  href="/admin/variant"
-                  className={`nav-link ${isLinkActive("/admin/variant") ? "active" : ""}`}
-                  onClick={onCloseMobile}
-                >
-                  <i className="bi bi-tag-fill"></i>
-                  <span>Variants & Taxes</span>
                 </Link>
               </li>
               <li className="nav-item">
@@ -578,23 +560,27 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
           </>
         )}
 
-        {/* Global Support Link */}
-        <div className="nav-section-title">Support</div>
-        <ul className="sidebar-nav">
-          <li className="nav-item">
-            <a
-              href="#"
-              className="nav-link"
-              onClick={(e) => {
-                e.preventDefault();
-                showToast("Dealership CRM Helpdesk is available 24/7", "info");
-              }}
-            >
-              <i className="bi bi-question-circle-fill"></i>
-              <span>Help & Support</span>
-            </a>
-          </li>
-        </ul>
+        {/* Services & Support - Only for roles that have support (SA, SM, SE, Rec) */}
+        {userRole !== "Accountant" && (
+          <>
+            <div className="nav-section-title">Services & Alerts</div>
+            <ul className="sidebar-nav">
+              <li className="nav-item">
+                <a
+                  href="#"
+                  className="nav-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    showToast("Dealership CRM Helpdesk is available 24/7", "info");
+                  }}
+                >
+                  <i className="bi bi-question-circle-fill"></i>
+                  <span>Help & Support</span>
+                </a>
+              </li>
+            </ul>
+          </>
+        )}
       </div>
 
       {/* Sidebar User Profile Footer */}
@@ -631,6 +617,7 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
           </button>
         </div>
       </div>
+
     </aside>
   );
 }

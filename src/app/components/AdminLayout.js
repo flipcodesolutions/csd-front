@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Sidebar from "./Sidebar";
 import Header from "./Header";
 import { ToastProvider, useToast } from "./Toast";
+import { canAccessAdminPath, getAuthenticatedUser } from "@/utils/auth";
 
 function AdminLayoutInner({ children }) {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -17,6 +19,8 @@ function AdminLayoutInner({ children }) {
   const [quickLeadBrand, setQuickLeadBrand] = useState("Maruti Suzuki");
   const [quickLeadModel, setQuickLeadModel] = useState("Grand Vitara");
   const [quickLeadPriority, setQuickLeadPriority] = useState("Hot");
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     // Check local storage for desktop sidebar collapsed preference
@@ -24,10 +28,18 @@ function AdminLayoutInner({ children }) {
       const saved = localStorage.getItem("carcrm_sidebar_collapsed");
       if (saved === "true") {
         document.body.classList.add("sidebar-collapsed");
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setIsDesktopCollapsed(true);
       }
     }
   }, []);
+
+  useEffect(() => {
+    const user = getAuthenticatedUser();
+    if (user && !canAccessAdminPath(pathname, user)) {
+      router.replace("/admin/dashboard");
+    }
+  }, [pathname, router]);
 
   const handleToggleSidebar = () => {
     if (typeof window !== "undefined" && window.innerWidth >= 992) {

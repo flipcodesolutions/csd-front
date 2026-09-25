@@ -5,9 +5,17 @@ import Link from "next/link";
 import axios from "axios";
 import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
+import { hasPermission } from "@/utils/auth";
 
 export default function ModelPage() {
   const { showToast } = useToast();
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (user) setCurrentUser(JSON.parse(user));
+  }, []);
+  const can = (permission) => hasPermission(permission, currentUser);
 
   // API Base URL
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
@@ -189,14 +197,14 @@ export default function ModelPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2">
-            <button
+            {can("model.export") && <button
               className="btn btn-outline-custom"
               onClick={() => showToast("Exporting model catalog as CSV...", "info")}
             >
               <i className="bi bi-file-earmark-arrow-down"></i>
               <span>Export CSV</span>
-            </button>
-            <button
+            </button>}
+            {can("model.create") && <button
               className="btn btn-primary"
               onClick={() => {
                 setFormData({
@@ -210,7 +218,7 @@ export default function ModelPage() {
             >
               <i className="bi bi-plus-circle"></i>
               <span>Add Model</span>
-            </button>
+            </button>}
           </div>
         </div>
 
@@ -402,7 +410,7 @@ export default function ModelPage() {
                       </td>
                       <td className="text-end">
                         <div className="table-actions justify-content-end">
-                          <button
+                          {can("model.edit") && <button
                             className="btn-action btn-edit"
                             title="Edit Model"
                             onClick={() =>
@@ -416,14 +424,14 @@ export default function ModelPage() {
                             }
                           >
                             <i className="bi bi-pencil"></i>
-                          </button>
-                          <button
+                          </button>}
+                          {can("model.delete") && <button
                             className="btn-action btn-delete"
                             title="Delete Model"
                             onClick={() => setDeleteTarget(item)}
                           >
                             <i className="bi bi-trash"></i>
-                          </button>
+                          </button>}
                         </div>
                       </td>
                     </tr>

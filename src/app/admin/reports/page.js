@@ -1,12 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
+import { hasPermission } from "@/utils/auth";
 
 export default function ReportsPage() {
   const { showToast } = useToast();
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      try {
+        setCurrentUser(JSON.parse(user));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+  const can = (permission) => hasPermission(permission, currentUser);
   const [dateRange, setDateRange] = useState("this_quarter");
 
   return (
@@ -37,21 +50,21 @@ export default function ReportsPage() {
               <option value="year_to_date">Financial Year to Date (FY26-27)</option>
             </select>
 
-            <button
+            {can("reports.export_pdf") && <button
               className="btn btn-outline-custom"
               onClick={() => showToast("Exporting comprehensive audit report as PDF...", "info")}
             >
               <i className="bi bi-file-earmark-pdf-fill text-danger"></i>
               <span>Export PDF</span>
-            </button>
+            </button>}
 
-            <button
+            {can("reports.export_csv") && <button
               className="btn btn-primary"
               onClick={() => showToast("Exporting raw analytics data to CSV...", "success")}
             >
               <i className="bi bi-file-earmark-arrow-down"></i>
               <span>Export Excel / CSV</span>
-            </button>
+            </button>}
           </div>
         </div>
 

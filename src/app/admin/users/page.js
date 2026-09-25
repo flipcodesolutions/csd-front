@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
+import { hasPermission } from "@/utils/auth";
 
 // Role Enum options matching Laravel UserRole Enum
 const ROLE_OPTIONS = [
@@ -18,6 +19,18 @@ const ROLE_OPTIONS = [
 
 export default function UsersPage() {
   const { showToast } = useToast();
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      try {
+        setCurrentUser(JSON.parse(user));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+  const can = (permission) => hasPermission(permission, currentUser);
 
   // API Base URL
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
@@ -233,14 +246,14 @@ export default function UsersPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2">
-            <button
+            {can("user.export") && <button
               className="btn btn-outline-custom"
               onClick={() => showToast("Exporting team user roster as CSV...", "info")}
             >
               <i className="bi bi-file-earmark-arrow-down"></i>
               <span>Export CSV</span>
-            </button>
-            <button
+            </button>}
+            {can("user.create") && <button
               className="btn btn-primary"
               onClick={() => {
                 setFormData({
@@ -257,7 +270,7 @@ export default function UsersPage() {
             >
               <i className="bi bi-person-plus-fill"></i>
               <span>Add New User</span>
-            </button>
+            </button>}
           </div>
         </div>
 
@@ -483,7 +496,7 @@ export default function UsersPage() {
                       </td>
                       <td className="text-end">
                         <div className="table-actions justify-content-end">
-                          <button
+                          {can("user.edit") && <button
                             className="btn-action btn-edit"
                             title="Edit User"
                             onClick={() =>
@@ -501,8 +514,8 @@ export default function UsersPage() {
                             }
                           >
                             <i className="bi bi-pencil"></i>
-                          </button>
-                          {user.role !== "Super Admin" && (
+                          </button>}
+                          {can("user.delete") && user.role !== "Super Admin" && (
                             <button
                               className="btn-action btn-delete"
                               title="Delete User"

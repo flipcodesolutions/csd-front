@@ -5,9 +5,17 @@ import Link from "next/link";
 import axios from "axios";
 import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
+import { hasPermission } from "@/utils/auth";
 
 export default function BrandPage() {
   const { showToast } = useToast();
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (user) setCurrentUser(JSON.parse(user));
+  }, []);
+  const can = (permission) => hasPermission(permission, currentUser);
 
   // API Base URL
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
@@ -50,7 +58,9 @@ export default function BrandPage() {
 
   // Run on page load
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchBrands();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Helper for vehicle type checkbox toggling
@@ -215,14 +225,14 @@ export default function BrandPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2">
-            <button
+            {can("brand.export") && <button
               className="btn btn-outline-custom"
               onClick={() => showToast("Exporting brands list as CSV...", "info")}
             >
               <i className="bi bi-file-earmark-arrow-down"></i>
               <span>Export CSV</span>
-            </button>
-            <button
+            </button>}
+            {can("brand.create") && <button
               className="btn btn-primary"
               onClick={() => {
                 setFormData({
@@ -236,7 +246,7 @@ export default function BrandPage() {
             >
               <i className="bi bi-plus-circle"></i>
               <span>Add Brand</span>
-            </button>
+            </button>}
           </div>
         </div>
 
@@ -448,7 +458,7 @@ export default function BrandPage() {
                         </td>
                         <td className="text-end">
                           <div className="table-actions justify-content-end">
-                            <button
+                            {can("brand.edit") && <button
                               className="btn-action btn-edit"
                               title="Edit Brand"
                               onClick={() =>
@@ -465,14 +475,14 @@ export default function BrandPage() {
                               }
                             >
                               <i className="bi bi-pencil"></i>
-                            </button>
-                            <button
+                            </button>}
+                            {can("brand.delete") && <button
                               className="btn-action btn-delete"
                               title="Delete Brand"
                               onClick={() => setDeleteTarget(brand)}
                             >
                               <i className="bi bi-trash"></i>
-                            </button>
+                            </button>}
                           </div>
                         </td>
                       </tr>

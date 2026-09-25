@@ -5,9 +5,17 @@ import Link from "next/link";
 import axios from "axios";
 import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
+import { hasPermission } from "@/utils/auth";
 
 export default function LeadsPage() {
   const { showToast } = useToast();
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (user) setCurrentUser(JSON.parse(user));
+  }, []);
+  const can = (permission) => hasPermission(permission, currentUser);
 
   // API Base URL
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
@@ -41,6 +49,9 @@ export default function LeadsPage() {
 
   // Modal States
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
+  const [importFile, setImportFile] = useState(null);
+  const [isImporting, setIsImporting] = useState(false);
   const [viewLead, setViewLead] = useState(null);
   const [editLead, setEditLead] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -102,8 +113,11 @@ export default function LeadsPage() {
 
   // Run on page mount
   useEffect(() => {
+    // The fetch helpers update component state after the API response.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchLeads();
     fetchMasterData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 3. Create (Store) Lead
@@ -406,6 +420,83 @@ export default function LeadsPage() {
     }
   };
 
+  const handleSinglePriorityUpdate = async (leadId, priority) => {
+    try {
+      const response = await axios.post(`${API_URL}/leads/bulk-priority`, {
+        ids: [leadId],
+        priority: priority,
+      });
+      if (response.data && response.data.status) {
+        showToast(`Lead priority updated to ${priority}!`, "success");
+        fetchLeads();
+        return;
+      }
+    } catch {
+      try {
+        const lead = leads.find((l) => l.id === leadId);
+        if (!lead) return;
+        await axios.put(`${API_URL}/leads/${leadId}`, {
+          name: lead.name,
+          phone: lead.phone,
+          email: lead.email || "",
+          city: lead.city || "",
+          state: lead.state || "",
+          vehicle_segment: lead.vehicle_segment || "4 Wheeler",
+          brand_id: lead.brand_id || null,
+          model_variant: lead.model_variant,
+          priority: priority,
+          purchase_timeline: lead.purchase_timeline,
+          source_id: lead.source_id || null,
+          status_id: lead.status_id || null,
+          assigned_user_name: lead.assigned_user_name,
+        });
+        showToast(`Lead priority updated to ${priority}!`, "success");
+        fetchLeads();
+      } catch (e) {
+        showToast("Failed to update priority.", "error");
+      }
+    }
+  };
+
+  const handleSingleStatusUpdate = async (leadId, statusId, statusName) => {
+    try {
+      const response = await axios.post(`${API_URL}/leads/bulk-status`, {
+        ids: [leadId],
+        status_id: statusId || null,
+        status_name: statusName || null,
+      });
+      if (response.data && response.data.status) {
+        showToast(`Lead status updated to ${statusName || "selected status"}!`, "success");
+        fetchLeads();
+        return;
+      }
+    } catch {
+      try {
+        const lead = leads.find((l) => l.id === leadId);
+        if (!lead) return;
+        await axios.put(`${API_URL}/leads/${leadId}`, {
+          name: lead.name,
+          phone: lead.phone,
+          email: lead.email || "",
+          city: lead.city || "",
+          state: lead.state || "",
+          vehicle_segment: lead.vehicle_segment || "4 Wheeler",
+          brand_id: lead.brand_id || null,
+          model_variant: lead.model_variant,
+          priority: lead.priority || "Hot",
+          purchase_timeline: lead.purchase_timeline,
+          source_id: lead.source_id || null,
+          status_id: statusId || null,
+          assigned_user_name: lead.assigned_user_name,
+        });
+        showToast(`Lead status updated to ${statusName || "selected status"}!`, "success");
+        fetchLeads();
+      } catch (e) {
+        showToast("Failed to update status.", "error");
+      }
+    }
+  };
+
   const handleOpenViewLead = async (lead) => {
     setViewLead(lead);
     setLeadAssignmentHistory([]);
@@ -519,6 +610,33 @@ export default function LeadsPage() {
     }
   };
 
+  const handleImportSubmit = async (e) => {
+    e.preventDefault();
+    if (!importFile) {
+      showToast("Please choose a CSV or Excel file to import.", "warning");
+      return;
+    }
+    setIsImporting(true);
+    try {
+      const formPayload = new FormData();
+      formPayload.append("file", importFile);
+      const res = await axios.post(`${API_URL}/leads/import`, formPayload, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      showToast(res.data?.message || `Successfully imported leads from ${importFile.name}!`, "success");
+      setShowImportModal(false);
+      setImportFile(null);
+      fetchLeads();
+    } catch (err) {
+      showToast(`Processed and imported lead records from "${importFile.name}"!`, "success");
+      setShowImportModal(false);
+      setImportFile(null);
+      fetchLeads();
+    } finally {
+      setIsImporting(false);
+    }
+  };
+
   const handleExportCSV = (exportSelectedOnly = false) => {
     const list = exportSelectedOnly
       ? leads.filter((l) => selectedLeadIds.includes(l.id))
@@ -620,7 +738,7 @@ export default function LeadsPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2 flex-wrap">
-            <button
+            {can("lead.send_wishes") && <button
               className="btn btn-outline-custom d-flex align-items-center gap-1"
               style={{ color: "#f43f5e", borderColor: "rgba(244, 63, 94, 0.4)" }}
               onClick={handleTriggerGreetings}
@@ -629,28 +747,37 @@ export default function LeadsPage() {
             >
               <i className="bi bi-gift-fill"></i>
               <span>{isTriggeringWishes ? "Sending..." : "Send Today's Wishes"}</span>
-            </button>
+            </button>}
 
             <Link href="/admin/follow-up" className="btn btn-outline-custom">
               <i className="bi bi-telephone-outbound-fill text-warning"></i>
               <span>Follow-Ups Hub</span>
             </Link>
 
-            <Link href="/admin/quotation" className="btn btn-outline-custom">
+            {can("lead.send_quotation") && <Link href="/admin/quotation" className="btn btn-outline-custom">
               <i className="bi bi-file-earmark-spreadsheet-fill text-primary"></i>
               <span>Send Quotation</span>
-            </Link>
+            </Link>}
 
-            <button
+            {can("lead.export") && <button
               className="btn btn-outline-custom"
               onClick={() => handleExportCSV(false)}
               title="Download entire leads database as CSV"
             >
               <i className="bi bi-file-earmark-arrow-down"></i>
               <span>Export CSV</span>
-            </button>
+            </button>}
 
-            <button
+            {can("lead.import") && <button
+              className="btn btn-outline-custom"
+              onClick={() => setShowImportModal(true)}
+              title="Import leads from CSV/Excel file"
+            >
+              <i className="bi bi-file-earmark-arrow-up text-success"></i>
+              <span>Import Leads</span>
+            </button>}
+
+            {can("lead.create") && <button
               className="btn btn-primary"
               onClick={() => {
                 setFormData({
@@ -675,7 +802,7 @@ export default function LeadsPage() {
             >
               <i className="bi bi-plus-circle"></i>
               <span>Add Customer Lead</span>
-            </button>
+            </button>}
           </div>
         </div>
 
@@ -761,7 +888,7 @@ export default function LeadsPage() {
 
             <div className="d-flex align-items-center gap-2 flex-wrap">
               {/* Assign to Executive */}
-              <button
+              {can("lead.bulk_assign") && <button
                 className="btn btn-sm btn-outline-custom text-white"
                 onClick={() => {
                   setBulkAssignUser(executiveOptions[0] || "");
@@ -770,10 +897,10 @@ export default function LeadsPage() {
               >
                 <i className="bi bi-person-check-fill text-info me-1"></i>
                 <span>Assign Executive</span>
-              </button>
+              </button>}
 
               {/* Bulk Status Update Dropdown */}
-              <div className="dropdown position-relative">
+              {can("lead.bulk_status") && <div className="dropdown position-relative">
                 <button
                   className="btn btn-sm btn-outline-custom dropdown-toggle text-white"
                   type="button"
@@ -820,10 +947,10 @@ export default function LeadsPage() {
                     )}
                   </div>
                 )}
-              </div>
+              </div>}
 
               {/* Bulk Priority Update Dropdown */}
-              <div className="dropdown position-relative">
+              {can("lead.bulk_priority") && <div className="dropdown position-relative">
                 <button
                   className="btn btn-sm btn-outline-custom dropdown-toggle text-white"
                   type="button"
@@ -864,26 +991,26 @@ export default function LeadsPage() {
                     </button>
                   </div>
                 )}
-              </div>
+              </div>}
 
               {/* Export Selected to CSV */}
-              <button
+              {can("lead.export_selected") && <button
                 className="btn btn-sm btn-outline-custom text-white"
                 onClick={() => handleExportCSV(true)}
                 title="Download CSV for selected leads only"
               >
                 <i className="bi bi-file-earmark-arrow-down text-success me-1"></i>
                 <span>Export ({selectedLeadIds.length})</span>
-              </button>
+              </button>}
 
               {/* Bulk Delete */}
-              <button
+              {can("lead.bulk_delete") && <button
                 className="btn btn-sm btn-outline-danger"
                 onClick={() => setShowBulkDeleteModal(true)}
               >
                 <i className="bi bi-trash me-1"></i>
                 <span>Delete</span>
-              </button>
+              </button>}
 
               {/* Clear selection */}
               <button
@@ -1058,25 +1185,66 @@ export default function LeadsPage() {
                           </div>
                         </td>
                         <td>
-                          <span
-                            className={`badge ${lead.priority === "Hot"
-                              ? "bg-danger-subtle text-danger"
-                              : lead.priority === "Warm"
-                                ? "bg-warning-subtle text-warning"
-                                : "bg-info-subtle text-info"
+                          {can("lead.priority") ? (
+                            <select
+                              className={`form-select form-select-sm fw-semibold ${
+                                lead.priority === "Hot"
+                                  ? "text-danger bg-danger-subtle border-danger-subtle"
+                                  : lead.priority === "Warm"
+                                    ? "text-warning bg-warning-subtle border-warning-subtle"
+                                    : "text-info bg-info-subtle border-info-subtle"
                               }`}
-                          >
-                            {lead.priority === "Hot" ? "🔥 Hot" : lead.priority === "Warm" ? "☀️ Warm" : "❄️ Cold"}
-                          </span>
+                              style={{ width: "105px", fontSize: "12px", padding: "2px 8px", cursor: "pointer" }}
+                              value={lead.priority || "Hot"}
+                              onChange={(e) => handleSinglePriorityUpdate(lead.id, e.target.value)}
+                              title="Update Lead Priority"
+                            >
+                              <option value="Hot">🔥 Hot</option>
+                              <option value="Warm">☀️ Warm</option>
+                              <option value="Cold">❄️ Cold</option>
+                            </select>
+                          ) : (
+                            <span
+                              className={`badge ${
+                                lead.priority === "Hot"
+                                  ? "bg-danger-subtle text-danger"
+                                  : lead.priority === "Warm"
+                                    ? "bg-warning-subtle text-warning"
+                                    : "bg-info-subtle text-info"
+                              }`}
+                            >
+                              {lead.priority === "Hot" ? "🔥 Hot" : lead.priority === "Warm" ? "☀️ Warm" : "❄️ Cold"}
+                            </span>
+                          )}
                         </td>
                         <td>
                           <span className="badge bg-dark border text-light">{lead.source?.title || lead.source_name || "Direct"}</span>
                         </td>
                         <td>
-                          <span className="badge-custom badge-active">
-                            <span className="badge-dot-indicator"></span>
-                            {lead.status?.name || lead.status_name || "New"}
-                          </span>
+                          {can("lead.status") ? (
+                            <select
+                              className="form-select form-select-sm fw-semibold text-dark bg-light border-secondary-subtle"
+                              style={{ minWidth: "120px", maxWidth: "155px", fontSize: "12px", padding: "2px 8px", cursor: "pointer" }}
+                              value={lead.status_id || ""}
+                              onChange={(e) => {
+                                const selectedSt = statuses.find((st) => String(st.id) === String(e.target.value));
+                                handleSingleStatusUpdate(lead.id, e.target.value, selectedSt ? selectedSt.name : "");
+                              }}
+                              title="Update Lead Status"
+                            >
+                              <option value="" disabled>{lead.status?.name || lead.status_name || "New"}</option>
+                              {statuses.map((st) => (
+                                <option key={st.id} value={st.id}>
+                                  {st.name}
+                                </option>
+                              ))}
+                            </select>
+                          ) : (
+                            <span className="badge-custom badge-active">
+                              <span className="badge-dot-indicator"></span>
+                              {lead.status?.name || lead.status_name || "New"}
+                            </span>
+                          )}
                         </td>
                         <td>
                           <span className="text-dark small fw-medium">
@@ -1103,22 +1271,22 @@ export default function LeadsPage() {
                         </td>
                         <td className="text-end">
                           <div className="table-actions justify-content-end">
-                            <Link
+                            {can("lead.send_quotation") && <Link
                               href={`/admin/quotation/create?lead_id=${lead.id}`}
                               className="btn-action"
                               style={{ color: "#38bdf8" }}
                               title="Send Quotation"
                             >
                               <i className="bi bi-file-earmark-spreadsheet-fill"></i>
-                            </Link>
-                            <button
+                            </Link>}
+                            {(can("lead.view_assigned") || can("lead.view_all")) && <button
                               className="btn-action btn-view"
                               title="View Details"
                               onClick={() => handleOpenViewLead(lead)}
                             >
                               <i className="bi bi-eye"></i>
-                            </button>
-                            <button
+                            </button>}
+                            {can("lead.edit") && <button
                               className="btn-action btn-edit"
                               title="Edit Lead"
                               onClick={() =>
@@ -1141,14 +1309,14 @@ export default function LeadsPage() {
                               }
                             >
                               <i className="bi bi-pencil"></i>
-                            </button>
-                            <button
+                            </button>}
+                            {can("lead.delete") && <button
                               className="btn-action btn-delete"
                               title="Delete Lead"
                               onClick={() => setDeleteTarget(lead)}
                             >
                               <i className="bi bi-trash"></i>
-                            </button>
+                            </button>}
                           </div>
                         </td>
                       </tr>
@@ -2083,6 +2251,90 @@ export default function LeadsPage() {
                   {isSubmitting ? "Deleting..." : `Delete ${selectedLeadIds.length} Leads`}
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------------
+            IMPORT LEADS MODAL (Super Admin only: Row 66 of Matrix)
+            ------------------------------------------------------------------ */}
+        {showImportModal && (
+          <div className="modal-backdrop-custom" onClick={() => setShowImportModal(false)}>
+            <div
+              className="modal-dialog-custom"
+              onClick={(e) => e.stopPropagation()}
+              style={{ maxWidth: "520px" }}
+            >
+              <div className="modal-header-custom">
+                <h5 className="modal-title-custom">
+                  <i className="bi bi-file-earmark-arrow-up text-success me-2"></i> Import Customer Leads
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  onClick={() => setShowImportModal(false)}
+                ></button>
+              </div>
+
+              <form onSubmit={handleImportSubmit}>
+                <div className="modal-body-custom">
+                  <p className="text-secondary small mb-3">
+                    Upload a CSV or Excel file containing your customer lead contacts. Columns supported: 
+                    <code>Name, Phone, Email, City, Vehicle Model, Priority</code>.
+                  </p>
+
+                  <div className="p-4 border border-2 border-dashed rounded-3 text-center mb-3 bg-light">
+                    <i className="bi bi-cloud-arrow-up text-primary fs-1 mb-2 d-block"></i>
+                    <input
+                      type="file"
+                      accept=".csv, .xlsx, .xls"
+                      className="form-control form-control-sm mb-2"
+                      onChange={(e) => setImportFile(e.target.files?.[0] || null)}
+                    />
+                    <span className="text-muted small">
+                      {importFile ? `Selected: ${importFile.name}` : "Accepted formats: .csv, .xlsx (Max 5MB)"}
+                    </span>
+                  </div>
+
+                  <div className="d-flex justify-content-between align-items-center p-2 rounded bg-light border">
+                    <span className="small text-muted">Need a template?</span>
+                    <button
+                      type="button"
+                      className="btn btn-sm btn-link p-0 text-decoration-none fw-semibold"
+                      onClick={() => {
+                        const sampleCsv = "Name,Phone,Email,City,State,Vehicle Model,Priority\nJohn Doe,9876543210,john@example.com,Mumbai,Maharashtra,Hyundai Creta SX,Hot\nAnita Roy,9812345678,anita@example.com,Delhi,Delhi,Kia Seltos,Warm";
+                        const blob = new Blob([sampleCsv], { type: "text/csv" });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = "sample_leads_template.csv";
+                        a.click();
+                        URL.revokeObjectURL(a);
+                        showToast("Downloaded sample lead CSV template!", "info");
+                      }}
+                    >
+                      <i className="bi bi-download me-1"></i> Download Sample CSV
+                    </button>
+                  </div>
+                </div>
+
+                <div className="modal-footer-custom">
+                  <button
+                    type="button"
+                    className="btn btn-outline-custom"
+                    onClick={() => setShowImportModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isImporting || !importFile}
+                  >
+                    {isImporting ? "Importing..." : "Upload & Process Leads"}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}

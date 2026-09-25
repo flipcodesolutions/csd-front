@@ -4,9 +4,17 @@ import React, { useState } from "react";
 import Link from "next/link";
 import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
+import { hasPermission } from "@/utils/auth";
 
 export default function FollowUpPage() {
   const { showToast } = useToast();
+  const [currentUser, setCurrentUser] = useState(null);
+  React.useEffect(() => {
+    const user = localStorage.getItem("user");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (user) setCurrentUser(JSON.parse(user));
+  }, []);
+  const can = (permission) => hasPermission(permission, currentUser);
   const [activeTab, setActiveTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [showLogModal, setShowLogModal] = useState(false);
@@ -44,17 +52,17 @@ export default function FollowUpPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2">
-            <button
+            {can("followup.export") && <button
               className="btn btn-outline-custom"
               onClick={() => showToast("Exporting follow-up schedule to CSV...", "info")}
             >
               <i className="bi bi-file-earmark-arrow-down"></i>
               <span>Export CSV</span>
-            </button>
-            <button className="btn btn-primary" onClick={() => setShowLogModal(true)}>
+            </button>}
+            {can("followup.log_call") && <button className="btn btn-primary" onClick={() => setShowLogModal(true)}>
               <i className="bi bi-telephone-plus-fill"></i>
               <span>Log Follow-Up Call</span>
-            </button>
+            </button>}
           </div>
         </div>
 
@@ -216,7 +224,7 @@ export default function FollowUpPage() {
                   </td>
                   <td className="text-end">
                     <div className="d-flex justify-content-end gap-1">
-                      <button
+                      {can("followup.call_now") && <button
                         className="btn btn-xs btn-primary"
                         onClick={() => {
                           setSelectedLead("Rajesh Verma");
@@ -224,10 +232,10 @@ export default function FollowUpPage() {
                         }}
                       >
                         <i className="bi bi-telephone-fill me-1"></i> Call Now
-                      </button>
-                      <Link href="/quotation" className="btn btn-xs btn-outline-custom">
+                      </button>}
+                      {can("followup.send_quotation") && <Link href="/admin/quotation" className="btn btn-xs btn-outline-custom">
                         <i className="bi bi-file-earmark-spreadsheet"></i>
-                      </Link>
+                      </Link>}
                     </div>
                   </td>
                 </tr>
@@ -275,7 +283,7 @@ export default function FollowUpPage() {
                   </td>
                   <td className="text-end">
                     <div className="d-flex justify-content-end gap-1">
-                      <button
+                      {can("followup.call_now") && <button
                         className="btn btn-xs btn-primary"
                         onClick={() => {
                           setSelectedLead("Priya Menon");
@@ -283,10 +291,10 @@ export default function FollowUpPage() {
                         }}
                       >
                         <i className="bi bi-telephone-fill me-1"></i> Call Now
-                      </button>
-                      <Link href="/quotation" className="btn btn-xs btn-outline-custom">
+                      </button>}
+                      {can("followup.send_quotation") && <Link href="/admin/quotation" className="btn btn-xs btn-outline-custom">
                         <i className="bi bi-file-earmark-spreadsheet"></i>
-                      </Link>
+                      </Link>}
                     </div>
                   </td>
                 </tr>
@@ -334,7 +342,7 @@ export default function FollowUpPage() {
                   </td>
                   <td className="text-end">
                     <div className="d-flex justify-content-end gap-1">
-                      <button
+                      {can("followup.call_now") && <button
                         className="btn btn-xs btn-primary"
                         onClick={() => {
                           setSelectedLead("Amit Patel");
@@ -342,10 +350,10 @@ export default function FollowUpPage() {
                         }}
                       >
                         <i className="bi bi-telephone-fill me-1"></i> Call Now
-                      </button>
-                      <Link href="/quotation" className="btn btn-xs btn-outline-custom">
+                      </button>}
+                      {can("followup.send_quotation") && <Link href="/admin/quotation" className="btn btn-xs btn-outline-custom">
                         <i className="bi bi-file-earmark-spreadsheet"></i>
-                      </Link>
+                      </Link>}
                     </div>
                   </td>
                 </tr>
@@ -393,7 +401,7 @@ export default function FollowUpPage() {
                   </td>
                   <td className="text-end">
                     <div className="d-flex justify-content-end gap-1">
-                      <button
+                      {can("followup.call_now") && <button
                         className="btn btn-xs btn-primary"
                         onClick={() => {
                           setSelectedLead("Sunita Rao");
@@ -401,10 +409,10 @@ export default function FollowUpPage() {
                         }}
                       >
                         <i className="bi bi-telephone-fill me-1"></i> Call Now
-                      </button>
-                      <Link href="/quotation" className="btn btn-xs btn-outline-custom">
+                      </button>}
+                      {can("followup.send_quotation") && <Link href="/admin/quotation" className="btn btn-xs btn-outline-custom">
                         <i className="bi bi-file-earmark-spreadsheet"></i>
-                      </Link>
+                      </Link>}
                     </div>
                   </td>
                 </tr>

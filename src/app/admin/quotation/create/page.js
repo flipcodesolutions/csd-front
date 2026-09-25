@@ -8,11 +8,24 @@ import { quotationApi } from "@/lib/quotationApi";
 import { salesExecutiveApi } from "@/lib/salesExecutiveApi";
 import api from "@/lib/axios";
 import { useToast } from "@/app/components/Toast";
+import { hasPermission } from "@/utils/auth";
 
 function SendQuotationPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { showToast } = useToast();
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      try {
+        setCurrentUser(JSON.parse(user));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+  const can = (permission) => hasPermission(permission, currentUser);
 
   const queryLeadId = searchParams.get("lead_id") || "";
 
@@ -547,25 +560,25 @@ function SendQuotationPageContent() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2 flex-wrap">
-            <button
+            {can("quotation.reset") && <button
               type="button"
               className="btn btn-outline-custom d-flex align-items-center gap-1"
               onClick={handleResetSheet}
             >
               <i className="bi bi-arrow-clockwise"></i>
               <span>Reset Sheet</span>
-            </button>
+            </button>}
 
-            <button
+            {can("quotation.print_pdf") && <button
               type="button"
               className="btn btn-outline-custom d-flex align-items-center gap-1"
               onClick={handlePrintPdf}
             >
               <i className="bi bi-printer-fill"></i>
               <span>Print / PDF</span>
-            </button>
+            </button>}
 
-            <button
+            {can("quotation.email") && <button
               type="button"
               className="btn btn-outline-custom d-flex align-items-center gap-1"
               style={{ color: "#facc15", borderColor: "rgba(234, 179, 8, 0.4)" }}
@@ -573,12 +586,12 @@ function SendQuotationPageContent() {
             >
               <i className="bi bi-envelope-fill"></i>
               <span>Email Client</span>
-            </button>
+            </button>}
 
-            <Link href="/admin/quotation" className="btn btn-primary btn-sm px-3 d-flex align-items-center gap-1">
+            {can("quotation.saved_view") && <Link href="/admin/quotation" className="btn btn-primary btn-sm px-3 d-flex align-items-center gap-1">
               <i className="bi bi-folder2-open"></i>
               <span>All Quotes</span>
-            </Link>
+            </Link>}
           </div>
         </div>
 
@@ -598,7 +611,7 @@ function SendQuotationPageContent() {
 
               <div className="card-body p-3">
                 {/* Auto-Fill from Leads Pipeline */}
-                <div className="mb-3">
+                {can("quotation.auto_fill") && <div className="mb-3">
                   <label className="form-label text-dark small fw-medium mb-1">
                     Auto-Fill from Leads Pipeline
                   </label>
@@ -614,8 +627,8 @@ function SendQuotationPageContent() {
                         lead.priority?.toLowerCase() === "hot"
                           ? "🔥"
                           : lead.priority?.toLowerCase() === "warm"
-                          ? "☀️"
-                          : "❄️";
+                            ? "☀️"
+                            : "❄️";
                       return (
                         <option key={lead.id} value={lead.id}>
                           {lead.name} ({lead.model_variant || lead.brand_name || "Lead"} - {lead.priority || "Standard"} {priorityEmoji})
@@ -623,7 +636,7 @@ function SendQuotationPageContent() {
                       );
                     })}
                   </select>
-                </div>
+                </div>}
 
                 {/* Client Name & Mobile */}
                 <div className="row g-2 mb-3">

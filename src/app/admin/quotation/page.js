@@ -8,10 +8,28 @@ import { quotationApi } from "@/lib/quotationApi";
 import { salesExecutiveApi } from "@/lib/salesExecutiveApi";
 import api from "@/lib/axios";
 import { useToast } from "@/app/components/Toast";
+import { hasPermission } from "@/utils/auth";
 
 export default function QuotationMainPage() {
   const router = useRouter();
   const { showToast } = useToast();
+  const [mounted, setMounted] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    setMounted(true);
+    const user = localStorage.getItem("user");
+    if (user) {
+      try {
+        setCurrentUser(JSON.parse(user));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+  const can = (permission) => {
+    if (!mounted || !currentUser) return false;
+    return hasPermission(permission, currentUser);
+  };
 
   // Active View Tab: 'maker' (Default builder UI) vs 'records' (History table)
   const [activeTab, setActiveTab] = useState("maker");
@@ -39,13 +57,15 @@ export default function QuotationMainPage() {
   const [clientName, setClientName] = useState("Vikramaditya Singh");
   const [clientMobile, setClientMobile] = useState("9825123456");
   const [cityJurisdiction, setCityJurisdiction] = useState("Ahmedabad");
-  const [quotationDate, setQuotationDate] = useState(() => {
+  const [quotationDate, setQuotationDate] = useState("25.09.26");
+
+  useEffect(() => {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, "0");
     const mm = String(today.getMonth() + 1).padStart(2, "0");
     const yy = String(today.getFullYear()).slice(-2);
-    return `${dd}.${mm}.${yy}`;
-  });
+    setQuotationDate(`${dd}.${mm}.${yy}`);
+  }, []);
 
   // ----------------------------------------------------
   // FORM STATES - VEHICLE & SPECIFICATIONS
@@ -513,25 +533,25 @@ export default function QuotationMainPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2 flex-wrap">
-            <button
+            {can("quotation.reset") && <button
               type="button"
               className="btn btn-outline-custom d-flex align-items-center gap-1"
               onClick={handleResetSheet}
             >
               <i className="bi bi-arrow-clockwise"></i>
               <span>Reset Sheet</span>
-            </button>
+            </button>}
 
-            <button
+            {can("quotation.print_pdf") && <button
               type="button"
               className="btn btn-outline-custom d-flex align-items-center gap-1"
               onClick={handlePrintPdf}
             >
               <i className="bi bi-printer-fill"></i>
               <span>Print / PDF</span>
-            </button>
+            </button>}
 
-            <button
+            {can("quotation.email") && <button
               type="button"
               className="btn btn-outline-custom d-flex align-items-center gap-1"
               style={{ color: "#facc15", borderColor: "rgba(234, 179, 8, 0.4)" }}
@@ -539,17 +559,17 @@ export default function QuotationMainPage() {
             >
               <i className="bi bi-envelope-fill"></i>
               <span>Email Client</span>
-            </button>
+            </button>}
 
             {/* Tab switch between Live Generator and All Saved Quotes */}
-            <button
+            {can("quotation.saved_view") && <button
               type="button"
               className={`btn btn-sm ${activeTab === "maker" ? "btn-outline-primary" : "btn-primary"} d-flex align-items-center gap-1`}
               onClick={() => setActiveTab(activeTab === "maker" ? "records" : "maker")}
             >
               <i className={activeTab === "maker" ? "bi bi-folder2-open" : "bi bi-file-earmark-spreadsheet-fill"}></i>
               <span>{activeTab === "maker" ? "Saved Quotes Pipeline" : "Back to Quotation Maker"}</span>
-            </button>
+            </button>}
           </div>
         </div>
 
@@ -573,7 +593,7 @@ export default function QuotationMainPage() {
 
                 <div className="card-body p-3">
                   {/* Auto-Fill from Leads Pipeline */}
-                  <div className="mb-3">
+                  {can("quotation.auto_fill") && <div className="mb-3">
                     <label className="form-label text-dark small fw-medium mb-1">
                       Auto-Fill from Leads Pipeline
                     </label>
@@ -598,7 +618,7 @@ export default function QuotationMainPage() {
                         );
                       })}
                     </select>
-                  </div>
+                  </div>}
 
                   {/* Client Name & Mobile */}
                   <div className="row g-2 mb-3">
@@ -644,6 +664,7 @@ export default function QuotationMainPage() {
                         value={quotationDate}
                         onChange={(e) => setQuotationDate(e.target.value)}
                         placeholder="12.08.26"
+                        suppressHydrationWarning
                       />
                     </div>
                   </div>
@@ -1315,17 +1336,17 @@ export default function QuotationMainPage() {
                           </span>
                         </td>
                         <td className="py-3 px-3 text-end">
-                          <Link href={`/admin/quotation/${quote.id}`} className="btn btn-outline-custom btn-sm p-1 px-2 me-1" title="View">
+                          {can("quotation.view") && <Link href={`/admin/quotation/${quote.id}`} className="btn btn-outline-custom btn-sm p-1 px-2 me-1" title="View">
                             <i className="bi bi-eye"></i>
-                          </Link>
-                          <button
+                          </Link>}
+                          {can("quotation.print_pdf") && <button
                             type="button"
                             className="btn btn-outline-custom btn-sm p-1 px-2 text-info"
                             title="Download PDF"
                             onClick={() => quotationApi.downloadPdf(quote.id, quote.quotation_number)}
                           >
                             <i className="bi bi-file-earmark-pdf-fill"></i>
-                          </button>
+                          </button>}
                         </td>
                       </tr>
                     ))
