@@ -323,6 +323,7 @@ export function canAccessAdminPath(pathname, customUser = undefined) {
     ["/admin/model", "model.export"],
     ["/admin/variant", "variant.export"],
     ["/admin/update-price", "price.update"],
+    ["/admin/invoice", "invoice.view"],
     ["/admin/lead-source", "lead_source.manage"],
     ["/admin/lead-status", "lead_status.manage"],
     ["/admin/settings", "settings.manage"],

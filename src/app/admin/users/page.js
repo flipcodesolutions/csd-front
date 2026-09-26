@@ -33,7 +33,8 @@ export default function UsersPage() {
   const can = (permission) => hasPermission(permission, currentUser);
 
   // API Base URL
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://cds.flipcodesolutions.com/api";
+  const BASE_STORAGE_URL = API_URL.replace(/\/api\/?$/, "");
 
   // 1. Component States
   const [users, setUsers] = useState([]);
@@ -415,7 +416,7 @@ export default function UsersPage() {
                               src={
                                 user.profile_photo.startsWith("http")
                                   ? user.profile_photo
-                                  : `http://127.0.0.1:8000${user.profile_photo}`
+                                  : `${BASE_STORAGE_URL}${user.profile_photo.startsWith("/") ? "" : "/"}${user.profile_photo}`
                               }
                               alt={user.name}
                               style={{

@@ -18,7 +18,8 @@ export default function BrandPage() {
   const can = (permission) => hasPermission(permission, currentUser);
 
   // API Base URL
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://cds.flipcodesolutions.com/api";
+  const BASE_STORAGE_URL = API_URL.replace(/\/api\/?$/, "");
 
   // 1. Component States
   const [brands, setBrands] = useState([]);
@@ -394,7 +395,7 @@ export default function BrandPage() {
                           <div className="d-flex align-items-center gap-2">
                             {brand.logo ? (
                               <img
-                                src={brand.logo.startsWith("http") ? brand.logo : `http://127.0.0.1:8000${brand.logo}`}
+                                src={brand.logo.startsWith("http") ? brand.logo : `${BASE_STORAGE_URL}${brand.logo.startsWith("/") ? "" : "/"}${brand.logo}`}
                                 alt={brand.name}
                                 style={{ width: "28px", height: "28px", objectFit: "contain", borderRadius: "4px" }}
                               />

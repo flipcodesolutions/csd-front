@@ -407,6 +407,16 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <span>Update Pricing</span>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link
+                  href="/admin/invoice"
+                  className={`nav-link ${isLinkActive("/admin/invoice") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-receipt-cutoff"></i>
+                  <span>Generate Invoice</span>
+                </Link>
+              </li>
             </ul>
           </>
         )}
@@ -520,6 +530,16 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                 >
                   <i className="bi bi-file-earmark-spreadsheet-fill"></i>
                   <span>Send Quotation</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  href="/admin/invoice"
+                  className={`nav-link ${isLinkActive("/admin/invoice") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-receipt-cutoff"></i>
+                  <span>Generate Invoice</span>
                 </Link>
               </li>
               <li className="nav-item">

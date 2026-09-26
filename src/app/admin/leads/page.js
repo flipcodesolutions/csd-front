@@ -18,7 +18,7 @@ export default function LeadsPage() {
   const can = (permission) => hasPermission(permission, currentUser);
 
   // API Base URL
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000/api";
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://cds.flipcodesolutions.com/api";
 
   // 1. Component States
   const [leads, setLeads] = useState([]);
@@ -57,6 +57,25 @@ export default function LeadsPage() {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Follow-Up Interaction Modal States
+  const [showFollowUpModal, setShowFollowUpModal] = useState(false);
+  const [followUpTarget, setFollowUpTarget] = useState(null);
+  const [isSubmittingFollowUp, setIsSubmittingFollowUp] = useState(false);
+  const [leadFollowUpHistory, setLeadFollowUpHistory] = useState([]);
+  const [isLoadingFollowUps, setIsLoadingFollowUps] = useState(false);
+
+  const [followUpForm, setFollowUpForm] = useState({
+    customer: "",
+    phone: "",
+    outcome: "Interested / Call Back",
+    type: "Phone Call",
+    follow_up_date: new Date().toISOString().split("T")[0],
+    follow_up_time: "02:30 PM",
+    next_follow_up_date: "",
+    next_follow_up_time: "10:00 AM",
+    notes: "",
+  });
+
   // Form State for Adding New Lead (matches user screenshot)
   const [formData, setFormData] = useState({
     name: "",
@@ -71,6 +90,7 @@ export default function LeadsPage() {
     model_variant: "",
     priority: "Hot", // "Hot", "Warm", "Cold"
     purchase_timeline: "Immediate (Within 7 Days)",
+    budget: "",
     source_id: "",
     status_id: "",
     assigned_user_name: "David Miller (Sales Executive)",
@@ -151,6 +171,8 @@ export default function LeadsPage() {
         model_variant: formData.model_variant.trim(),
         priority: formData.priority,
         purchase_timeline: formData.purchase_timeline,
+        budget: formData.budget ? parseFloat(formData.budget) : null,
+        total_deal_amount: formData.budget ? parseFloat(formData.budget) : null,
         source_id: formData.source_id || null,
         status_id: formData.status_id || null,
         assigned_user_name: formData.assigned_user_name,
@@ -218,6 +240,7 @@ export default function LeadsPage() {
         model_variant: editLead.model_variant.trim(),
         priority: editLead.priority || "Hot",
         purchase_timeline: editLead.purchase_timeline,
+        budget: editLead.budget || null,
         source_id: editLead.source_id || null,
         status_id: editLead.status_id || null,
         assigned_user_name: editLead.assigned_user_name,
@@ -260,7 +283,12 @@ export default function LeadsPage() {
     setIsTriggeringWishes(true);
     try {
       showToast("Running Birthday & Anniversary wishes automation...", "info");
-      const res = await axios.post(`${API_URL}/leads/send-greetings-now`);
+      let res;
+      try {
+        res = await axios.get(`${API_URL}/leads/send-greetings-now`);
+      } catch {
+        res = await axios.post(`${API_URL}/leads/send-greetings-now`);
+      }
       if (res.data && res.data.status) {
         showToast(res.data.message || "Greetings sent successfully!", "success");
         fetchLeads();
@@ -497,19 +525,108 @@ export default function LeadsPage() {
     }
   };
 
+  const handleOpenFollowUpModal = (lead) => {
+    setFollowUpTarget(lead);
+    const today = new Date().toISOString().split("T")[0];
+    const nowTime = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
+
+    // Default next follow-up date 3 days later
+    const nextDate = new Date();
+    nextDate.setDate(nextDate.getDate() + 3);
+    const nextDateStr = nextDate.toISOString().split("T")[0];
+
+    setFollowUpForm({
+      customer: lead.name || "",
+      phone: lead.phone || "",
+      outcome: "Interested / Call Back",
+      type: "Phone Call",
+      follow_up_date: today,
+      follow_up_time: nowTime,
+      next_follow_up_date: nextDateStr,
+      next_follow_up_time: "10:00 AM",
+      notes: "",
+    });
+    setShowFollowUpModal(true);
+  };
+
+  const handleFollowUpSubmit = async (e) => {
+    e.preventDefault();
+    if (!followUpTarget) return;
+    setIsSubmittingFollowUp(true);
+
+    try {
+      const payload = {
+        lead_id: followUpTarget.id,
+        follow_up_date: followUpForm.follow_up_date || new Date().toISOString().split("T")[0],
+        follow_up_time: followUpForm.follow_up_time || "02:30 PM",
+        type: followUpForm.type || "Phone Call",
+        notes: followUpForm.notes || "",
+        next_follow_up_date: followUpForm.next_follow_up_date || null,
+        next_follow_up_time: followUpForm.next_follow_up_time || "10:00 AM",
+        status: followUpForm.outcome || "Interested",
+        lead_status_name: "In Follow-Up",
+      };
+
+      const response = await axios.post(`${API_URL}/follow-ups`, payload);
+      if (response.data && response.data.status) {
+        showToast(response.data.message || `Follow-up call interaction logged for ${followUpForm.customer}!`, "success");
+        setShowFollowUpModal(false);
+        fetchLeads();
+      } else {
+        showToast(response.data?.message || "Failed to log follow-up.", "error");
+      }
+    } catch (error) {
+      console.error("Follow-up error:", error);
+      // Fallback endpoint: POST /leads/{id}/follow-ups
+      try {
+        const payload = {
+          follow_up_date: followUpForm.follow_up_date || new Date().toISOString().split("T")[0],
+          follow_up_time: followUpForm.follow_up_time || "02:30 PM",
+          type: followUpForm.type || "Phone Call",
+          notes: followUpForm.notes || "",
+          next_follow_up_date: followUpForm.next_follow_up_date || null,
+          next_follow_up_time: followUpForm.next_follow_up_time || "10:00 AM",
+          status: followUpForm.outcome || "Interested",
+          lead_status_name: "In Follow-Up",
+        };
+        const fbRes = await axios.post(`${API_URL}/leads/${followUpTarget.id}/follow-ups`, payload);
+        if (fbRes.data && fbRes.data.status) {
+          showToast(`Follow-up call interaction logged for ${followUpForm.customer}!`, "success");
+          setShowFollowUpModal(false);
+          fetchLeads();
+          return;
+        }
+      } catch (fbErr) {
+        console.error("Fallback follow-up error:", fbErr);
+      }
+      showToast(error.response?.data?.message || "Failed to log follow-up call.", "error");
+    } finally {
+      setIsSubmittingFollowUp(false);
+    }
+  };
+
   const handleOpenViewLead = async (lead) => {
     setViewLead(lead);
     setLeadAssignmentHistory([]);
+    setLeadFollowUpHistory([]);
     setIsLoadingHistory(true);
+    setIsLoadingFollowUps(true);
     try {
-      const response = await axios.get(`${API_URL}/leads/${lead.id}/assignments`);
-      if (response.data && response.data.status) {
-        setLeadAssignmentHistory(response.data.data || []);
+      const [assignRes, followUpRes] = await Promise.all([
+        axios.get(`${API_URL}/leads/${lead.id}/assignments`).catch(() => ({ data: { data: [] } })),
+        axios.get(`${API_URL}/leads/${lead.id}/follow-ups`).catch(() => ({ data: { data: [] } })),
+      ]);
+      if (assignRes.data && assignRes.data.status) {
+        setLeadAssignmentHistory(assignRes.data.data || []);
+      }
+      if (followUpRes.data && followUpRes.data.status) {
+        setLeadFollowUpHistory(followUpRes.data.data || []);
       }
     } catch (err) {
-      console.log("Error fetching lead assignments:", err);
+      console.log("Error fetching lead history:", err);
     } finally {
       setIsLoadingHistory(false);
+      setIsLoadingFollowUps(false);
     }
   };
 
@@ -1271,6 +1388,16 @@ export default function LeadsPage() {
                         </td>
                         <td className="text-end">
                           <div className="table-actions justify-content-end">
+                            {(can("lead.followup") || can("followup.log_call") || !currentUser) && (
+                              <button
+                                className="btn-action"
+                                style={{ color: "#10b981", backgroundColor: "rgba(16, 185, 129, 0.12)" }}
+                                title="Log Follow-Up Call"
+                                onClick={() => handleOpenFollowUpModal(lead)}
+                              >
+                                <i className="bi bi-telephone-plus-fill"></i>
+                              </button>
+                            )}
                             {can("lead.send_quotation") && <Link
                               href={`/admin/quotation/create?lead_id=${lead.id}`}
                               className="btn-action"
@@ -1590,6 +1717,22 @@ export default function LeadsPage() {
                         <option value="Exploring / Later">Exploring / Later</option>
                       </select>
                     </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-dark fw-bold small">
+                        Total Deal Price / Budget (₹)
+                      </label>
+                      <div className="input-group">
+                        <span className="input-group-text bg-light fw-bold">₹</span>
+                        <input
+                          type="number"
+                          className="form-control fw-bold"
+                          placeholder="e.g. 1450000"
+                          value={formData.budget || ""}
+                          onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   {/* SECTION 3: Lead Tracking & Assignment */}
@@ -1839,6 +1982,22 @@ export default function LeadsPage() {
                         <option value="Exploring / Later">Exploring / Later</option>
                       </select>
                     </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-dark fw-bold small">
+                        Total Deal Price / Budget (₹)
+                      </label>
+                      <div className="input-group">
+                        <span className="input-group-text bg-light fw-bold">₹</span>
+                        <input
+                          type="number"
+                          className="form-control fw-bold"
+                          placeholder="e.g. 1450000"
+                          value={editLead.budget || ""}
+                          onChange={(e) => setEditLead({ ...editLead, budget: e.target.value })}
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   {/* Tracking */}
@@ -2052,6 +2211,63 @@ export default function LeadsPage() {
                     </div>
                   )}
                 </div>
+
+                {/* Follow-Up Interaction History */}
+                <div className="mt-4 pt-3 border-top border-secondary">
+                  <div className="d-flex align-items-center justify-content-between mb-2">
+                    <h6 className="text-dark fw-bold mb-0 small">
+                      <i className="bi bi-telephone-outbound-fill text-primary me-1"></i> Follow-Up Interaction History
+                    </h6>
+                    <span className="badge bg-primary-subtle text-primary small">
+                      {leadFollowUpHistory.length} {leadFollowUpHistory.length === 1 ? "Call Log" : "Call Logs"}
+                    </span>
+                  </div>
+
+                  {isLoadingFollowUps ? (
+                    <div className="text-center py-3 text-muted small">
+                      <div className="spinner-border spinner-border-sm me-2" role="status"></div>
+                      Loading follow-ups...
+                    </div>
+                  ) : leadFollowUpHistory.length === 0 ? (
+                    <div className="text-muted small py-2 px-3 rounded-2 bg-dark border">
+                      No follow-up interaction logged yet for this lead.
+                    </div>
+                  ) : (
+                    <div className="d-flex flex-column gap-2" style={{ maxHeight: "200px", overflowY: "auto" }}>
+                      {leadFollowUpHistory.map((fu) => (
+                        <div
+                          key={fu.id}
+                          className="p-2 rounded-2"
+                          style={{ background: "#161819", border: "1px solid #33383B" }}
+                        >
+                          <div className="d-flex align-items-center justify-content-between">
+                            <span className="text-white fw-bold small">
+                              <i className="bi bi-telephone-forward text-success me-1"></i>
+                              {fu.type || "Phone Call"}: <span className="badge bg-info-subtle text-info border ms-1">{fu.status || "Follow-up"}</span>
+                            </span>
+                            <span className="text-muted" style={{ fontSize: "11px" }}>
+                              {fu.follow_up_date} {fu.follow_up_time ? `• ${fu.follow_up_time}` : ""}
+                            </span>
+                          </div>
+                          {fu.notes && (
+                       <div className="text-light small mt-1"style={{ fontSize: "12px", opacity: 0.9 }}>
+                         {fu.notes}
+                        </div>
+                          )}
+                          <div className="d-flex align-items-center justify-content-between mt-1 text-muted" style={{ fontSize: "11px" }}>
+                            <span>Logged by: <strong className="text-secondary">{fu.user_name || fu.user?.name || "Rep"}</strong></span>
+                            {fu.next_follow_up_date && (
+                              <span className="text-warning">
+                                <i className="bi bi-calendar-event me-1"></i>
+                                Next: {fu.next_follow_up_date} {fu.next_follow_up_time || ""}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="modal-footer-custom d-flex justify-content-between align-items-center">
@@ -2062,13 +2278,27 @@ export default function LeadsPage() {
                 >
                   Close
                 </button>
-                <Link
-                  href={`/admin/quotation/create?lead_id=${viewLead.id}`}
-                  className="btn btn-primary d-inline-flex align-items-center gap-1"
-                >
-                  <i className="bi bi-file-earmark-spreadsheet-fill me-1"></i>
-                  <span>Send Quotation</span>
-                </Link>
+                <div className="d-flex gap-2">
+                  <button
+                    type="button"
+                    className="btn btn-outline-success d-inline-flex align-items-center gap-1"
+                    onClick={() => {
+                      const cur = viewLead;
+                      setViewLead(null);
+                      handleOpenFollowUpModal(cur);
+                    }}
+                  >
+                    <i className="bi bi-telephone-plus-fill me-1"></i>
+                    <span>Log Call</span>
+                  </button>
+                  <Link
+                    href={`/admin/quotation/create?lead_id=${viewLead.id}`}
+                    className="btn btn-primary d-inline-flex align-items-center gap-1"
+                  >
+                    <i className="bi bi-file-earmark-spreadsheet-fill me-1"></i>
+                    <span>Send Quotation</span>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -2093,7 +2323,7 @@ export default function LeadsPage() {
 
               <div className="modal-body-custom">
                 <p className="text-dark mb-0">
-                  Are you sure you want to delete lead for <strong>"{deleteTarget.name}"</strong>?
+                  Are you sure you want to delete lead for <strong>&quot;{deleteTarget.name}&quot;</strong>?
                 </p>
               </div>
 
@@ -2332,6 +2562,141 @@ export default function LeadsPage() {
                     disabled={isImporting || !importFile}
                   >
                     {isImporting ? "Importing..." : "Upload & Process Leads"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ------------------------------------------------------------------
+            LOG CALL INTERACTION MODAL (Matches user's screenshot exactly)
+            ------------------------------------------------------------------ */}
+        {showFollowUpModal && (
+          <div className="modal-backdrop-custom" onClick={() => setShowFollowUpModal(false)}>
+            <div className="modal-dialog-custom modal-lg" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header-custom d-flex justify-content-between align-items-center">
+                <h5 className="modal-title-custom text-white mb-0 fs-5 fw-bold d-flex align-items-center gap-2">
+                  <i className="bi bi-telephone-outbound-fill text-primary"></i> Log Call Interaction
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close btn-close-white"
+                  onClick={() => setShowFollowUpModal(false)}
+                ></button>
+              </div>
+
+              <form onSubmit={handleFollowUpSubmit}>
+                <div className="modal-body-custom">
+                  <div className="row g-3">
+                    <div className="col-md-6">
+                      <label className="form-label text-dark fw-semibold small">Customer Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={followUpForm.customer}
+                        onChange={(e) => setFollowUpForm({ ...followUpForm, customer: e.target.value })}
+                        required
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-dark fw-semibold small">Phone Number</label>
+                      <input
+                        type="tel"
+                        className="form-control"
+                        value={followUpForm.phone}
+                        onChange={(e) => setFollowUpForm({ ...followUpForm, phone: e.target.value })}
+                        required
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-dark fw-semibold small">Call Outcome</label>
+                      <select
+                        className="form-select"
+                        value={followUpForm.outcome}
+                        onChange={(e) => setFollowUpForm({ ...followUpForm, outcome: e.target.value })}
+                      >
+                        <option value="Interested / Call Back">Interested / Call Back</option>
+                        <option value="Test Drive Requested">Test Drive Requested</option>
+                        <option value="Quotation Requested">Quotation Requested</option>
+                        <option value="Ready for Booking">Ready for Booking</option>
+                        <option value="Not Answering / Busy">Not Answering / Busy</option>
+                        <option value="Price Too High">Price Too High</option>
+                        <option value="Bought Competitor Car">Bought Competitor Car</option>
+                        <option value="Showroom Visit Done">Showroom Visit Done</option>
+                      </select>
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-dark fw-semibold small">Next Action Date</label>
+                      <input
+                        type="date"
+                        className="form-control"
+                        value={followUpForm.next_follow_up_date}
+                        onChange={(e) => setFollowUpForm({ ...followUpForm, next_follow_up_date: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-dark fw-semibold small">Interaction Type</label>
+                      <select
+                        className="form-select"
+                        value={followUpForm.type}
+                        onChange={(e) => setFollowUpForm({ ...followUpForm, type: e.target.value })}
+                      >
+                        <option value="Phone Call">Phone Call</option>
+                        <option value="Showroom Visit">Showroom Visit</option>
+                        <option value="WhatsApp">WhatsApp</option>
+                        <option value="Email">Email</option>
+                      </select>
+                    </div>
+
+                    <div className="col-md-6">
+                      <label className="form-label text-dark fw-semibold small">Next Action Time</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="e.g. 10:00 AM"
+                        value={followUpForm.next_follow_up_time}
+                        onChange={(e) => setFollowUpForm({ ...followUpForm, next_follow_up_time: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="col-12">
+                      <label className="form-label text-dark fw-semibold small">Call Notes & Conversation Summary</label>
+                      <textarea
+                        className="form-control"
+                        rows="3"
+                        placeholder="Detail customer reaction, discount discussed, accessories requested, or loan requirements..."
+                        value={followUpForm.notes}
+                        onChange={(e) => setFollowUpForm({ ...followUpForm, notes: e.target.value })}
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="modal-footer-custom d-flex justify-content-end gap-2">
+                  <button type="button" className="btn btn-outline-custom" onClick={() => setShowFollowUpModal(false)}>
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-success d-inline-flex align-items-center gap-1"
+                    style={{ backgroundColor: "#4D5D25", borderColor: "#4D5D25" }}
+                    disabled={isSubmittingFollowUp}
+                  >
+                    {isSubmittingFollowUp ? (
+                      <>
+                        <span className="spinner-border spinner-border-sm me-1" role="status"></span>
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <i className="bi bi-check-circle me-1"></i> Save Interaction
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
