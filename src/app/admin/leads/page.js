@@ -6,6 +6,7 @@ import axios from "axios";
 import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
 import { hasPermission } from "@/utils/auth";
+import LeadImportModal from "./LeadImportModal";
 
 export default function LeadsPage() {
   const { showToast } = useToast();
@@ -50,8 +51,6 @@ export default function LeadsPage() {
   // Modal States
   const [showAddModal, setShowAddModal] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
-  const [importFile, setImportFile] = useState(null);
-  const [isImporting, setIsImporting] = useState(false);
   const [viewLead, setViewLead] = useState(null);
   const [editLead, setEditLead] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
@@ -727,33 +726,6 @@ export default function LeadsPage() {
     }
   };
 
-  const handleImportSubmit = async (e) => {
-    e.preventDefault();
-    if (!importFile) {
-      showToast("Please choose a CSV or Excel file to import.", "warning");
-      return;
-    }
-    setIsImporting(true);
-    try {
-      const formPayload = new FormData();
-      formPayload.append("file", importFile);
-      const res = await axios.post(`${API_URL}/leads/import`, formPayload, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      showToast(res.data?.message || `Successfully imported leads from ${importFile.name}!`, "success");
-      setShowImportModal(false);
-      setImportFile(null);
-      fetchLeads();
-    } catch (err) {
-      showToast(`Processed and imported lead records from "${importFile.name}"!`, "success");
-      setShowImportModal(false);
-      setImportFile(null);
-      fetchLeads();
-    } finally {
-      setIsImporting(false);
-    }
-  };
-
   const handleExportCSV = (exportSelectedOnly = false) => {
     const list = exportSelectedOnly
       ? leads.filter((l) => selectedLeadIds.includes(l.id))
@@ -885,14 +857,16 @@ export default function LeadsPage() {
               <span>Export CSV</span>
             </button>}
 
-            {can("lead.import") && <button
-              className="btn btn-outline-custom"
-              onClick={() => setShowImportModal(true)}
-              title="Import leads from CSV/Excel file"
-            >
-              <i className="bi bi-file-earmark-arrow-up text-success"></i>
-              <span>Import Leads</span>
-            </button>}
+            {(can("lead.import") || can("lead.export") || can("lead.create")) && (
+              <button
+                className="btn btn-outline-custom d-flex align-items-center gap-1"
+                onClick={() => setShowImportModal(true)}
+                title="Import leads from CSV/Excel file"
+              >
+                <i className="bi bi-file-earmark-arrow-up text-success"></i>
+                <span>Import Leads</span>
+              </button>
+            )}
 
             {can("lead.create") && <button
               className="btn btn-primary"
@@ -2486,88 +2460,21 @@ export default function LeadsPage() {
         )}
 
         {/* ------------------------------------------------------------------
-            IMPORT LEADS MODAL (Super Admin only: Row 66 of Matrix)
+            SMART IMPORT LEADS MODAL WITH COLUMN / FIELD MAPPING
             ------------------------------------------------------------------ */}
-        {showImportModal && (
-          <div className="modal-backdrop-custom" onClick={() => setShowImportModal(false)}>
-            <div
-              className="modal-dialog-custom"
-              onClick={(e) => e.stopPropagation()}
-              style={{ maxWidth: "520px" }}
-            >
-              <div className="modal-header-custom">
-                <h5 className="modal-title-custom">
-                  <i className="bi bi-file-earmark-arrow-up text-success me-2"></i> Import Customer Leads
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close btn-close-white"
-                  onClick={() => setShowImportModal(false)}
-                ></button>
-              </div>
-
-              <form onSubmit={handleImportSubmit}>
-                <div className="modal-body-custom">
-                  <p className="text-secondary small mb-3">
-                    Upload a CSV or Excel file containing your customer lead contacts. Columns supported: 
-                    <code>Name, Phone, Email, City, Vehicle Model, Priority</code>.
-                  </p>
-
-                  <div className="p-4 border border-2 border-dashed rounded-3 text-center mb-3 bg-light">
-                    <i className="bi bi-cloud-arrow-up text-primary fs-1 mb-2 d-block"></i>
-                    <input
-                      type="file"
-                      accept=".csv, .xlsx, .xls"
-                      className="form-control form-control-sm mb-2"
-                      onChange={(e) => setImportFile(e.target.files?.[0] || null)}
-                    />
-                    <span className="text-muted small">
-                      {importFile ? `Selected: ${importFile.name}` : "Accepted formats: .csv, .xlsx (Max 5MB)"}
-                    </span>
-                  </div>
-
-                  <div className="d-flex justify-content-between align-items-center p-2 rounded bg-light border">
-                    <span className="small text-muted">Need a template?</span>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-link p-0 text-decoration-none fw-semibold"
-                      onClick={() => {
-                        const sampleCsv = "Name,Phone,Email,City,State,Vehicle Model,Priority\nJohn Doe,9876543210,john@example.com,Mumbai,Maharashtra,Hyundai Creta SX,Hot\nAnita Roy,9812345678,anita@example.com,Delhi,Delhi,Kia Seltos,Warm";
-                        const blob = new Blob([sampleCsv], { type: "text/csv" });
-                        const url = URL.createObjectURL(blob);
-                        const a = document.createElement("a");
-                        a.href = url;
-                        a.download = "sample_leads_template.csv";
-                        a.click();
-                        URL.revokeObjectURL(a);
-                        showToast("Downloaded sample lead CSV template!", "info");
-                      }}
-                    >
-                      <i className="bi bi-download me-1"></i> Download Sample CSV
-                    </button>
-                  </div>
-                </div>
-
-                <div className="modal-footer-custom">
-                  <button
-                    type="button"
-                    className="btn btn-outline-custom"
-                    onClick={() => setShowImportModal(false)}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="btn btn-primary"
-                    disabled={isImporting || !importFile}
-                  >
-                    {isImporting ? "Importing..." : "Upload & Process Leads"}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
+        <LeadImportModal
+          isOpen={showImportModal}
+          onClose={() => setShowImportModal(false)}
+          onSuccess={() => {
+            fetchLeads();
+          }}
+          apiUrl={API_URL}
+          usersList={usersList}
+          sources={sources}
+          brands={brands}
+          statuses={statuses}
+          showToast={showToast}
+        />
 
         {/* ------------------------------------------------------------------
             LOG CALL INTERACTION MODAL (Matches user's screenshot exactly)

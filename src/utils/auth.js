@@ -95,6 +95,7 @@ const ROLE_PERMISSIONS = {
     "lead.followup",
     "lead.send_quotation",
     "lead.send_wishes",
+    "lead.import",
     "lead.export",
     "lead.export_selected",
     "lead.bulk_status",
@@ -157,6 +158,8 @@ const ROLE_PERMISSIONS = {
     "lead.assign",
     "lead.status",
     "lead.priority",
+    "lead.import",
+    "lead.export",
     "lead.followup",
     "lead.send_quotation",
     "lead.send_wishes",
@@ -287,6 +290,8 @@ export function hasPermission(permission, customUser = undefined) {
   let roleKey = currentRole;
   if (roleKey === "admin") roleKey = "super_admin";
   if (roleKey === "manager") roleKey = "sales_manager";
+
+  if (roleKey === "super_admin") return true;
 
   const permissions = ROLE_PERMISSIONS[roleKey] || [];
 
