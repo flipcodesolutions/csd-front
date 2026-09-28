@@ -7,6 +7,8 @@ import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
 import { hasPermission } from "@/utils/auth";
 import LeadImportModal from "./LeadImportModal";
+import ConvertDealModal from "./ConvertDealModal";
+import { getConvertedLeadIds } from "@/services/dealApi";
 
 export default function LeadsPage() {
   const { showToast } = useToast();
@@ -28,6 +30,11 @@ export default function LeadsPage() {
   const [statuses, setStatuses] = useState([]);
   const [usersList, setUsersList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Convert Deal State & Three dots menu state
+  const [convertDealTarget, setConvertDealTarget] = useState(null);
+  const [activeActionMenuId, setActiveActionMenuId] = useState(null);
+  const [convertedLeadIds, setConvertedLeadIds] = useState([]);
 
   // Selection & Bulk Action States
   const [selectedLeadIds, setSelectedLeadIds] = useState([]);
@@ -300,8 +307,28 @@ export default function LeadsPage() {
     }
   };
 
-  // Filter leads based on user selection
+  // Sync converted lead IDs and close action menu on outside click
+  useEffect(() => {
+    setConvertedLeadIds(getConvertedLeadIds());
+    const handleConv = () => setConvertedLeadIds(getConvertedLeadIds());
+    window.addEventListener("csd_leads_converted_updated", handleConv);
+    return () => window.removeEventListener("csd_leads_converted_updated", handleConv);
+  }, []);
+
+  useEffect(() => {
+    const handleOutsideClick = () => setActiveActionMenuId(null);
+    if (activeActionMenuId) {
+      window.addEventListener("click", handleOutsideClick);
+      return () => window.removeEventListener("click", handleOutsideClick);
+    }
+  }, [activeActionMenuId]);
+
+  // Filter leads based on user selection (excluding converted deals)
   const filteredLeads = leads.filter((item) => {
+    if (convertedLeadIds.some((cid) => String(cid) === String(item.id))) {
+      return false;
+    }
+
     const matchesSearch =
       item.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.phone?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -1360,64 +1387,138 @@ export default function LeadsPage() {
                             )}
                           </span>
                         </td>
-                        <td className="text-end">
-                          <div className="table-actions justify-content-end">
-                            {(can("lead.followup") || can("followup.log_call") || !currentUser) && (
-                              <button
-                                className="btn-action"
-                                style={{ color: "#10b981", backgroundColor: "rgba(16, 185, 129, 0.12)" }}
-                                title="Log Follow-Up Call"
-                                onClick={() => handleOpenFollowUpModal(lead)}
+                        <td className="text-end" onClick={(e) => e.stopPropagation()}>
+                          <div className="dropdown position-relative d-inline-block">
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-light border rounded-circle shadow-none p-0 d-inline-flex align-items-center justify-content-center"
+                              style={{ width: "32px", height: "32px", cursor: "pointer" }}
+                              title="Lead Actions"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setActiveActionMenuId(activeActionMenuId === lead.id ? null : lead.id);
+                              }}
+                            >
+                              <i className="bi bi-three-dots-vertical fs-6 text-dark"></i>
+                            </button>
+
+                            {activeActionMenuId === lead.id && (
+                              <div
+                                className="dropdown-menu show shadow-lg border rounded-3 p-1 position-absolute end-0 text-start"
+                                style={{
+                                  minWidth: "195px",
+                                  zIndex: 1050,
+                                  top: "100%",
+                                  backgroundColor: "#FFFFFF",
+                                }}
+                                onClick={(e) => e.stopPropagation()}
                               >
-                                <i className="bi bi-telephone-plus-fill"></i>
-                              </button>
+                                {/* 1. Convert to Deal */}
+                                <button
+                                  type="button"
+                                  className="dropdown-item d-flex align-items-center gap-2 py-2 px-3 rounded-2 fw-bold text-success"
+                                  style={{ backgroundColor: "rgba(21, 128, 61, 0.1)" }}
+                                  onClick={() => {
+                                    setActiveActionMenuId(null);
+                                    setConvertDealTarget(lead);
+                                  }}
+                                >
+                                  <i className="bi bi-trophy-fill text-success"></i>
+                                  <span>Convert to Deal</span>
+                                </button>
+
+                                <div className="dropdown-divider my-1"></div>
+
+                                {/* 2. Log Follow-Up Call */}
+                                {(can("lead.followup") || can("followup.log_call") || !currentUser) && (
+                                  <button
+                                    type="button"
+                                    className="dropdown-item d-flex align-items-center gap-2 py-1 px-3 small text-dark"
+                                    onClick={() => {
+                                      setActiveActionMenuId(null);
+                                      handleOpenFollowUpModal(lead);
+                                    }}
+                                  >
+                                    <i className="bi bi-telephone-plus text-primary"></i>
+                                    <span>Log Follow-Up</span>
+                                  </button>
+                                )}
+
+                                {/* 3. Send Quotation */}
+                                {can("lead.send_quotation") && (
+                                  <Link
+                                    href={`/admin/quotation/create?lead_id=${lead.id}`}
+                                    className="dropdown-item d-flex align-items-center gap-2 py-1 px-3 small text-dark text-decoration-none"
+                                    onClick={() => setActiveActionMenuId(null)}
+                                  >
+                                    <i className="bi bi-file-earmark-spreadsheet text-info"></i>
+                                    <span>Send Quotation</span>
+                                  </Link>
+                                )}
+
+                                {/* 4. View Details */}
+                                {(can("lead.view_assigned") || can("lead.view_all")) && (
+                                  <button
+                                    type="button"
+                                    className="dropdown-item d-flex align-items-center gap-2 py-1 px-3 small text-dark"
+                                    onClick={() => {
+                                      setActiveActionMenuId(null);
+                                      handleOpenViewLead(lead);
+                                    }}
+                                  >
+                                    <i className="bi bi-eye text-secondary"></i>
+                                    <span>View Details</span>
+                                  </button>
+                                )}
+
+                                {/* 5. Edit Lead */}
+                                {can("lead.edit") && (
+                                  <button
+                                    type="button"
+                                    className="dropdown-item d-flex align-items-center gap-2 py-1 px-3 small text-dark"
+                                    onClick={() => {
+                                      setActiveActionMenuId(null);
+                                      setEditLead({
+                                        id: lead.id,
+                                        name: lead.name,
+                                        email: lead.email || "",
+                                        phone: lead.phone,
+                                        city: lead.city || "",
+                                        state: lead.state || "",
+                                        vehicle_segment: lead.vehicle_segment || "4 Wheeler",
+                                        brand_id: lead.brand_id || "",
+                                        model_variant: lead.model_variant,
+                                        priority: lead.priority || "Hot",
+                                        purchase_timeline: lead.purchase_timeline || "Immediate (Within 7 Days)",
+                                        source_id: lead.source_id || "",
+                                        status_id: lead.status_id || "",
+                                        assigned_user_name: lead.assigned_user_name || "David Miller (Sales Executive)",
+                                      });
+                                    }}
+                                  >
+                                    <i className="bi bi-pencil text-warning"></i>
+                                    <span>Edit Lead</span>
+                                  </button>
+                                )}
+
+                                <div className="dropdown-divider my-1"></div>
+
+                                {/* 6. Delete Lead */}
+                                {can("lead.delete") && (
+                                  <button
+                                    type="button"
+                                    className="dropdown-item d-flex align-items-center gap-2 py-1 px-3 small text-danger"
+                                    onClick={() => {
+                                      setActiveActionMenuId(null);
+                                      setDeleteTarget(lead);
+                                    }}
+                                  >
+                                    <i className="bi bi-trash text-danger"></i>
+                                    <span>Delete Lead</span>
+                                  </button>
+                                )}
+                              </div>
                             )}
-                            {can("lead.send_quotation") && <Link
-                              href={`/admin/quotation/create?lead_id=${lead.id}`}
-                              className="btn-action"
-                              style={{ color: "#38bdf8" }}
-                              title="Send Quotation"
-                            >
-                              <i className="bi bi-file-earmark-spreadsheet-fill"></i>
-                            </Link>}
-                            {(can("lead.view_assigned") || can("lead.view_all")) && <button
-                              className="btn-action btn-view"
-                              title="View Details"
-                              onClick={() => handleOpenViewLead(lead)}
-                            >
-                              <i className="bi bi-eye"></i>
-                            </button>}
-                            {can("lead.edit") && <button
-                              className="btn-action btn-edit"
-                              title="Edit Lead"
-                              onClick={() =>
-                                setEditLead({
-                                  id: lead.id,
-                                  name: lead.name,
-                                  email: lead.email || "",
-                                  phone: lead.phone,
-                                  city: lead.city || "",
-                                  state: lead.state || "",
-                                  vehicle_segment: lead.vehicle_segment || "4 Wheeler",
-                                  brand_id: lead.brand_id || "",
-                                  model_variant: lead.model_variant,
-                                  priority: lead.priority || "Hot",
-                                  purchase_timeline: lead.purchase_timeline || "Immediate (Within 7 Days)",
-                                  source_id: lead.source_id || "",
-                                  status_id: lead.status_id || "",
-                                  assigned_user_name: lead.assigned_user_name || "David Miller (Sales Executive)",
-                                })
-                              }
-                            >
-                              <i className="bi bi-pencil"></i>
-                            </button>}
-                            {can("lead.delete") && <button
-                              className="btn-action btn-delete"
-                              title="Delete Lead"
-                              onClick={() => setDeleteTarget(lead)}
-                            >
-                              <i className="bi bi-trash"></i>
-                            </button>}
                           </div>
                         </td>
                       </tr>
@@ -2457,6 +2558,20 @@ export default function LeadsPage() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Convert Lead to Deal Modal */}
+        {convertDealTarget && (
+          <ConvertDealModal
+            isOpen={Boolean(convertDealTarget)}
+            lead={convertDealTarget}
+            onClose={() => setConvertDealTarget(null)}
+            onSuccess={(convertedId) => {
+              setConvertedLeadIds((prev) => [...prev, convertedId]);
+              fetchLeads();
+            }}
+            showToast={showToast}
+          />
         )}
 
         {/* ------------------------------------------------------------------

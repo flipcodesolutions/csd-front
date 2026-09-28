@@ -128,6 +128,16 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <span>Leads Pipeline</span>
                 </Link>
               </li>}
+              <li className="nav-item">
+                <Link
+                  href="/admin/deals"
+                  className={`nav-link ${isLinkActive("/admin/deals") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-trophy-fill"></i>
+                  <span>Deals & Bookings</span>
+                </Link>
+              </li>
               {canNavigate("/admin/follow-up") && <li className="nav-item">
                 <Link
                   href="/admin/follow-up"
@@ -213,6 +223,16 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <span>Team Leads Pipeline</span>
                 </Link>
               </li>}
+              <li className="nav-item">
+                <Link
+                  href="/admin/deals"
+                  className={`nav-link ${isLinkActive("/admin/deals") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-trophy-fill"></i>
+                  <span>Deals & Bookings</span>
+                </Link>
+              </li>
               <li className="nav-item">
                 <Link
                   href="/admin/follow-up"
@@ -466,6 +486,16 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                 >
                   <i className="bi bi-funnel-fill"></i>
                   <span>Leads Pipeline</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  href="/admin/deals"
+                  className={`nav-link ${isLinkActive("/admin/deals") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-trophy-fill"></i>
+                  <span>Deals & Bookings</span>
                 </Link>
               </li>
               <li className="nav-item">
