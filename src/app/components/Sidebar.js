@@ -417,6 +417,26 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                   <span>Generate Invoice</span>
                 </Link>
               </li>
+              <li className="nav-item">
+                <Link
+                  href="/admin/expense-master"
+                  className={`nav-link ${isLinkActive("/admin/expense-master") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-wallet2"></i>
+                  <span>Expense Master</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  href="/admin/expense-detail"
+                  className={`nav-link ${isLinkActive("/admin/expense-detail") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-journal-text"></i>
+                  <span>Expense Details</span>
+                </Link>
+              </li>
             </ul>
           </>
         )}
@@ -540,6 +560,26 @@ export default function Sidebar({ isOpen, isCollapsed, onCloseMobile }) {
                 >
                   <i className="bi bi-receipt-cutoff"></i>
                   <span>Generate Invoice</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  href="/admin/expense-master"
+                  className={`nav-link ${isLinkActive("/admin/expense-master") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-wallet2"></i>
+                  <span>Expense Master</span>
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link
+                  href="/admin/expense-detail"
+                  className={`nav-link ${isLinkActive("/admin/expense-detail") ? "active" : ""}`}
+                  onClick={onCloseMobile}
+                >
+                  <i className="bi bi-journal-text"></i>
+                  <span>Expense Details</span>
                 </Link>
               </li>
               <li className="nav-item">
