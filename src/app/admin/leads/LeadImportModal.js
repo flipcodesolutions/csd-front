@@ -4,6 +4,7 @@ import React, { useState, useRef, useMemo } from "react";
 import api from "@/lib/axios";
 import axios from "axios";
 import * as XLSX from "xlsx";
+import leadApi from "@/services/leadApi";
 
 /**
  * EXACT Target Fields matching the Lead Table & "Add Customer Lead" form:
@@ -774,40 +775,36 @@ export default function LeadImportModal({
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       };
 
-      // 1. Attempt bulk API endpoints first
-      let bulkSucceeded = false;
-      let bulkMessage = "";
+      // 1. Direct call to backend leads/bulk-import API
+      try {
+        const res = await leadApi.bulkImport(cleanPayloadLeads);
 
-      const bulkEndpoints = [
-        `${apiUrl}/leads/bulk-import`,
-        `${apiUrl}/leads/bulk`,
-        `${apiUrl}/leads/import`,
-      ];
+        if (res && (res.status || res.success)) {
+          setProgress({
+            current: cleanPayloadLeads.length,
+            total: cleanPayloadLeads.length,
+            percent: 100,
+          });
 
-      for (const endpoint of bulkEndpoints) {
-        try {
-          const res = await api.post(
-            endpoint,
-            { leads: cleanPayloadLeads, data: cleanPayloadLeads },
-            { headers }
-          );
+          const summary = res.summary;
+          const msg = summary
+            ? `Bulk Import: ${summary.imported_count || 0} imported, ${summary.skipped_count || 0} skipped (duplicates), ${summary.failed_count || 0} failed.`
+            : res.message || `Successfully processed ${cleanPayloadLeads.length} leads!`;
 
-          if (res.data && (res.data.status || res.data.success)) {
-            bulkSucceeded = true;
-            bulkMessage = res.data.message || `Successfully imported ${cleanPayloadLeads.length} leads!`;
-            break;
-          }
-        } catch {
-          // Try next bulk endpoint or fallback
+          showToast(msg, summary?.failed_count > 0 && summary?.imported_count === 0 ? "warning" : "success");
+          onSuccess();
+          handleClose();
+          return;
         }
-      }
-
-      if (bulkSucceeded) {
-        setProgress({ current: cleanPayloadLeads.length, total: cleanPayloadLeads.length, percent: 100 });
-        showToast(bulkMessage, "success");
-        onSuccess();
-        handleClose();
-        return;
+      } catch (bulkErr) {
+        console.warn("Bulk import endpoint error, attempting batch fallback:", bulkErr);
+        // If the error message is specific (like validation 422), we can log or handle
+        const errMsg = bulkErr.response?.data?.message;
+        if (errMsg && bulkErr.response?.status === 422) {
+          showToast(`Import validation failed: ${errMsg}`, "error");
+          setIsProcessing(false);
+          return;
+        }
       }
 
       // 2. Immediate Batch Fallback using Axios instance with Token

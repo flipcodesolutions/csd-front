@@ -68,6 +68,16 @@ export const leadApi = {
   },
 
   /**
+   * Bulk Import customer leads from Excel/CSV
+   * @param {Array<Object>} leads - Array of mapped lead objects
+   * @returns {Promise<Object>} 
+   */
+  bulkImport: async (leads) => {
+    const response = await api.post("/leads/bulk-import", { leads });
+    return response.data;
+  },
+
+  /**
    * Bulk Update Lead Status
    * @param {Array<number|string>} leadIds
    * @param {number|string} statusId
