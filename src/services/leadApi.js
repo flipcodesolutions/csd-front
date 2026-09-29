@@ -114,6 +114,19 @@ export const leadApi = {
   },
 
   /**
+   * Bulk Import Leads from CSV File or JSON Array
+   * @param {FormData|Object} payload - FormData with 'file' or JSON with 'leads'
+   * @returns {Promise<Object>}
+   */
+  bulkImport: async (payload) => {
+    const isFormData = payload instanceof FormData;
+    const response = await api.post("/leads/bulk-import", payload, {
+      headers: isFormData ? { "Content-Type": "multipart/form-data" } : {},
+    });
+    return response.data;
+  },
+
+  /**
    * Get assignment history records for a specific lead
    * @param {number|string} leadId
    * @returns {Promise<Object>}
