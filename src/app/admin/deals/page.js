@@ -218,13 +218,6 @@ export default function DealsPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2">
-            <Link
-              href="/admin/leads"
-              className="btn btn-outline-custom d-flex align-items-center gap-2"
-            >
-              <i className="bi bi-funnel-fill text-primary"></i>
-              <span>View Leads</span>
-            </Link>
 
             <button
               className="btn btn-outline-custom d-flex align-items-center gap-2"
@@ -247,7 +240,6 @@ export default function DealsPage() {
                 </div>
               </div>
               <div className="stat-card-value">{metrics.totalDeals} Deals</div>
-              <span className="text-primary small fw-semibold">Locked Customer Bookings</span>
             </div>
           </div>
 
@@ -262,9 +254,9 @@ export default function DealsPage() {
               <div className="stat-card-value text-dark">
                 ₹{formatIndianCurrency(metrics.totalValue)}
               </div>
-              <span className="text-muted small fw-semibold fst-italic" style={{ fontSize: "11px" }}>
+              {/* <span className="text-muted small fw-semibold fst-italic" style={{ fontSize: "11px" }}>
                 {numberToWords(metrics.totalValue)}
-              </span>
+              </span> */}
             </div>
           </div>
 
@@ -279,9 +271,7 @@ export default function DealsPage() {
               <div className="stat-card-value text-success">
                 ₹{formatIndianCurrency(metrics.totalCollected)}
               </div>
-              <span className="text-success small fw-semibold">
-                Tokens & Down Payments
-              </span>
+             
             </div>
           </div>
 
@@ -296,7 +286,7 @@ export default function DealsPage() {
               <div className="stat-card-value text-warning">
                 ₹{formatIndianCurrency(metrics.pendingBalance)}
               </div>
-              <span className="text-warning small fw-semibold">Remaining Customer Dues</span>
+              
             </div>
           </div>
         </div>
@@ -428,6 +418,16 @@ export default function DealsPage() {
                                   VIN: {deal.vin_chassis_number}
                                 </span>
                               )}
+                              {deal.quotation_id && (
+                                <Link
+                                  href={`/admin/quotation/${deal.quotation_id}`}
+                                  className="badge bg-primary-subtle text-primary border border-primary-subtle text-decoration-none"
+                                  title="View Linked Quotation"
+                                >
+                                  <i className="bi bi-file-earmark-text me-1"></i>
+                                  Quote #{deal.quotation_id}
+                                </Link>
+                              )}
                             </div>
                           </div>
                         </td>
@@ -537,7 +537,7 @@ export default function DealsPage() {
         </div>
 
         {/* ===================================================================
-            MODAL 1: RECORD PAYMENT (Matches api/payments schema)
+            MODAL 1: RECORD PAYMENT
             =================================================================== */}
         {showPaymentModal && selectedDealForPayment && (
           <div className="modal-backdrop-custom" onClick={() => setShowPaymentModal(false)}>
@@ -566,9 +566,6 @@ export default function DealsPage() {
                     <h5 className="modal-title-custom text-white mb-0 fw-bold">
                       Record Deal Payment
                     </h5>
-                    <span className="small text-light opacity-75">
-                      Posting to API /api/payments
-                    </span>
                   </div>
                 </div>
                 <button
@@ -793,7 +790,7 @@ export default function DealsPage() {
                 <div className="d-flex align-items-center gap-2">
                   <i className="bi bi-receipt text-info fs-5"></i>
                   <h5 className="modal-title-custom text-white mb-0 fw-bold">
-                    Deal Order Voucher & Ledger #{viewDeal.id}
+                    Deal Order Voucher & Ledger
                   </h5>
                 </div>
                 <button

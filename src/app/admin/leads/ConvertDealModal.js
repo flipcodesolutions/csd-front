@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import dealApi from "@/services/dealApi";
+import quotationApi from "@/lib/quotationApi";
 import { numberToWords, formatIndianCurrency } from "@/utils/numberToWords";
 
 export default function ConvertDealModal({
@@ -14,6 +15,8 @@ export default function ConvertDealModal({
 }) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [leadQuotations, setLeadQuotations] = useState([]);
+  const [isLoadingQuotes, setIsLoadingQuotes] = useState(false);
 
   // Form State matching API specifications
   const [formData, setFormData] = useState({
@@ -33,9 +36,9 @@ export default function ConvertDealModal({
     },
   });
 
-  // Pre-fill dynamically when lead opens
+  // Pre-fill dynamically when lead opens & fetch customer's quotations
   useEffect(() => {
-    if (lead) {
+    if (lead && isOpen) {
       // Default delivery date: 15 days from now
       const delivery = new Date();
       delivery.setDate(delivery.getDate() + 15);
@@ -59,8 +62,73 @@ export default function ConvertDealModal({
           notes: "",
         },
       });
+
+      // Load all quotations generated for this customer
+      const fetchQuotations = async () => {
+        setIsLoadingQuotes(true);
+        try {
+          const res = await quotationApi.getQuotations({ lead_id: lead.id, per_page: 50 });
+          let quotesList = [];
+          if (res && res.data && Array.isArray(res.data)) {
+            quotesList = res.data;
+          } else if (Array.isArray(res)) {
+            quotesList = res;
+          }
+
+          // Filter by lead ID, phone or email
+          const matched = quotesList.filter(
+            (q) =>
+              String(q.lead_id) === String(lead.id) ||
+              (lead.phone && (q.customer_phone === lead.phone || q.phone === lead.phone)) ||
+              (lead.email && q.customer_email === lead.email)
+          );
+
+          const finalQuotes = matched.length > 0 ? matched : quotesList.filter((q) => String(q.lead_id) === String(lead.id));
+          setLeadQuotations(finalQuotes);
+
+          // If lead has a specific quotation_id pre-linked, auto-select it
+          if (lead.quotation_id) {
+            const found = finalQuotes.find((q) => String(q.id) === String(lead.quotation_id));
+            if (found) {
+              const quoteTotal = Number(found.grand_total || found.total_amount || 0);
+              if (quoteTotal > 0 && !leadBudget) {
+                setFormData((prev) => ({
+                  ...prev,
+                  total_amount: String(quoteTotal),
+                }));
+              }
+            }
+          }
+        } catch (err) {
+          console.error("Error loading quotations for convert deal:", err);
+          setLeadQuotations([]);
+        } finally {
+          setIsLoadingQuotes(false);
+        }
+      };
+
+      fetchQuotations();
     }
-  }, [lead]);
+  }, [lead, isOpen]);
+
+  const handleSelectQuotation = (quote) => {
+    if (!quote) {
+      setFormData((prev) => ({
+        ...prev,
+        quotation_id: "",
+      }));
+      return;
+    }
+
+    const quoteTotal = Number(quote.grand_total || quote.total_amount || quote.final_price || 0);
+
+    setFormData((prev) => ({
+      ...prev,
+      quotation_id: quote.id,
+      total_amount: quoteTotal > 0 ? String(quoteTotal) : prev.total_amount,
+    }));
+    showToast(`Selected Quotation #${quote.quotation_number || quote.id}`, "info");
+  };
 
   if (!isOpen || !lead) return null;
 
@@ -98,6 +166,7 @@ export default function ConvertDealModal({
       color: formData.color.trim(),
       vin_chassis_number: formData.vin_chassis_number.trim(),
       expected_delivery_date: formData.expected_delivery_date,
+      sales_executive_id: lead.assigned_to && Number(lead.assigned_to) !== 5 ? Number(lead.assigned_to) : undefined,
       initial_payment: {
         amount: initialPayNum,
         payment_type: formData.initial_payment.payment_type,
@@ -121,7 +190,12 @@ export default function ConvertDealModal({
       }, 500);
     } catch (err) {
       console.error("Convert Deal Error:", err);
-      showToast(err.response?.data?.message || "Failed to convert lead to deal.", "error");
+      const errorMsg =
+        err.response?.data?.message ||
+        err.response?.data?.error ||
+        err.message ||
+        "Failed to convert lead to deal.";
+      showToast(errorMsg, "error");
       setIsSubmitting(false);
     }
   };
@@ -187,6 +261,108 @@ export default function ConvertDealModal({
                 </span>
               </div>
             </div>
+
+            {/* QUOTATION SELECTION CARDS  */}
+            {isLoadingQuotes ? (
+              <div className="p-3 mb-3 bg-white rounded border text-center small text-muted">
+                <div className="spinner-border spinner-border-sm me-2 text-primary" role="status"></div>
+                Checking generated quotations for {lead.name}...
+              </div>
+            ) : leadQuotations.length > 0 ? (
+              <div className="mb-4 p-3 rounded border bg-light-subtle shadow-sm">
+                <div className="d-flex align-items-center justify-content-between mb-2">
+                  <div>
+                    <label className="form-label text-dark fw-bold small mb-0 d-flex align-items-center gap-1.5">
+                      <i className="bi bi-file-earmark-spreadsheet-fill text-primary"></i>
+                      <span>Select Quotation to Link with Deal ({leadQuotations.length} available)</span>
+                    </label>
+                    <span className="text-muted d-block" style={{ fontSize: "11px" }}>
+                      Choose which car quotation this customer is finalizing for booking:
+                    </span>
+                  </div>
+                  {formData.quotation_id && (
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary btn-sm py-0 px-2 fw-semibold"
+                      style={{ fontSize: "11px" }}
+                      onClick={() => handleSelectQuotation(null)}
+                    >
+                      <i className="bi bi-x me-1"></i>Clear
+                    </button>
+                  )}
+                </div>
+
+                <div className="row g-2">
+                  {leadQuotations.map((quote) => {
+                    const isSelected = String(formData.quotation_id) === String(quote.id);
+                    const quotePrice = Number(quote.grand_total || quote.total_amount || quote.final_price || 0);
+
+                    return (
+                      <div className="col-12 col-md-6" key={quote.id}>
+                        <div
+                          className={`p-3 rounded-3 border transition-all h-100 d-flex flex-column justify-content-between position-relative ${
+                            isSelected
+                              ? "border-primary bg-primary bg-opacity-10 shadow-sm"
+                              : "border-secondary border-opacity-25 bg-white hover-shadow"
+                          }`}
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleSelectQuotation(quote)}
+                        >
+                          <div>
+                            <div className="d-flex align-items-start justify-content-between mb-2">
+                              <div className="d-flex align-items-center gap-2">
+                                <input
+                                  type="radio"
+                                  className="form-check-input mt-0"
+                                  name="quotationRadioSelect"
+                                  checked={isSelected}
+                                  onChange={() => handleSelectQuotation(quote)}
+                                />
+                                <span className="fw-bold font-monospace small text-primary">
+                                  {quote.quotation_number || `QTN-${quote.id}`}
+                                </span>
+                              </div>
+                              {isSelected ? (
+                                <span className="badge bg-primary text-white" style={{ fontSize: "10px" }}>
+                                  SELECTED
+                                </span>
+                              ) : (
+                                <span className="badge bg-secondary-subtle text-muted" style={{ fontSize: "10px" }}>
+                                  {quote.status || "Quotation"}
+                                </span>
+                              )}
+                            </div>
+
+                            <div
+                              className="text-dark small fw-bold mb-2"
+                              style={{
+                                lineHeight: "1.4",
+                                wordBreak: "break-word",
+                                whiteSpace: "normal",
+                              }}
+                              title={quote.subject || quote.model_name || "Vehicle Quotation"}
+                            >
+                              <i className="bi bi-car-front text-secondary me-1"></i>
+                              {quote.subject || quote.model_name || "Vehicle Quotation"}
+                            </div>
+                          </div>
+
+                          <div className="d-flex align-items-center justify-content-between mt-2 pt-2 border-top border-secondary border-opacity-10">
+                            <span className="text-muted" style={{ fontSize: "11px" }}>
+                              <i className="bi bi-calendar3 me-1"></i>
+                              {quote.quotation_date || "Date"}
+                            </span>
+                            <span className="fw-bold text-success fs-6">
+                              ₹{Number(quotePrice).toLocaleString("en-IN")}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
 
             {/* SECTION 1: Deal Financials */}
             <h6 className="fw-bold text-dark mb-2 d-flex align-items-center gap-2 border-bottom pb-1">
@@ -257,22 +433,6 @@ export default function ConvertDealModal({
 
               {/* Net Deal Value Calculation Summary Banner */}
               <div className="col-12">
-                <div className="p-3 bg-success-subtle border border-success-subtle rounded d-flex justify-content-between align-items-center">
-                  <div>
-                    <span className="text-muted small fw-semibold text-uppercase">Net Final Deal Value</span>
-                    <h5 className="mb-0 text-success fw-bold">
-                      ₹{formatIndianCurrency(netPayable)}
-                    </h5>
-                    <div className="text-dark small fw-semibold fst-italic" style={{ fontSize: "11px" }}>
-                      {numberToWords(netPayable)}
-                    </div>
-                  </div>
-                  <div className="text-end">
-                    <span className="badge bg-success text-white px-2 py-1">
-                      Ready for Booking
-                    </span>
-                  </div>
-                </div>
               </div>
             </div>
 
@@ -324,24 +484,9 @@ export default function ConvertDealModal({
                   onChange={(e) => setFormData({ ...formData, expected_delivery_date: e.target.value })}
                 />
               </div>
-
-              {/* Quotation ID (optional link) */}
-              <div className="col-md-4">
-                <label className="form-label text-dark fw-bold small mb-1">
-                  Linked Quotation ID
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  placeholder="e.g. 2"
-                  value={formData.quotation_id}
-                  onChange={(e) => setFormData({ ...formData, quotation_id: e.target.value })}
-                />
-                <span className="form-text small text-muted">Optional if quotation exists</span>
-              </div>
             </div>
 
-            {/* SECTION 3: Initial Payment Details (Token Advance) */}
+            {/* SECTION 3: Initial Payment Details  */}
             <h6 className="fw-bold text-dark mb-2 d-flex align-items-center gap-2 border-bottom pb-1">
               <i className="bi bi-wallet2 text-warning"></i> 3. Initial Payment (Token Advance)
             </h6>

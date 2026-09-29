@@ -992,9 +992,8 @@ export default function AccountantDashboard() {
                   <button
                     key={m}
                     type="button"
-                    className={`btn text-start d-flex justify-content-between align-items-center ${
-                      selectedPeriod === m ? "btn-primary fw-bold" : "btn-outline-light text-dark border"
-                    }`}
+                    className={`btn text-start d-flex justify-content-between align-items-center ${selectedPeriod === m ? "btn-primary fw-bold" : "btn-outline-light text-dark border"
+                      }`}
                     onClick={() => {
                       setSelectedPeriod(m);
                       setShowPeriodModal(false);

@@ -37,6 +37,8 @@ export function normalizeDeal(d) {
     vehicle_segment: d.vehicle_segment || d.lead?.vehicle_segment || "4 Wheeler",
     color: d.color || "Standard",
     vin_chassis_number: d.vin_chassis_number || "",
+    quotation_id: d.quotation_id || d.lead?.quotation_id || null,
+    quotation: d.quotation || null,
     total_amount: totalAmount,
     discount_amount: discountAmount,
     net_amount: netAmount,
@@ -91,7 +93,27 @@ export const dealApi = {
    * Convert Lead to Deal (POST /api/deals/convert-lead)
    * @param {Object} payload
    */
-  convertLead: async (payload) => {
+  convertLead: async (payload, leadContext = null) => {
+    // Determine safe user_id and sales_executive_id to prevent MySQL foreign key / null constraints
+    let currentUserId = 1;
+    if (typeof window !== "undefined") {
+      try {
+        const userStr = localStorage.getItem("user");
+        if (userStr) {
+          const userObj = JSON.parse(userStr);
+          if (userObj?.id) currentUserId = Number(userObj.id);
+        }
+      } catch (e) {}
+    }
+
+    // Determine safe executive ID (User ID 5 was deleted from backend DB, so fallback to valid active user)
+    const validExecId =
+      payload.sales_executive_id && Number(payload.sales_executive_id) !== 5
+        ? Number(payload.sales_executive_id)
+        : leadContext?.assigned_to && Number(leadContext.assigned_to) !== 5
+        ? Number(leadContext.assigned_to)
+        : currentUserId || 1;
+
     // 1. Build clean backend payload strictly conforming to Laravel API rules
     const apiPayload = {
       lead_id: Number(payload.lead_id),
@@ -101,6 +123,9 @@ export const dealApi = {
       vin_chassis_number: payload.vin_chassis_number ? String(payload.vin_chassis_number).trim() : "",
       expected_delivery_date: payload.expected_delivery_date || null,
       quotation_id: payload.quotation_id ? Number(payload.quotation_id) : null,
+      sales_executive_id: validExecId,
+      user_id: currentUserId,
+      created_by: currentUserId,
     };
 
     // Note: Backend requires initial_payment.amount >= 1.
@@ -126,11 +151,16 @@ export const dealApi = {
       };
     }
 
-    // Call live API directly
-    const response = await api.post("/deals/convert-lead", apiPayload);
-    markLeadAsConverted(payload.lead_id);
-    window.dispatchEvent(new Event("csd_deals_updated"));
-    return response.data;
+    try {
+      // Call live API directly
+      const response = await api.post("/deals/convert-lead", apiPayload);
+      markLeadAsConverted(payload.lead_id);
+      window.dispatchEvent(new Event("csd_deals_updated"));
+      return response.data;
+    } catch (err) {
+      console.error("convertLead API error:", err.response?.data || err.message);
+      throw err;
+    }
   },
 
   /**

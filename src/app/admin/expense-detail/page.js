@@ -4,11 +4,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
-import {
-  getExpenseMasters,
-  getExpenseDetails,
-  saveExpenseDetails,
-} from "@/utils/expenseStorage";
+import expenseApi from "@/services/expenseApi";
 
 export default function ExpenseDetailPage() {
   const { showToast } = useToast();
@@ -16,6 +12,7 @@ export default function ExpenseDetailPage() {
   // State Management
   const [expenseList, setExpenseList] = useState([]);
   const [categoryMasters, setCategoryMasters] = useState([]);
+  const [statsData, setStatsData] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -34,6 +31,7 @@ export default function ExpenseDetailPage() {
   // Form State
   const initialFormState = {
     title: "",
+    category_id: "",
     amount: "",
     invoice_no: "",
     party_name: "",
@@ -61,14 +59,54 @@ export default function ExpenseDetailPage() {
     }
   }, []);
 
-  // Load expenses & master categories
-  const loadData = () => {
+  const normalizeExpense = (item) => {
+    const isOnline = item.payment_method !== "Cash";
+    return {
+      ...item,
+      id: item.id,
+      title: item.title || item.category?.name || "Expense",
+      amount: Number(item.amount) || 0,
+      invoice_no: item.reference_no || item.invoice_no || `EXP-${item.id}`,
+      party_name: item.description || item.party_name || item.title || "-",
+      pay_by: item.creator?.name || item.pay_by || "Admin User",
+      payment_type: isOnline ? "Online" : "Offline",
+      payment_method: item.payment_method || (isOnline ? "Bank Transfer" : "Cash"),
+      reference_no: item.reference_no || "",
+      remark: item.description || item.remark || "",
+      date: item.expense_date || item.date || (item.created_at ? item.created_at.split("T")[0] : new Date().toISOString().split("T")[0]),
+      category_id: item.category_id || item.category?.id || "",
+      category_name: item.category?.name || item.title || "",
+    };
+  };
+
+  // Load live expenses, categories & statistics from backend API
+  const loadData = async () => {
     setIsLoading(true);
     try {
-      const masters = getExpenseMasters();
-      const details = getExpenseDetails();
-      setCategoryMasters(masters);
-      setExpenseList(details);
+      const [catsRes, expensesRes, statsRes] = await Promise.all([
+        expenseApi.getCategories().catch(() => ({ data: [] })),
+        expenseApi.getExpenses().catch(() => ({ data: [] })),
+        expenseApi.getExpenseStats().catch(() => null),
+      ]);
+
+      if (catsRes && Array.isArray(catsRes.data)) {
+        setCategoryMasters(
+          catsRes.data.map((c) => ({
+            ...c,
+            id: c.id,
+            title: c.name || c.title,
+            name: c.name || c.title,
+          }))
+        );
+      }
+
+      if (expensesRes && Array.isArray(expensesRes.data)) {
+        setExpenseList(expensesRes.data.map(normalizeExpense));
+      }
+
+      if (statsRes && statsRes.data) {
+        setStatsData(statsRes.data);
+      }
     } catch (e) {
       console.error(e);
       showToast("Error loading expense data", "error");
@@ -79,34 +117,27 @@ export default function ExpenseDetailPage() {
 
   useEffect(() => {
     loadData();
-
-    // Listen for storage changes
-    const handleUpdate = () => loadData();
-    window.addEventListener("csd_expense_details_updated", handleUpdate);
-    window.addEventListener("csd_expense_masters_updated", handleUpdate);
-    return () => {
-      window.removeEventListener("csd_expense_details_updated", handleUpdate);
-      window.removeEventListener("csd_expense_masters_updated", handleUpdate);
-    };
   }, []);
 
   // Open Add Modal with pre-filled default Pay By & default Title
   const handleOpenAdd = () => {
     const loggedInName =
-      currentUser?.name || currentUser?.full_name || "Alexander Vance";
-    const defaultTitle = categoryMasters.length > 0 ? categoryMasters[0].title : "";
+      currentUser?.name || currentUser?.full_name || "Admin User";
+    const defaultTitle = categoryMasters.length > 0 ? (categoryMasters[0].name || categoryMasters[0].title) : "";
+    const defaultCatId = categoryMasters.length > 0 ? categoryMasters[0].id : "";
 
     setFormData({
       ...initialFormState,
       title: defaultTitle,
+      category_id: defaultCatId,
       pay_by: loggedInName,
       date: new Date().toISOString().split("T")[0],
     });
     setShowAddModal(true);
   };
 
-  // 1. ADD EXPENSE DETAIL
-  const handleAddSubmit = (e) => {
+  // 1. ADD EXPENSE DETAIL (POST /expenses)
+  const handleAddSubmit = async (e) => {
     e.preventDefault();
 
     if (!formData.title) {
@@ -132,27 +163,40 @@ export default function ExpenseDetailPage() {
       return;
     }
 
-    setIsSubmitting(true);
-    const newRecord = {
-      id: `ed-${Date.now()}`,
-      title: formData.title,
-      amount: parseFloat(formData.amount),
-      invoice_no: formData.invoice_no.trim(),
-      party_name: formData.party_name.trim(),
-      pay_by: formData.pay_by.trim() || (currentUser?.name || "Admin"),
-      payment_type: formData.payment_type,
-      reference_no: formData.payment_type === "Online" ? formData.reference_no.trim() : "",
-      remark: formData.payment_type === "Online" ? formData.remark.trim() : "",
-      date: formData.date || new Date().toISOString().split("T")[0],
-      created_at: new Date().toISOString(),
-    };
+    const selectedCat = categoryMasters.find(
+      (c) => String(c.id) === String(formData.category_id) || c.title === formData.title || c.name === formData.title
+    );
+    const catId = selectedCat ? Number(selectedCat.id) : (Number(formData.category_id) || 1);
 
-    const updated = [newRecord, ...expenseList];
-    saveExpenseDetails(updated);
-    setExpenseList(updated);
-    setIsSubmitting(false);
-    setShowAddModal(false);
-    showToast(`Expense for "${newRecord.party_name}" recorded successfully!`, "success");
+    setIsSubmitting(true);
+    try {
+      const apiPayload = {
+        expense_date: formData.date || new Date().toISOString().split("T")[0],
+        category_id: catId,
+        title: formData.title,
+        description: formData.party_name
+          ? `${formData.party_name} - ${formData.remark || formData.invoice_no || ""}`
+          : (formData.remark || formData.title),
+        amount: parseFloat(formData.amount),
+        payment_method: formData.payment_type === "Offline" ? "Cash" : "Bank Transfer",
+        reference_no: formData.payment_type === "Online" ? formData.reference_no.trim() : (formData.invoice_no.trim() || ""),
+        status: "Paid",
+      };
+
+      const res = await expenseApi.createExpense(apiPayload);
+      showToast(res.message || `Expense for "${formData.party_name}" recorded successfully!`, "success");
+      setShowAddModal(false);
+      await loadData();
+    } catch (err) {
+      console.error(err);
+      const errMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors ? Object.values(err.response.data.errors).flat().join(", ") : null) ||
+        "Failed to record expense.";
+      showToast(errMsg, "error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   // 2. EDIT EXPENSE DETAIL
@@ -167,7 +211,7 @@ export default function ExpenseDetailPage() {
     });
   };
 
-  const handleEditSubmit = (e) => {
+  const handleEditSubmit = async (e) => {
     e.preventDefault();
     if (!editItem) return;
 
@@ -192,42 +236,55 @@ export default function ExpenseDetailPage() {
       return;
     }
 
-    setIsSubmitting(true);
-    const updated = expenseList.map((item) => {
-      if (item.id === editItem.id) {
-        return {
-          ...item,
-          title: editItem.title,
-          amount: parseFloat(editItem.amount),
-          invoice_no: editItem.invoice_no.trim(),
-          party_name: editItem.party_name.trim(),
-          pay_by: editItem.pay_by.trim(),
-          payment_type: editItem.payment_type,
-          reference_no:
-            editItem.payment_type === "Online" ? editItem.reference_no.trim() : "",
-          remark: editItem.payment_type === "Online" ? editItem.remark.trim() : "",
-          date: editItem.date,
-        };
-      }
-      return item;
-    });
+    const selectedCat = categoryMasters.find(
+      (c) => String(c.id) === String(editItem.category_id) || c.title === editItem.title || c.name === editItem.title
+    );
+    const catId = selectedCat ? Number(selectedCat.id) : 1;
 
-    saveExpenseDetails(updated);
-    setExpenseList(updated);
-    setIsSubmitting(false);
-    setEditItem(null);
-    showToast("Expense record updated successfully!", "success");
+    setIsSubmitting(true);
+    try {
+      const apiPayload = {
+        expense_date: editItem.date || new Date().toISOString().split("T")[0],
+        category_id: catId,
+        title: editItem.title,
+        description: editItem.party_name
+          ? `${editItem.party_name} - ${editItem.remark || editItem.invoice_no || ""}`
+          : (editItem.remark || editItem.title),
+        amount: parseFloat(editItem.amount),
+        payment_method: editItem.payment_type === "Offline" ? "Cash" : "Bank Transfer",
+        reference_no: editItem.payment_type === "Online" ? editItem.reference_no.trim() : (editItem.invoice_no.trim() || ""),
+        status: editItem.status || "Paid",
+      };
+
+      const res = await expenseApi.updateExpense(editItem.id, apiPayload);
+      showToast(res.message || "Expense record updated successfully!", "success");
+      setEditItem(null);
+      await loadData();
+    } catch (err) {
+      console.error(err);
+      const errMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors ? Object.values(err.response.data.errors).flat().join(", ") : null) ||
+        "Failed to update expense.";
+      showToast(errMsg, "error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  // 3. DELETE EXPENSE DETAIL
-  const handleDeleteConfirm = () => {
+  // 3. DELETE EXPENSE DETAIL (DELETE /expenses/:id)
+  const handleDeleteConfirm = async () => {
     if (!deleteTarget) return;
 
-    const updated = expenseList.filter((item) => item.id !== deleteTarget.id);
-    saveExpenseDetails(updated);
-    setExpenseList(updated);
-    showToast(`Invoice #${deleteTarget.invoice_no} deleted successfully!`, "success");
-    setDeleteTarget(null);
+    try {
+      const res = await expenseApi.deleteExpense(deleteTarget.id);
+      showToast(res.message || `Expense record deleted successfully!`, "success");
+      setDeleteTarget(null);
+      await loadData();
+    } catch (err) {
+      console.error(err);
+      showToast(err.response?.data?.message || "Failed to delete expense.", "error");
+    }
   };
 
   // Filtered List
@@ -346,13 +403,13 @@ export default function ExpenseDetailPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2">
-            <Link
+            {/* <Link
               href="/admin/expense-master"
               className="btn btn-outline-custom d-flex align-items-center gap-2"
             >
               <i className="bi bi-wallet2 text-primary"></i>
               <span>Expense Master</span>
-            </Link>
+            </Link> */}
 
             <button
               className="btn btn-outline-custom d-flex align-items-center gap-2"
@@ -373,7 +430,7 @@ export default function ExpenseDetailPage() {
         </div>
 
         {/* KPI Stat Cards */}
-        <div className="row g-3 mb-4">
+        {/* <div className="row g-3 mb-4">
           <div className="col-xl-3 col-sm-6">
             <div className="card stat-card shadow-sm border-0">
               <div className="stat-card-header">
@@ -439,7 +496,7 @@ export default function ExpenseDetailPage() {
               <span className="text-info small fw-semibold">Active Session Officer</span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Expenses Table Card */}
         <div className="card shadow-sm border-0">
@@ -716,14 +773,7 @@ export default function ExpenseDetailPage() {
                         <label className="form-label text-dark fw-bold small mb-0">
                           Expense Title <span className="text-danger">*</span>
                         </label>
-                        <Link
-                          href="/admin/expense-master"
-                          className="small text-primary text-decoration-none"
-                          target="_blank"
-                          title="Open Expense Master to manage categories"
-                        >
-                          + New Title
-                        </Link>
+                        
                       </div>
                       <select
                         className="form-select"

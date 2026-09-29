@@ -4,10 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import AdminLayout from "@/app/components/AdminLayout";
 import { useToast } from "@/app/components/Toast";
-import {
-  getExpenseMasters,
-  saveExpenseMasters,
-} from "@/utils/expenseStorage";
+import expenseApi from "@/services/expenseApi";
 
 export default function ExpenseMasterPage() {
   const { showToast } = useToast();
@@ -22,19 +19,30 @@ export default function ExpenseMasterPage() {
   const [editItem, setEditItem] = useState(null);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  // Form State - user requested only one field: "title"
+  // Form State
   const [titleInput, setTitleInput] = useState("");
+  const [descInput, setDescInput] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load from local storage
-  const loadData = () => {
+  // Load from Live Backend API
+  const loadData = async () => {
     setIsLoading(true);
     try {
-      const masters = getExpenseMasters();
-      setCategories(masters);
+      const res = await expenseApi.getCategories();
+      if (res && res.data && Array.isArray(res.data)) {
+        const mapped = res.data.map((c) => ({
+          ...c,
+          id: c.id,
+          title: c.name || c.title,
+          name: c.name || c.title,
+          description: c.description || "",
+          status: c.status === 1 || c.status === "Active" ? "Active" : "Inactive",
+        }));
+        setCategories(mapped);
+      }
     } catch (err) {
       console.error(err);
-      showToast("Error loading expense categories", "error");
+      showToast(err.response?.data?.message || "Error loading expense categories", "error");
     } finally {
       setIsLoading(false);
     }
@@ -42,17 +50,10 @@ export default function ExpenseMasterPage() {
 
   useEffect(() => {
     loadData();
-
-    // Listen for cross-page or external changes
-    const handleUpdate = () => loadData();
-    window.addEventListener("csd_expense_masters_updated", handleUpdate);
-    return () => {
-      window.removeEventListener("csd_expense_masters_updated", handleUpdate);
-    };
   }, []);
 
-  // 1. ADD EXPENSE CATEGORY (Only title field)
-  const handleAddSubmit = (e) => {
+  // 1. ADD EXPENSE CATEGORY (POST /expense-categories)
+  const handleAddSubmit = async (e) => {
     e.preventDefault();
     const cleanTitle = titleInput.trim();
 
@@ -61,34 +62,32 @@ export default function ExpenseMasterPage() {
       return;
     }
 
-    // Check duplicate
-    const exists = categories.some(
-      (c) => c.title.toLowerCase() === cleanTitle.toLowerCase()
-    );
-    if (exists) {
-      showToast(`Category "${cleanTitle}" already exists!`, "error");
-      return;
-    }
-
     setIsSubmitting(true);
-    const newCategory = {
-      id: `em-${Date.now()}`,
-      title: cleanTitle,
-      status: "Active",
-      created_at: new Date().toISOString(),
-    };
-
-    const updated = [newCategory, ...categories];
-    saveExpenseMasters(updated);
-    setCategories(updated);
-    setIsSubmitting(false);
-    setShowAddModal(false);
-    setTitleInput("");
-    showToast(`Expense Category "${cleanTitle}" added successfully!`, "success");
+    try {
+      const res = await expenseApi.createCategory({
+        name: cleanTitle,
+        description: descInput.trim() || "desc",
+        status: 1,
+      });
+      showToast(res.message || `Expense Category "${cleanTitle}" added successfully!`, "success");
+      setShowAddModal(false);
+      setTitleInput("");
+      setDescInput("");
+      await loadData();
+    } catch (err) {
+      console.error(err);
+      const errMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors ? Object.values(err.response.data.errors).flat().join(", ") : null) ||
+        "Failed to add expense category.";
+      showToast(errMsg, "error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  // 2. EDIT EXPENSE CATEGORY
-  const handleEditSubmit = (e) => {
+  // 2. EDIT EXPENSE CATEGORY 
+  const handleEditSubmit = async (e) => {
     e.preventDefault();
     if (!editItem || !editItem.title.trim()) {
       showToast("Please enter a category title.", "error");
@@ -96,40 +95,47 @@ export default function ExpenseMasterPage() {
     }
 
     const cleanTitle = editItem.title.trim();
-    // Check duplicate with others
-    const exists = categories.some(
-      (c) => c.id !== editItem.id && c.title.toLowerCase() === cleanTitle.toLowerCase()
-    );
-    if (exists) {
-      showToast(`Another category with title "${cleanTitle}" already exists!`, "error");
-      return;
-    }
-
     setIsSubmitting(true);
-    const updated = categories.map((c) =>
-      c.id === editItem.id ? { ...c, title: cleanTitle } : c
-    );
-    saveExpenseMasters(updated);
-    setCategories(updated);
-    setIsSubmitting(false);
-    setEditItem(null);
-    showToast("Expense category updated successfully!", "success");
+    try {
+      const res = await expenseApi.updateCategory(editItem.id, {
+        name: cleanTitle,
+        description: (editItem.description ? editItem.description.trim() : "") || "desc",
+        status: editItem.status === "Active" ? 1 : 0,
+      });
+      showToast(res.message || "Expense category updated successfully!", "success");
+      setEditItem(null);
+      await loadData();
+    } catch (err) {
+      console.error(err);
+      const errMsg =
+        err.response?.data?.message ||
+        (err.response?.data?.errors ? Object.values(err.response.data.errors).flat().join(", ") : null) ||
+        "Failed to update expense category.";
+      showToast(errMsg, "error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  // 3. DELETE EXPENSE CATEGORY
-  const handleDeleteConfirm = () => {
+  // 3. DELETE EXPENSE CATEGORY 
+  const handleDeleteConfirm = async () => {
     if (!deleteTarget) return;
 
-    const updated = categories.filter((c) => c.id !== deleteTarget.id);
-    saveExpenseMasters(updated);
-    setCategories(updated);
-    showToast(`Category "${deleteTarget.title}" deleted successfully!`, "success");
-    setDeleteTarget(null);
+    try {
+      const res = await expenseApi.deleteCategory(deleteTarget.id);
+      showToast(res.message || `Category "${deleteTarget.title}" deleted successfully!`, "success");
+      setDeleteTarget(null);
+      await loadData();
+    } catch (err) {
+      console.error(err);
+      showToast(err.response?.data?.message || "Failed to delete category.", "error");
+    }
   };
 
-  // Filtered by Search
+  // Filtered by Search 
   const filteredCategories = categories.filter((c) =>
-    c.title.toLowerCase().includes(searchTerm.toLowerCase())
+    (c.title || c.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (c.description || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -154,13 +160,6 @@ export default function ExpenseMasterPage() {
           </div>
 
           <div className="page-header-actions d-flex align-items-center gap-2">
-            <Link
-              href="/admin/expense-detail"
-              className="btn btn-outline-custom d-flex align-items-center gap-2"
-            >
-              <i className="bi bi-journal-text text-primary"></i>
-              <span>View Expense Details</span>
-            </Link>
 
             <button
               className="btn btn-primary d-flex align-items-center gap-2"
@@ -216,21 +215,22 @@ export default function ExpenseMasterPage() {
               <thead>
                 <tr>
                   <th style={{ width: "60px" }}>#</th>
-                  <th>Expense Title</th>
+                  <th style={{ width: "260px" }}>Expense Title</th>
+                  <th>Description</th>
                   <th className="text-end" style={{ width: "120px" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {isLoading ? (
                   <tr>
-                    <td colSpan="3" className="text-center py-4 text-muted">
+                    <td colSpan="4" className="text-center py-4 text-muted">
                       <div className="spinner-border spinner-border-sm me-2" role="status"></div>
                       Loading master categories...
                     </td>
                   </tr>
                 ) : filteredCategories.length === 0 ? (
                   <tr>
-                    <td colSpan="3" className="text-center py-5 text-muted">
+                    <td colSpan="4" className="text-center py-5 text-muted">
                       <div className="mb-2">
                         <i className="bi bi-folder-x fs-1 text-secondary opacity-50"></i>
                       </div>
@@ -274,6 +274,15 @@ export default function ExpenseMasterPage() {
                             <span className="fw-bold text-dark">{category.title}</span>
                           </div>
                         </td>
+                        <td>
+                          <span className="text-secondary small">
+                            {category.description ? (
+                              category.description
+                            ) : (
+                              <span className="text-muted fst-italic opacity-75">No description</span>
+                            )}
+                          </span>
+                        </td>
                         <td className="text-end">
                           <div className="table-actions justify-content-end">
                             <button
@@ -284,6 +293,8 @@ export default function ExpenseMasterPage() {
                                 setEditItem({
                                   id: category.id,
                                   title: category.title,
+                                  description: category.description || "",
+                                  status: category.status,
                                 })
                               }
                             >
@@ -331,7 +342,7 @@ export default function ExpenseMasterPage() {
 
               <form onSubmit={handleAddSubmit}>
                 <div className="modal-body-custom py-3">
-                  <div className="mb-2">
+                  <div className="mb-3">
                     <label className="form-label text-dark fw-bold small">
                       Expense Title <span className="text-danger">*</span>
                     </label>
@@ -344,9 +355,20 @@ export default function ExpenseMasterPage() {
                       onChange={(e) => setTitleInput(e.target.value)}
                       autoFocus
                     />
-                    <div className="form-text text-muted small mt-1">
-                      This title will be available for selection in the Expense Detail entry form.
-                    </div>
+                  </div>
+
+                  <div className="mb-2">
+                    <label className="form-label text-dark fw-bold small">
+                      Description <span className="text-muted fw-normal">(Optional)</span>
+                    </label>
+                    <textarea
+                      className="form-control"
+                      rows="3"
+                      placeholder="e.g. Monthly office space rent and facility maintenance..."
+                      value={descInput}
+                      onChange={(e) => setDescInput(e.target.value)}
+                    ></textarea>
+                  
                   </div>
                 </div>
 
@@ -395,7 +417,7 @@ export default function ExpenseMasterPage() {
 
               <form onSubmit={handleEditSubmit}>
                 <div className="modal-body-custom py-3">
-                  <div className="mb-2">
+                  <div className="mb-3">
                     <label className="form-label text-dark fw-bold small">
                       Expense Title <span className="text-danger">*</span>
                     </label>
@@ -410,6 +432,21 @@ export default function ExpenseMasterPage() {
                       }
                       autoFocus
                     />
+                  </div>
+
+                  <div className="mb-2">
+                    <label className="form-label text-dark fw-bold small">
+                      Description <span className="text-muted fw-normal">(Optional)</span>
+                    </label>
+                    <textarea
+                      className="form-control"
+                      rows="3"
+                      placeholder="e.g. Monthly office space rent and maintenance..."
+                      value={editItem.description || ""}
+                      onChange={(e) =>
+                        setEditItem({ ...editItem, description: e.target.value })
+                      }
+                    ></textarea>
                   </div>
                 </div>
 
